@@ -1,0 +1,7 @@
+package edu.sdu.sensumbosted;
+
+public class Main {
+
+    public static void main(String[] args) { new Main(); }
+
+}
