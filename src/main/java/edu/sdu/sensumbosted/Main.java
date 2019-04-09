@@ -1,5 +1,6 @@
 package edu.sdu.sensumbosted;
 
+import edu.sdu.sensumbosted.data.DataService;
 import edu.sdu.sensumbosted.entity.AuthLevel;
 import edu.sdu.sensumbosted.entity.Context;
 import edu.sdu.sensumbosted.entity.Department;
