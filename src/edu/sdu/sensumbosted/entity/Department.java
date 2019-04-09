@@ -17,19 +17,21 @@ public class Department {
 
     public void newManager(Context ctx, String name, AuthLevel auth) {
         ctx.assertAndLog(AuditAction.USER_CREATE,AuthLevel.LOCAL_ADMIN);
-        User manager = new Manager(name, auth);
-        members.put(Util.newId(),manager);
+        String userId = Util.newId();
+        User manager = new Manager(name,userId, auth);
+        members.put(userId,manager);
     }
     public void newPractitioner(Context ctx, String name) {
         ctx.assertAndLog(AuditAction.USER_CREATE,AuthLevel.LOCAL_ADMIN);
-        User practitioner = new Practitioner(name);
-        members.put(Util.newId(),practitioner);
+        String userId = Util.newId();
+        User practitioner = new Practitioner(name,userId);
+        members.put(userId,practitioner);
     }
     public void newPatient(Context ctx, String name) {
         ctx.assertAndLog(AuditAction.USER_CREATE,AuthLevel.CASEWORKER);
         String userId = Util.newId();
         User patient = new Patient(name, userId);
-        members.put(id,patient);
+        members.put(userId,patient);
     }
     public void deleteUser(Context ctx, User user) {
         ctx.assertAndLog(AuditAction.USER_DELETE,AuthLevel.LOCAL_ADMIN);
