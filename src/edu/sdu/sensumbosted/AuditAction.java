@@ -14,5 +14,8 @@ public enum AuditAction {
     DIARY_READ,
     DIARY_WRITE,
     CALENDAR_READ,
-    CALENDAR_WRITE;
+    CALENDAR_WRITE,
+    MANAGER_READ,
+    PRACTITIONER_READ,
+    PATIENT_READ;
 }

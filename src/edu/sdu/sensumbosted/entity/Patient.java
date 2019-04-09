@@ -9,8 +9,8 @@ public class Patient extends User {
     private List<String> asignees;
     private boolean enrolled;
 
-    Patient(String name) {
-        super(name);
+    Patient(String name, String id) {
+        super(name,id);
     }
 
     @Override
