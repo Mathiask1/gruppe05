@@ -17,38 +17,42 @@ public class Department {
 
     public void newManager(Context ctx, String name, AuthLevel auth) {
         ctx.assertAndLog(AuditAction.USER_CREATE,AuthLevel.LOCAL_ADMIN);
-        String userId = Util.newId();
-        User manager = new Manager(name,userId, auth);
-        members.put(userId,manager);
+        User manager = new Manager(name, auth);
+        members.put(manager.getId(),manager);
     }
+
     public void newPractitioner(Context ctx, String name) {
         ctx.assertAndLog(AuditAction.USER_CREATE,AuthLevel.LOCAL_ADMIN);
-        String userId = Util.newId();
-        User practitioner = new Practitioner(name,userId);
-        members.put(userId,practitioner);
+        User practitioner = new Practitioner(name);
+        members.put(practitioner.getId(),practitioner);
     }
+
     public void newPatient(Context ctx, String name) {
         ctx.assertAndLog(AuditAction.USER_CREATE,AuthLevel.CASEWORKER);
-        String userId = Util.newId();
-        User patient = new Patient(name, userId);
-        members.put(userId,patient);
+        User patient = new Patient(name);
+        members.put(patient.getId(),patient);
     }
+
     public void deleteUser(Context ctx, User user) {
         ctx.assertAndLog(AuditAction.USER_DELETE,AuthLevel.LOCAL_ADMIN);
         members.remove(user);
     }
+
     public User getUser(Context ctx, String id) {
         ctx.assertAndLog(AuditAction.PRACTITIONER_READ_ASSIGNED,AuthLevel.PRACTITIONER);
         return members.get(id);
     }
+
     public Manager getManager(Context ctx, String id) {
         ctx.assertAndLog(AuditAction.MANAGER_READ,AuthLevel.PATIENT);
         return (Manager) members.get(id);
     }
+
     public Practitioner getPractitioner(Context ctx, String id) {
         ctx.assertAndLog(AuditAction.PRACTITIONER_READ,AuthLevel.PATIENT);
         return (Practitioner) members.get(id);
     }
+
     public Patient getPatient(Context ctx, String id) {
         ctx.assertAndLog(AuditAction.PATIENT_READ,AuthLevel.PATIENT);
         return (Patient) members.get(id);
