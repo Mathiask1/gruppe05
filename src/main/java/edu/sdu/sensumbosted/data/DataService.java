@@ -4,9 +4,11 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import edu.sdu.sensumbosted.AuditAction;
 import edu.sdu.sensumbosted.entity.Context;
+import org.postgresql.Driver;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
+import java.sql.DriverManager;
 
 public class DataService {
 
@@ -15,6 +17,7 @@ public class DataService {
 
     public DataService()  {
         HikariConfig conf = new HikariConfig("database.properties");
+        conf.setMaximumPoolSize(2);
         dataSource = new HikariDataSource(conf);
         departments = new JdbcTemplate(dataSource);
     }
