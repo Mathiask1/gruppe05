@@ -2,19 +2,17 @@ package edu.sdu.sensumbosted.data;
 
 import edu.sdu.sensumbosted.AuditAction;
 import edu.sdu.sensumbosted.entity.Context;
-import org.postgresql.ds.PGSimpleDataSource;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 public class DataService {
 
-    private final javax.sql.DataSource dataSource;
+    /*private final javax.sql.DataSource dataSource;
     private final JdbcTemplate departments;
 
     public DataService()  {
         dataSource = new PGSimpleDataSource();
         // TODO
         departments = new JdbcTemplate(dataSource);
-    }
+    }*/
 
     public void log(Context ctx, AuditAction action) {
         log(ctx, action, "");
