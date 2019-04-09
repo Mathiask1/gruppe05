@@ -1,7 +1,7 @@
 package edu.sdu.sensumbosted.entity;
 
 import edu.sdu.sensumbosted.AuditAction;
-import edu.sdu.sensumbosted.DataService;
+import edu.sdu.sensumbosted.data.DataService;
 
 public class Context {
 
