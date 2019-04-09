@@ -36,3 +36,5 @@ pom.xml.releaseBackup
 pom.xml.tag
 /.idea/
 /out/
+/.gradle/
+/database.properties
