@@ -4,8 +4,8 @@ public class Manager extends User {
 
     private AuthLevel authLevel;
 
-    Manager(String name,String id, AuthLevel authLevel) {
-        super(name,id);
+    Manager(String name, AuthLevel authLevel) {
+        super(name);
         this.authLevel = authLevel;
     }
 

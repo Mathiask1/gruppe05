@@ -1,16 +1,16 @@
 package edu.sdu.sensumbosted.entity;
 
+import edu.sdu.sensumbosted.Util;
+
 public abstract class User {
 
     private String name;
     private String id;
 
-    User(String name, String id) {
+    User(String name) {
         this.name = name;
-        this.id = id;
-    }
+        this.id = Util.newId();
 
-    public User(String name) {
     }
 
     abstract AuthLevel getAuth();
