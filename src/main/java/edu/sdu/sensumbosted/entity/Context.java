@@ -33,11 +33,20 @@ public class Context {
         throw new SensumAccessException(this, action);
     }
 
+    /**
+     * Assert that the current user has at least a certain AuthLevel. Throws exception otherwise.
+     * The action will be logged.
+     */
     public void assertAndLog(AuditAction action, AuthLevel auth) {
         assertMinimum(action, auth);
         data.log(this, action);
     }
 
+    /**
+     * Assert that the current user has at least a certain AuthLevel. Throws exception otherwise.
+     * The callback will be run afterwards.
+     * The action will be logged.
+     */
     public void assertAndLog(AuditAction action, AuthLevel auth, Runnable runnable) {
         assertMinimum(action, auth);
         runnable.run();
