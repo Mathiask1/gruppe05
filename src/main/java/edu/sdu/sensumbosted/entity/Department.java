@@ -17,4 +17,8 @@ public class Department implements DataEntity {
 
     @Override
     public String getSqlTable() { return "departments"; }
+
+    public String getName() {
+        return name;
+    }
 }

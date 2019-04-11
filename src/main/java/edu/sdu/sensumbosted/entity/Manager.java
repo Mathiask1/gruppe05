@@ -4,13 +4,13 @@ public class Manager extends User {
 
     private AuthLevel authLevel;
 
-    Manager(String name, AuthLevel authLevel) {
-        super(name);
+    Manager(Department department, String name, AuthLevel authLevel) {
+        super(department, name);
         this.authLevel = authLevel;
     }
 
     @Override
-    AuthLevel getAuth() {
+    public AuthLevel getAuth() {
         return authLevel;
     }
 

@@ -9,8 +9,8 @@ public class Practitioner extends User {
 
     private ArrayList<Patient> assigned = new ArrayList<>();
 
-    Practitioner(String name) {
-        super(name);
+    Practitioner(Department department, String name) {
+        super(department, name);
     }
 
     @Override

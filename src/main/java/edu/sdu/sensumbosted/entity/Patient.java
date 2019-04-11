@@ -9,8 +9,8 @@ public class Patient extends User {
     private List<String> asignees;
     private boolean enrolled;
 
-    Patient(String name) {
-        super(name);
+    Patient(Department department, String name) {
+        super(department, name);
     }
 
     @Override
@@ -20,4 +20,8 @@ public class Patient extends User {
 
     @Override
     public String getSqlTable() { return "patients"; }
+
+    public boolean isEnrolled() {
+        return enrolled;
+    }
 }

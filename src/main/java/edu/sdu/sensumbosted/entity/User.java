@@ -7,10 +7,12 @@ import java.util.UUID;
 public abstract class User implements DataEntity  {
 
     private UUID id;
+    private Department department;
     private String name;
 
-    User(String name) {
+    User(Department department, String name) {
         id = UUID.randomUUID();
+        this.department = department;
         this.name = name;
     }
 
@@ -23,5 +25,9 @@ public abstract class User implements DataEntity  {
     @Override
     public UUID getId() {
         return id;
+    }
+
+    public Department getDepartment() {
+        return department;
     }
 }
