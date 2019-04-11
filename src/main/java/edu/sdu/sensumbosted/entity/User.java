@@ -1,10 +1,16 @@
 package edu.sdu.sensumbosted.entity;
 
-public abstract class User {
+import edu.sdu.sensumbosted.data.DataEntity;
 
+import java.util.UUID;
+
+public abstract class User implements DataEntity  {
+
+    private UUID id;
     private String name;
 
     User(String name) {
+        id = UUID.randomUUID();
         this.name = name;
     }
 
@@ -12,5 +18,10 @@ public abstract class User {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public UUID getId() {
+        return id;
     }
 }
