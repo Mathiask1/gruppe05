@@ -13,4 +13,7 @@ public class Manager extends User {
     AuthLevel getAuth() {
         return authLevel;
     }
+
+    @Override
+    public String getSqlTable() { return "managers"; }
 }

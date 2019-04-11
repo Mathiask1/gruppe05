@@ -17,4 +17,7 @@ public class Patient extends User {
     AuthLevel getAuth() {
         return AuthLevel.PATIENT;
     }
+
+    @Override
+    public String getSqlTable() { return "patients"; }
 }

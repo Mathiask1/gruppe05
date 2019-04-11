@@ -36,4 +36,7 @@ public class Practitioner extends User {
         return this.assigned;
     }
 
+    @Override
+    public String getSqlTable() { return "practitioners"; }
+
 }

@@ -22,6 +22,14 @@ public class DataService {
         departments = new JdbcTemplate(dataSource);
     }
 
+    public void put(DataEntity entity) {
+
+    }
+
+    public void delete(DataEntity entity) {
+
+    }
+
     public void log(Context ctx, AuditAction action) {
         log(ctx, action, "");
     }
