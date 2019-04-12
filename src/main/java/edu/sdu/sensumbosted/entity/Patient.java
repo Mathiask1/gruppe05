@@ -6,6 +6,7 @@ import edu.sdu.sensumbosted.Util;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Patient extends User {
 
@@ -29,10 +30,9 @@ public class Patient extends User {
         return this.diary;
     }
 
-    // SKAL IMPLEMENTERES
     public void setDiary(Context ctx, String diaryEntry) {
         ctx.assertAndLog(AuditAction.DIARY_WRITE, AuthLevel.PRACTITIONER);
-
+        long diaryId = TimeUnit.DAYS.toMillis(1);
+        diary.put(diaryId, diaryEntry);
     }
-
 }
