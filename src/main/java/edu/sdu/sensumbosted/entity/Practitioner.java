@@ -22,7 +22,7 @@ public class Practitioner extends User {
         ctx.assertAndLog(AuditAction.PRACTITIONER_ASSIGN,
                 AuthLevel.CASEWORKER,
                 () -> {
-                    ctx.data.relate(this, patient);
+                    ctx.data.associate(this, patient);
                     this.assigned.add(patient);
                 }
         );
@@ -32,7 +32,7 @@ public class Practitioner extends User {
         ctx.assertAndLog(AuditAction.PRACTITIONER_UNASSIGN,
                 AuthLevel.CASEWORKER,
                 () -> {
-                    ctx.data.unrelate(this, patient);
+                    ctx.data.disassociate(this, patient);
                     this.assigned.remove(patient);
                 }
         );

@@ -54,14 +54,14 @@ public class DataService {
     /**
      * Create a new relation between a practitioner and a patient
      */
-    public void relate(Practitioner practitioner, Patient patient) {
+    public void associate(Practitioner practitioner, Patient patient) {
         jdbc.update("INSERT INTO practitionerpatientrelation VALUES (?, ?);", ps -> {
             ps.setString(1, practitioner.getIdString());
             ps.setString(2, patient.getIdString());
         });
     }
 
-    public void unrelate(Practitioner practitioner, Patient patient) {
+    public void disassociate(Practitioner practitioner, Patient patient) {
         jdbc.update("DELETE FROM practitionerpatientrelation WHERE practitioner = ? AND patient = ?;", ps -> {
             ps.setString(1, practitioner.getIdString());
             ps.setString(2, patient.getIdString());
