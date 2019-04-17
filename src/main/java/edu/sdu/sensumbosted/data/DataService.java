@@ -35,14 +35,13 @@ public class DataService {
     }
 
     public void create(Patient patient) {
-        jdbc.update("INSERT INTO patients VALUES(?, ?, ?, ?, ?, ?, ?)", ps -> {
+        jdbc.update("INSERT INTO patients VALUES(?, ?, ?, ?, ?, ?)", ps -> {
             ps.setString(1, patient.getId().toString());
             ps.setString(2, patient.getDepartment().getId().toString());
             ps.setString(3, patient.getName());
-            ps.setString(4, null); // TODO many to many references
-            ps.setBoolean(5, patient.isEnrolled());
+            ps.setBoolean(4, patient.isEnrolled());
+            ps.setString(5, null); // TODO
             ps.setString(6, null); // TODO
-            ps.setString(7, null); // TODO
         });
     }
 

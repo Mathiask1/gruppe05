@@ -24,9 +24,9 @@ create table "user"
     auth       smallint
 );
 
-alter table "user"
+alter table managers
     owner to kjpusdpl;
 
 create unique index user_id_uindex
-    on "user" (id);
+    on managers (id);
 
