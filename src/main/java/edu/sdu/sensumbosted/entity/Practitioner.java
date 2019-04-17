@@ -17,17 +17,24 @@ public class Practitioner extends User {
     AuthLevel getAuth() {
         return AuthLevel.PRACTITIONER;
     }
+
     public void assign(Context ctx, Patient patient) {
         ctx.assertAndLog(AuditAction.PRACTITIONER_ASSIGN,
                 AuthLevel.CASEWORKER,
-                () -> this.assigned.add(patient)
+                () -> {
+                    ctx.data.relate(this, patient);
+                    this.assigned.add(patient);
+                }
         );
     }
 
     public void unassign(Context ctx, Patient patient) {
         ctx.assertAndLog(AuditAction.PRACTITIONER_UNASSIGN,
                 AuthLevel.CASEWORKER,
-                () -> this.assigned.remove(patient)
+                () -> {
+                    ctx.data.unrelate(this, patient);
+                    this.assigned.remove(patient);
+                }
         );
     }
 
