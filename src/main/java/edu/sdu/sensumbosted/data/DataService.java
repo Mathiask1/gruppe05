@@ -9,15 +9,23 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class DataService {
 
-    private final JdbcTemplate jdbc;
+    final JdbcTemplate jdbc;
+    private final DepartmentLoader departmentLoader;
 
     public DataService() {
         HikariConfig conf = new HikariConfig("database.properties");
         conf.setMaximumPoolSize(2);
         jdbc = new JdbcTemplate(new HikariDataSource(conf));
+        departmentLoader = new DepartmentLoader(this);
+    }
+
+    public HashMap<UUID, Department> loadDepartments() {
+        return departmentLoader.loadDepartments();
     }
 
     public void create(Department department) {
@@ -130,7 +138,7 @@ public class DataService {
      * <p>
      * This is at the cost of strong typing.
      */
-    private class VarargSetter implements PreparedStatementSetter {
+    class VarargSetter implements PreparedStatementSetter {
 
         private Object[] args;
 
@@ -150,7 +158,7 @@ public class DataService {
     /**
      * Convenience function
      */
-    private VarargSetter varargs(Object... args) {
+    VarargSetter varargs(Object... args) {
         return new VarargSetter(args);
     }
 
