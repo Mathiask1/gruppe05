@@ -14,7 +14,7 @@ public class DataService {
 
     private final JdbcTemplate jdbc;
 
-    public DataService()  {
+    public DataService() {
         HikariConfig conf = new HikariConfig("database.properties");
         conf.setMaximumPoolSize(2);
         jdbc = new JdbcTemplate(new HikariDataSource(conf));
@@ -56,8 +56,38 @@ public class DataService {
     }
 
     public void update(Department department) {
-        jdbc.update("UPDATE department SET name = ? WHERE id = ?;",
-                varargs(department.getName(), department.getId()));
+        jdbc.update("UPDATE department SET name = ? WHERE id = ?;", varargs(
+                department.getName(),
+                department.getId()
+        ));
+    }
+
+    public void update(Manager manager) {
+        jdbc.update("UPDATE managers SET department = ?, name = ?, auth = ? WHERE id = ?;", varargs(
+                manager.getDepartment().getId(),
+                manager.getName(),
+                manager.getAuth().ordinal(),
+                manager.getId()
+        ));
+    }
+
+    public void update(Patient patient) {
+        jdbc.update("UPDATE patients SET department = ?, name = ?, enrolled = ?, diary = ?, calendar = ? WHERE id = ?;", varargs(
+                patient.getDepartment().getId(),
+                patient.getName(),
+                patient.isEnrolled(),
+                null,// TODO
+                null,
+                patient.getId()
+        ));
+    }
+
+    public void update(Practitioner practitioner) {
+        jdbc.update("UPDATE managers SET department = ?, name = ? WHERE id = ?;", varargs(
+                practitioner.getDepartment().getId(),
+                practitioner.getName(),
+                practitioner.getId()
+        ));
     }
 
     /**
@@ -96,7 +126,9 @@ public class DataService {
     }
 
     /**
-     * Convenience class to preserve my sanity
+     * Convenience class to preserve my sanity.
+     * <p>
+     * This is at the cost of strong typing.
      */
     private class VarargSetter implements PreparedStatementSetter {
 
@@ -109,13 +141,17 @@ public class DataService {
         @Override
         public void setValues(PreparedStatement ps) throws SQLException {
             int i = 1;
-            for (Object o : args) { ps.setObject(i++, o); }
+            for (Object o : args) {
+                ps.setObject(i++, o);
+            }
         }
     }
 
     /**
      * Convenience function
      */
-    private VarargSetter varargs(Object... args) { return new VarargSetter(args); }
+    private VarargSetter varargs(Object... args) {
+        return new VarargSetter(args);
+    }
 
 }
