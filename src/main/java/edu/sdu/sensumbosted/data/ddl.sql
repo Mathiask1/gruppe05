@@ -7,11 +7,11 @@ create table department
     name text not null
 );
 
-alter table department
+alter table departments
     owner to kjpusdpl;
 
 create unique index department_id_uindex
-    on department (id);
+    on departments (id);
 
 -- auto-generated definition
 create table "user"

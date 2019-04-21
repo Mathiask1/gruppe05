@@ -4,6 +4,8 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import edu.sdu.sensumbosted.AuditAction;
 import edu.sdu.sensumbosted.entity.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 
@@ -16,9 +18,12 @@ public class DataService {
 
     final JdbcTemplate jdbc;
     private final DepartmentLoader departmentLoader;
+    private static final Logger log = LoggerFactory.getLogger(DataService.class);
 
     public DataService() {
         HikariConfig conf = new HikariConfig("database.properties");
+        conf.validate();
+        log.info("Database config passed validation");
         conf.setMaximumPoolSize(2);
         jdbc = new JdbcTemplate(new HikariDataSource(conf));
         departmentLoader = new DepartmentLoader(this);
@@ -29,7 +34,7 @@ public class DataService {
     }
 
     public void create(Department department) {
-        jdbc.update("INSERT INTO department VALUES(?, ?);", ps -> {
+        jdbc.update("INSERT INTO departments VALUES(?, ?);", ps -> {
             ps.setString(1, department.getIdString());
             ps.setString(2, department.getName());
         });
@@ -64,7 +69,7 @@ public class DataService {
     }
 
     public void update(Department department) {
-        jdbc.update("UPDATE department SET name = ? WHERE id = ?;", varargs(
+        jdbc.update("UPDATE departments SET name = ? WHERE id = ?;", varargs(
                 department.getName(),
                 department.getId()
         ));
@@ -130,7 +135,8 @@ public class DataService {
     }
 
     public void log(Context ctx, AuditAction action, String description) {
-        System.out.println(ctx.getUser() + " " + action + " " + description);
+        log.info("{} {} {}", ctx.getUser(), action, description);
+        // TODO
     }
 
     /**
