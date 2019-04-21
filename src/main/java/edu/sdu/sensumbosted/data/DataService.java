@@ -5,6 +5,10 @@ import com.zaxxer.hikari.HikariDataSource;
 import edu.sdu.sensumbosted.AuditAction;
 import edu.sdu.sensumbosted.entity.*;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class DataService {
 
@@ -51,6 +55,11 @@ public class DataService {
         });
     }
 
+    public void update(Department department) {
+        jdbc.update("UPDATE department SET name = ? WHERE id = ?;",
+                varargs(department.getName(), department.getId()));
+    }
+
     /**
      * Create a new relation between a practitioner and a patient
      */
@@ -85,5 +94,28 @@ public class DataService {
     public void log(Context ctx, AuditAction action, String description) {
         System.out.println(ctx.getUser() + " " + action + " " + description);
     }
+
+    /**
+     * Convenience class to preserve my sanity
+     */
+    private class VarargSetter implements PreparedStatementSetter {
+
+        private Object[] args;
+
+        VarargSetter(Object... args) {
+            this.args = args;
+        }
+
+        @Override
+        public void setValues(PreparedStatement ps) throws SQLException {
+            int i = 1;
+            for (Object o : args) { ps.setObject(i++, o); }
+        }
+    }
+
+    /**
+     * Convenience function
+     */
+    private VarargSetter varargs(Object... args) { return new VarargSetter(args); }
 
 }
