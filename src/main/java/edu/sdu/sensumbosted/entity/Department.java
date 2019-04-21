@@ -15,15 +15,19 @@ public class Department implements DataEntity {
     }
 
     /** DB access */
-    public Department(UUID id, String name, Map<UUID, User> members) {
+    public Department(UUID id, String name) {
         this.id = id;
         this.name = name;
-        this.members = members;
     }
 
-    private UUID id;
+    private final UUID id;
     private String name;
-    private Map<UUID, User> members;
+    private Map<UUID, User> members = null;
+
+    public void lateinit(Map<UUID, User> members) {
+        if (members == null) throw new IllegalStateException("Members are already initialized");
+        this.members = members;
+    }
 
     @Override
     public UUID getId() {
