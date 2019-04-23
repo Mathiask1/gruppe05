@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -139,7 +140,9 @@ public class DataService {
 
     public void log(Context ctx, AuditAction action, String description) {
         log.info("{} {} {}", ctx.getUser(), action, description);
-        // TODO
+        jdbc.update("INSERT INTO audit (time, actor, action, description) VALUES(?, ?, ?, ?);", varargs(
+                Instant.now(), ctx.getUser().getId(), action.toString(), description
+        ));
     }
 
     /**
