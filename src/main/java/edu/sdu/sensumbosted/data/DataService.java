@@ -35,10 +35,10 @@ public class DataService {
     }
 
     public void create(Department department) {
-        jdbc.update("INSERT INTO departments VALUES(?, ?);", ps -> {
-            ps.setString(1, department.getIdString());
-            ps.setString(2, department.getName());
-        });
+        jdbc.update("INSERT INTO departments VALUES(?, ?);", varargs(
+                department.getId(),
+                department.getName()
+        ));
     }
 
     public void create(Manager manager) {

@@ -9,7 +9,7 @@ public class Practitioner extends User {
 
     private ArrayList<Patient> assigned = null;
 
-    Practitioner(Department department, String name) {
+    public Practitioner(Department department, String name) {
         super(department, name);
     }
 

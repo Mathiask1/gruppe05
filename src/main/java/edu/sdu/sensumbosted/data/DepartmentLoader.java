@@ -46,8 +46,16 @@ class DepartmentLoader {
 
         log.info("Loaded {} managers", managers.size());
 
-        HashMap<UUID, List<Practitioner>> assignees = new HashMap<>();
-        HashMap<UUID, List<Patient>> assigned = new HashMap<>();
+        HashMap<UUID, List<Practitioner>> assigneeRelations = new HashMap<>();
+        HashMap<UUID, List<Patient>> assignedRelations = new HashMap<>();
+
+        List<Practitioner> practitioners = data.jdbc.query("SELECT * FROM practitioners;", (rs, rowNum) -> {
+            Practitioner practitioner = new Practitioner(getDepartment(departments, rs), rs.getString("name"));
+            log.info("Loaded {}", practitioner);
+            return practitioner;
+        });
+
+        log.info("Loaded {} practitioners", practitioners.size());
 
         return new HashMap<>(departments);
     }

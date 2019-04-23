@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class Department implements DataEntity {
 
-    Department(String name) {
+    public Department(String name) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.members = new HashMap<>();
