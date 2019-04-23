@@ -7,10 +7,15 @@ import java.util.List;
 
 public class Practitioner extends User {
 
-    private ArrayList<Patient> assigned = new ArrayList<>();
+    private ArrayList<Patient> assigned = null;
 
     Practitioner(Department department, String name) {
         super(department, name);
+    }
+
+    public void lateInit(ArrayList<Patient> assigned) {
+        if (assigned == null) throw new IllegalStateException("Assigned are already initialized");
+        this.assigned = assigned;
     }
 
     @Override

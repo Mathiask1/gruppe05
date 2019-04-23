@@ -24,7 +24,7 @@ public class Department implements DataEntity {
     private String name;
     private Map<UUID, User> members = null;
 
-    public void lateinit(Map<UUID, User> members) {
+    public void lateInit(Map<UUID, User> members) {
         if (members == null) throw new IllegalStateException("Members are already initialized");
         this.members = members;
     }

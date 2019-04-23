@@ -46,8 +46,8 @@ class DepartmentLoader {
 
         log.info("Loaded {} managers", managers.size());
 
-        HashMap<UUID, HashMap<UUID, Practitioner>> assignees = new HashMap<>();
-        HashMap<UUID, HashMap<UUID, Patient>> assigned = new HashMap<>();
+        HashMap<UUID, List<Practitioner>> assignees = new HashMap<>();
+        HashMap<UUID, List<Patient>> assigned = new HashMap<>();
 
         return new HashMap<>(departments);
     }
