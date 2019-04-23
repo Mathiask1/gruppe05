@@ -2,9 +2,7 @@ package edu.sdu.sensumbosted.data;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import edu.sdu.sensumbosted.entity.AuthLevel;
-import edu.sdu.sensumbosted.entity.Department;
-import edu.sdu.sensumbosted.entity.Manager;
+import edu.sdu.sensumbosted.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +27,7 @@ class DepartmentLoader {
 
         // Load departments
         List<Department> depsList = data.jdbc.query("SELECT * FROM departments;", (rs, rowNum) -> {
-            Department department = new Department(getId(rs), rs.getString("name"));
+            Department department = new Department(getId(rs, "id"), rs.getString("name"));
             log.debug("Loaded {}", department);
             return department;
         });
@@ -48,13 +46,14 @@ class DepartmentLoader {
 
         log.info("Loaded {} managers", managers.size());
 
-        // TODO members
+        HashMap<UUID, HashMap<UUID, Practitioner>> assignees = new HashMap<>();
+        HashMap<UUID, HashMap<UUID, Patient>> assigned = new HashMap<>();
 
         return new HashMap<>(departments);
     }
 
-    private UUID getId(ResultSet rs) throws SQLException {
-        return UUID.fromString(rs.getString("id"));
+    private UUID getId(ResultSet rs, String label) throws SQLException {
+        return UUID.fromString(rs.getString(label));
     }
 
     private Department getDepartment(Map<UUID, Department> departments, ResultSet rs) throws SQLException {

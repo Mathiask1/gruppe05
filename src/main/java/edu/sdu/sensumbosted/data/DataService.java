@@ -79,7 +79,7 @@ public class DataService {
         jdbc.update("UPDATE managers SET department = ?, name = ?, auth = ? WHERE id = ?;", varargs(
                 manager.getDepartment().getId(),
                 manager.getName(),
-                manager.getAuth().ordinal(),
+                manager.getAuth().toString(),
                 manager.getId()
         ));
     }
@@ -125,8 +125,11 @@ public class DataService {
      * @return true if deleted
      */
     public boolean delete(DataEntity entity) {
-        //noinspection SqlResolve
-        int changed = jdbc.update("DELETE FROM " + entity.getSqlTable() + " WHERE id = '" + entity.getId() + "';");
+        @SuppressWarnings("SqlResolve")
+        int changed = jdbc.update("DELETE FROM ? WHERE id = ?;", varargs(
+                entity.getSqlTable(),
+                entity.getId())
+        );
         return changed > 0;
     }
 
