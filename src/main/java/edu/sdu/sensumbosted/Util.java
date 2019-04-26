@@ -4,8 +4,8 @@ import java.util.UUID;
 
 public class Util {
 
-    public static String newId() {
-        return UUID.randomUUID().toString();
+    public static UUID newId() {
+        return UUID.randomUUID();
     }
 
 }

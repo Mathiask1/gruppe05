@@ -5,7 +5,7 @@ import edu.sdu.sensumbosted.data.DataService;
 
 public class Context {
 
-    private final DataService data;
+    public final DataService data;
     private User user = null;
 
     public Context(DataService data) {
