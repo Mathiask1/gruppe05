@@ -20,6 +20,7 @@ public class DataService {
     final JdbcTemplate jdbc;
     private final DepartmentLoader departmentLoader;
     private static final Logger log = LoggerFactory.getLogger(DataService.class);
+    final DatabaseContext context = new DatabaseContext(this);
 
     public DataService() {
         HikariConfig conf = new HikariConfig("database.properties");

@@ -1,23 +1,30 @@
 package edu.sdu.sensumbosted.entity;
 
-import edu.sdu.sensumbosted.Util;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class Patient extends User {
 
+    private UUID id;
     private Map<Integer, String> diary;
     private List<Practitioner> assignees = null;
     private boolean enrolled;
-    private String id;
 
 
     Patient(Department department, String name) {
         super(department, name);
     }
 
-    public void lateInit(ArrayList<Practitioner> assignees) {
+    /** DB access */
+    public Patient(UUID id, Department department, String name, Map<Integer, String> diary, boolean enrolled) {
+        super(department, name);
+        this.id = id;
+        this.diary = diary;
+        this.enrolled = enrolled;
+    }
+
+    public void lateInit(List<Practitioner> assignees) {
         if (assignees == null) throw new IllegalStateException("Assignees are already initialized");
         this.assignees = assignees;
     }

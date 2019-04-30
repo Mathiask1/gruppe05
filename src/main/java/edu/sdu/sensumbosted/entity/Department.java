@@ -2,9 +2,8 @@ package edu.sdu.sensumbosted.entity;
 
 import edu.sdu.sensumbosted.AuditAction;
 import edu.sdu.sensumbosted.data.DataEntity;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+
+import java.util.*;
 
 public class Department implements DataEntity {
 
@@ -99,6 +98,11 @@ public class Department implements DataEntity {
     public Patient getPatient(Context ctx, UUID id) {
         ctx.assertAndLog(AuditAction.PATIENT_READ,AuthLevel.PATIENT);
         return (Patient) members.get(id);
+    }
+
+    public List<User> getUsers(Context ctx) {
+        ctx.assertAndLog(AuditAction.DEPARTMENT_USERS_READ, AuthLevel.PRACTITIONER);
+        return new ArrayList<>(members.values());
     }
 
     @Override
