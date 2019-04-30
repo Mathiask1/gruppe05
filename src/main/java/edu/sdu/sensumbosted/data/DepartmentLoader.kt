@@ -34,8 +34,8 @@ class DepartmentLoader(private val data: DataService) {
 
         fun User.addToDepartment(rs: ResultSet) {
             val depId = rs.getId("department")
-            if (!departmentUserMaps.containsKey(id)) {
-                log.warn("Received dangling department ID $id for user $this")
+            if (!departmentUserMaps.containsKey(depId)) {
+                log.warn("Received dangling department ID $depId for user $this")
                 return
             }
             departmentUserMaps[depId]!![id] = this
@@ -96,7 +96,7 @@ class DepartmentLoader(private val data: DataService) {
             relations++
         }
 
-        log.info("Found $relations between patients and practitioners.")
+        log.info("Found $relations relations between patients and practitioners.")
         if (dangling > 0) log.warn("$dangling relations were dangling.")
 
         departmentUserMaps.forEach { departments.getValue(it.key).lateInit(it.value) }
@@ -119,7 +119,7 @@ class DepartmentLoader(private val data: DataService) {
             deps.forEach { dep ->
                 appendln("├── $dep")
                 dep.getUsers(data.context).forEach {
-                    appendln("│  ├── $it")
+                    appendln("│   ├── $it")
                 }
             }
         })
