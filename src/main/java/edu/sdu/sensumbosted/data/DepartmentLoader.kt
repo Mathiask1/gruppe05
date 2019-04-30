@@ -10,6 +10,8 @@ import java.util.*
  *
  * While this project is intended to be written in Java, Kotlin brings with it a lot of features in relation to lambdas
  * and declarative collection handling.
+ *
+ * This class loads the database upon startup, and returns a map of all the departments as a [HashMap].
  */
 class DepartmentLoader(private val data: DataService) {
 
@@ -22,7 +24,7 @@ class DepartmentLoader(private val data: DataService) {
 
         // Load departments
         val depsList = data.jdbc.query("SELECT * FROM departments;") { rs, rowNum ->
-            val department = Department(getId(rs, "id"), rs.getString("name"))
+            val department = Department(rs.getId("id"), rs.getString("name"))
             log.debug("Loaded $department")
             department
         }
@@ -31,7 +33,7 @@ class DepartmentLoader(private val data: DataService) {
 
         val managers = data.jdbc.query("SELECT * FROM managers;") { rs, rowNum ->
             val manager = Manager(
-                    getDepartment(departments, rs),
+                    departments.getDepartment(rs),
                     rs.getString("name"),
                     AuthLevel.valueOf(rs.getString("auth"))
             )
@@ -45,7 +47,7 @@ class DepartmentLoader(private val data: DataService) {
         val assignedRelations = mutableMapOf<UUID, List<Patient>>()
 
         val practitioners = data.jdbc.query("SELECT * FROM practitioners;") { rs, rowNum ->
-            val practitioner = Practitioner(getDepartment(departments, rs), rs.getString("name"))
+            val practitioner = Practitioner(departments.getDepartment(rs), rs.getString("name"))
             log.info("Loaded $practitioner")
             practitioner
         }
@@ -55,8 +57,8 @@ class DepartmentLoader(private val data: DataService) {
         return HashMap(departments)
     }
 
-    private fun getId(rs: ResultSet, label: String): UUID = UUID.fromString(rs.getString(label))
+    private fun ResultSet.getId(label: String): UUID = UUID.fromString(this.getString(label))
 
-    private fun getDepartment(departments: Map<UUID, Department>, rs: ResultSet): Department =
-            departments[UUID.fromString(rs.getString("department"))] ?: error("Map should contain ID")
+    private fun Map<UUID, Department>.getDepartment(rs: ResultSet) =
+            this[UUID.fromString(rs.getString("department"))] ?: error("Map should contain ID")
 }
