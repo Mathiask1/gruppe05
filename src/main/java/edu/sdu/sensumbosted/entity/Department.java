@@ -1,65 +1,111 @@
 package edu.sdu.sensumbosted.entity;
 
 import edu.sdu.sensumbosted.AuditAction;
-import edu.sdu.sensumbosted.Util;
-
+import edu.sdu.sensumbosted.data.DataEntity;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
-public class Department {
-    private String id;
-    private String name;
-    private Map<String, User> members;
+public class Department implements DataEntity {
 
-    public Department (String id, String name) {
+    public Department(String name) {
+        this.id = UUID.randomUUID();
+        this.name = name;
+        this.members = new HashMap<>();
+    }
+
+    /** DB access */
+    public Department(UUID id, String name) {
         this.id = id;
         this.name = name;
     }
 
+    private final UUID id;
+    private String name;
+    private Map<UUID, User> members = null;
+
+    public void lateInit(Map<UUID, User> members) {
+        if (members == null) throw new IllegalStateException("Members are already initialized");
+        this.members = members;
+    }
+
+    @Override
+    public UUID getId() {
+        return id;
+    }
+
+    @Override
+    public String getSqlTable() { return "departments"; }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Department)) return false;
+
+        Department that = (Department) o;
+
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
     public void newManager(Context ctx, String name, AuthLevel auth) {
-        ctx.assertAndLog(AuditAction.USER_CREATE, AuthLevel.LOCAL_ADMIN);
-        User manager = new Manager(name, auth);
+        ctx.assertAndLog(AuditAction.USER_CREATE,AuthLevel.LOCAL_ADMIN);
+        User manager = new Manager(this, name, auth);
         members.put(manager.getId(),manager);
     }
 
     public void newPractitioner(Context ctx, String name) {
-        ctx.assertAndLog(AuditAction.USER_CREATE, AuthLevel.LOCAL_ADMIN);
-        User practitioner = new Practitioner(name);
+        ctx.assertAndLog(AuditAction.USER_CREATE,AuthLevel.LOCAL_ADMIN);
+        User practitioner = new Practitioner(this, name);
         members.put(practitioner.getId(),practitioner);
     }
 
     public void newPatient(Context ctx, String name) {
-        ctx.assertAndLog(AuditAction.USER_CREATE, AuthLevel.CASEWORKER);
-        User patient = new Patient(name);
-        members.put(patient.getId(), patient);
+        ctx.assertAndLog(AuditAction.USER_CREATE,AuthLevel.CASEWORKER);
+        User patient = new Patient(this, name);
+        members.put(patient.getId(),patient);
     }
 
     public void deleteUser(Context ctx, User user) {
-        ctx.assertAndLog(AuditAction.USER_DELETE, AuthLevel.LOCAL_ADMIN);
-        members.remove(user);
+        ctx.assertAndLog(AuditAction.USER_DELETE,AuthLevel.LOCAL_ADMIN);
+        members.remove(user.getId());
     }
 
-    public User getUser(Context ctx, String id) {
-        ctx.assertAndLog(AuditAction.PRACTITIONER_READ_ASSIGNED, AuthLevel.PRACTITIONER);
+    // TODO: Patienter bør kun se de practitioners, de er blevet tildelt
+
+    public User getUser(Context ctx, UUID id) {
+        ctx.assertAndLog(AuditAction.PRACTITIONER_READ_ASSIGNED,AuthLevel.PRACTITIONER);
         return members.get(id);
     }
 
-    public Manager getManager(Context ctx, String id) {
-        ctx.assertAndLog(AuditAction.MANAGER_READ, AuthLevel.PATIENT);
+    public Manager getManager(Context ctx, UUID id) {
+        ctx.assertAndLog(AuditAction.MANAGER_READ,AuthLevel.PATIENT);
         return (Manager) members.get(id);
     }
 
-    public Practitioner getPractitioner(Context ctx, String id) {
-        ctx.assertAndLog(AuditAction.PRACTITIONER_READ, AuthLevel.PATIENT);
+    public Practitioner getPractitioner(Context ctx, UUID id) {
+        ctx.assertAndLog(AuditAction.PRACTITIONER_READ,AuthLevel.PATIENT);
         return (Practitioner) members.get(id);
     }
 
-    public Patient getPatient(Context ctx, String id) {
-        ctx.assertAndLog(AuditAction.PATIENT_READ, AuthLevel.PATIENT);
+    public Patient getPatient(Context ctx, UUID id) {
+        ctx.assertAndLog(AuditAction.PATIENT_READ,AuthLevel.PATIENT);
         return (Patient) members.get(id);
     }
 
-    // skal implementeres
-    public void onUpdate(User user) {
-
+    @Override
+    public String toString() {
+        return "Department{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

@@ -7,27 +7,39 @@ import java.util.List;
 
 public class Practitioner extends User {
 
-    private ArrayList<Patient> assigned = new ArrayList<>();
+    private ArrayList<Patient> assigned = null;
 
-    Practitioner(String name) {
-        super(name);
+    public Practitioner(Department department, String name) {
+        super(department, name);
+    }
+
+    public void lateInit(ArrayList<Patient> assigned) {
+        if (assigned == null) throw new IllegalStateException("Assigned are already initialized");
+        this.assigned = assigned;
     }
 
     @Override
     AuthLevel getAuth() {
         return AuthLevel.PRACTITIONER;
     }
+
     public void assign(Context ctx, Patient patient) {
         ctx.assertAndLog(AuditAction.PRACTITIONER_ASSIGN,
                 AuthLevel.CASEWORKER,
-                () -> this.assigned.add(patient)
+                () -> {
+                    ctx.data.associate(this, patient);
+                    this.assigned.add(patient);
+                }
         );
     }
 
     public void unassign(Context ctx, Patient patient) {
         ctx.assertAndLog(AuditAction.PRACTITIONER_UNASSIGN,
                 AuthLevel.CASEWORKER,
-                () -> this.assigned.remove(patient)
+                () -> {
+                    ctx.data.disassociate(this, patient);
+                    this.assigned.remove(patient);
+                }
         );
     }
 
@@ -35,5 +47,8 @@ public class Practitioner extends User {
         ctx.assertAndLog(AuditAction.PRACTITIONER_READ_ASSIGNED, AuthLevel.CASEWORKER);
         return this.assigned;
     }
+
+    @Override
+    public String getSqlTable() { return "practitioners"; }
 
 }

@@ -1,10 +1,9 @@
 package edu.sdu.sensumbosted.entity;
 import edu.sdu.sensumbosted.AuditAction;
 import edu.sdu.sensumbosted.Util;
-
-
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -12,17 +11,22 @@ import java.util.concurrent.TimeUnit;
 public class Patient extends User {
 
     private Map<Long, String> diary;
-    private List<String> asignees;
+    private List<Practitioner> assignees = null;
     private boolean enrolled;
     private String id;
 
-    Patient(String name) {
-        super(name);
 
+    Patient(Department department, String name) {
+        super(department, name);
+    }
+
+    public void lateInit(ArrayList<Practitioner> assignees) {
+        if (assignees == null) throw new IllegalStateException("Assignees are already initialized");
+        this.assignees = assignees;
     }
 
     @Override
-    AuthLevel getAuth() {
+    public AuthLevel getAuth() {
         return AuthLevel.PATIENT;
     }
 
@@ -41,5 +45,12 @@ public class Patient extends User {
         LocalDate localDate = LocalDate.now();
         long diaryId = TimeUnit.DAYS.toMillis(localDate.toEpochDay());
         diary.put(diaryId, diaryEntry);
+	}
+
+	@Override
+    public String getSqlTable() { return "patients"; }
+
+    public boolean isEnrolled() {
+        return enrolled;
     }
 }
