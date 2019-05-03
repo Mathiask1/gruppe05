@@ -57,8 +57,8 @@ public class DataService {
             ps.setString(2, patient.getDepartment().getIdString());
             ps.setString(3, patient.getName());
             ps.setBoolean(4, patient.isEnrolled());
-            ps.setString(5, null); // TODO
-            ps.setString(6, null); // TODO
+            ps.setString(5, patient.getDiaryJson().toString());
+            ps.setString(6, patient.getCalendarJson().toString());
         });
     }
 
@@ -91,8 +91,8 @@ public class DataService {
                 patient.getDepartment().getId(),
                 patient.getName(),
                 patient.isEnrolled(),
-                null,// TODO
-                null,
+                patient.getDiaryJson().toString(),
+                patient.getCalendarJson().toString(),
                 patient.getId()
         ));
     }
