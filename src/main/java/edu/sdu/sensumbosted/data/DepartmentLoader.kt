@@ -9,7 +9,7 @@ import java.util.*
  * This is the only class in this project that is written in Kotlin.
  *
  * While this project is intended to be written in Java, Kotlin brings with it a lot of features in relation to lambdas
- * and declarative collection handling.
+ * and declarative collection handling (especially [associateBy]).
  *
  * This class loads the database upon startup, and returns a map of all the departments as a [HashMap].
  */
@@ -23,13 +23,23 @@ class DepartmentLoader(private val data: DataService) {
         log.info("Loading departments and their members")
 
         // Load departments
-        val depsList = data.jdbc.query("SELECT * FROM departments;") { rs, rowNum ->
+        val departments = data.jdbc.query("SELECT * FROM departments;") { rs, _ ->
             val department = Department(rs.getId("id"), rs.getString("name"))
             log.debug("Loaded $department")
             department
-        }
-        val departments = depsList.associateBy { it.id }
+        }.associateBy { it.id }
+        val departmentUserMaps = mutableMapOf<UUID, MutableMap<UUID, User>>()
+        departments.forEach { departmentUserMaps[it.key] = mutableMapOf() }
         log.info("Loaded ${departments.size} departments")
+
+        fun User.addToDepartment(rs: ResultSet) {
+            val depId = rs.getId("department")
+            if (!departmentUserMaps.containsKey(depId)) {
+                log.warn("Received dangling department ID $depId for user $this")
+                return
+            }
+            departmentUserMaps[depId]!![id] = this
+        }
 
         val managers = data.jdbc.query("SELECT * FROM managers;") { rs, rowNum ->
             val manager = Manager(
@@ -38,21 +48,62 @@ class DepartmentLoader(private val data: DataService) {
                     AuthLevel.valueOf(rs.getString("auth"))
             )
             log.debug("Loaded $manager")
+            manager.addToDepartment(rs)
             manager
         }
 
         log.info("Loaded ${managers.size} managers")
 
-        val assigneeRelations = mutableMapOf<UUID, List<Practitioner>>()
-        val assignedRelations = mutableMapOf<UUID, List<Patient>>()
-
-        val practitioners = data.jdbc.query("SELECT * FROM practitioners;") { rs, rowNum ->
+        val assigneeRelations = mutableMapOf<UUID, MutableList<Practitioner>>()
+        val practitioners = data.jdbc.query("SELECT * FROM practitioners;") { rs, _ ->
             val practitioner = Practitioner(departments.getDepartment(rs), rs.getString("name"))
             log.info("Loaded $practitioner")
+            assigneeRelations[practitioner.id] = mutableListOf()
+            practitioner.addToDepartment(rs)
             practitioner
+        }.associateBy { it.id }
+        log.info("Loaded ${practitioners.size} practitioners")
+
+        val assignedRelations = mutableMapOf<UUID, MutableList<Patient>>()
+        val patients = data.jdbc.query("SELECT * FROM patients;") { rs, _ ->
+            val patient = Patient(
+                    rs.getId("id"),
+                    departments.getDepartment(rs),
+                    rs.getString("name"),
+                    null,
+                    rs.getBoolean("enrolled")
+            )
+            log.info("Loaded $patient")
+            assignedRelations[patient.id] = mutableListOf()
+            patient.addToDepartment(rs)
+            patient
+        }.associateBy { it.id }
+        log.info("Loaded ${patients.size} practitioners")
+
+        var relations = 0
+        var dangling = 0
+        data.jdbc.query("SELECT * FROM practitionerpatientrelation;") { rs ->
+            val practitioner = practitioners[rs.getId("practitioner")]
+            val patient = patients[rs.getId("patient")]
+
+            if (practitioner == null || patient == null) {
+                dangling++
+                return@query
+            }
+
+            assignedRelations[practitioner.id]!!.add(patient)
+            assigneeRelations[patient.id]!!.add(practitioner)
+            relations++
         }
 
-        log.info("Loaded ${practitioners.size} practitioners")
+        log.info("Found $relations relations between patients and practitioners.")
+        if (dangling > 0) log.warn("$dangling relations were dangling.")
+
+        departmentUserMaps.forEach { departments.getValue(it.key).lateInit(it.value) }
+        assignedRelations.forEach { practitioners.getValue(it.key).lateInit(it.value) }
+        assigneeRelations.forEach { patients.getValue(it.key).lateInit(it.value) }
+
+        if (log.isDebugEnabled) printDebug(departments.values.toList())
 
         return HashMap(departments)
     }
@@ -61,4 +112,16 @@ class DepartmentLoader(private val data: DataService) {
 
     private fun Map<UUID, Department>.getDepartment(rs: ResultSet) =
             this[UUID.fromString(rs.getString("department"))] ?: error("Map should contain ID")
+
+    private fun printDebug(deps: List<Department>) {
+        log.debug(buildString {
+            appendln("${deps.size} departments")
+            deps.forEach { dep ->
+                appendln("├── $dep")
+                dep.getUsers(data.context).forEach {
+                    appendln("│   ├── $it")
+                }
+            }
+        })
+    }
 }

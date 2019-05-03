@@ -3,6 +3,7 @@ package edu.sdu.sensumbosted;
 public enum AuditAction {
     DEPARTMENT_CREATE,
     DEPARTMENT_DELETE,
+    DEPARTMENT_USERS_READ,
     USER_CREATE,
     USER_DELETE,
     LOGGED_IN,

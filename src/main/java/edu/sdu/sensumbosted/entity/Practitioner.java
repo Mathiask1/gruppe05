@@ -2,18 +2,17 @@ package edu.sdu.sensumbosted.entity;
 
 import edu.sdu.sensumbosted.AuditAction;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Practitioner extends User {
 
-    private ArrayList<Patient> assigned = null;
+    private List<Patient> assigned = null;
 
     public Practitioner(Department department, String name) {
         super(department, name);
     }
 
-    public void lateInit(ArrayList<Patient> assigned) {
+    public void lateInit(List<Patient> assigned) {
         if (assigned == null) throw new IllegalStateException("Assigned are already initialized");
         this.assigned = assigned;
     }
