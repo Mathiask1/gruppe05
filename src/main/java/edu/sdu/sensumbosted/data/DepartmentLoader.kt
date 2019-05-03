@@ -1,6 +1,8 @@
 package edu.sdu.sensumbosted.data
 
 import edu.sdu.sensumbosted.entity.*
+import org.json.JSONArray
+import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import java.sql.ResultSet
 import java.util.*
@@ -70,7 +72,8 @@ class DepartmentLoader(private val data: DataService) {
                     rs.getId("id"),
                     departments.getDepartment(rs),
                     rs.getString("name"),
-                    null,
+                    JSONObject(rs.getString("diary")),
+                    JSONArray(rs.getString("calendar")),
                     rs.getBoolean("enrolled")
             )
             log.info("Loaded $patient")
