@@ -24,7 +24,7 @@ class DepartmentLoader(private val data: DataService) {
     fun loadDepartments(): HashMap<UUID, Department> {
         log.info("Loading departments and their members")
 
-        // Load departments
+        // Load departments to a map
         val departments = data.jdbc.query("SELECT * FROM departments;") { rs, _ ->
             val department = Department(rs.getId("id"), rs.getString("name"))
             log.debug("Loaded $department")

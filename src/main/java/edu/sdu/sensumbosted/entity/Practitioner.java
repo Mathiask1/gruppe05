@@ -23,31 +23,27 @@ public class Practitioner extends User {
     }
 
     public void assign(Context ctx, Patient patient) {
-        ctx.assertAndLog(AuditAction.PRACTITIONER_ASSIGN,
-                AuthLevel.CASEWORKER,
-                () -> {
-                    ctx.data.associate(this, patient);
-                    this.assigned.add(patient);
-                }
-        );
+        ctx.assertAndLog(getDepartment(), AuditAction.PRACTITIONER_ASSIGN, AuthLevel.CASEWORKER, () -> {
+            ctx.data.associate(this, patient);
+            this.assigned.add(patient);
+        });
     }
 
     public void unassign(Context ctx, Patient patient) {
-        ctx.assertAndLog(AuditAction.PRACTITIONER_UNASSIGN,
-                AuthLevel.CASEWORKER,
-                () -> {
-                    ctx.data.disassociate(this, patient);
-                    this.assigned.remove(patient);
-                }
-        );
+        ctx.assertAndLog(getDepartment(), AuditAction.PRACTITIONER_UNASSIGN, AuthLevel.CASEWORKER, () -> {
+            ctx.data.disassociate(this, patient);
+            this.assigned.remove(patient);
+        });
     }
 
     public List<Patient> getPatients(Context ctx) {
-        ctx.assertAndLog(AuditAction.PRACTITIONER_READ_ASSIGNED, AuthLevel.CASEWORKER);
+        ctx.assertAndLog(getDepartment(), AuditAction.PRACTITIONER_READ_ASSIGNED, AuthLevel.CASEWORKER);
         return this.assigned;
     }
 
     @Override
-    public String getSqlTable() { return "practitioners"; }
+    public String getSqlTable() {
+        return "practitioners";
+    }
 
 }

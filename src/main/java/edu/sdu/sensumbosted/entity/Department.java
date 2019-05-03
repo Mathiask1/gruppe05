@@ -60,50 +60,50 @@ public class Department implements DataEntity {
     }
 
     public void newManager(Context ctx, String name, AuthLevel auth) {
-        ctx.assertAndLog(AuditAction.USER_CREATE, AuthLevel.LOCAL_ADMIN);
+        ctx.assertAndLog(this, AuditAction.USER_CREATE, AuthLevel.LOCAL_ADMIN);
         User manager = new Manager(this, name, auth);
         members.put(manager.getId(), manager);
     }
 
     public void newPractitioner(Context ctx, String name) {
-        ctx.assertAndLog(AuditAction.USER_CREATE, AuthLevel.LOCAL_ADMIN);
+        ctx.assertAndLog(this, AuditAction.USER_CREATE, AuthLevel.LOCAL_ADMIN);
         User practitioner = new Practitioner(this, name);
         members.put(practitioner.getId(), practitioner);
     }
 
     public void newPatient(Context ctx, String name) {
-        ctx.assertAndLog(AuditAction.USER_CREATE, AuthLevel.CASEWORKER);
+        ctx.assertAndLog(this, AuditAction.USER_CREATE, AuthLevel.CASEWORKER);
         User patient = new Patient(this, name);
         members.put(patient.getId(), patient);
     }
 
     public void deleteUser(Context ctx, User user) {
-        ctx.assertAndLog(AuditAction.USER_DELETE, AuthLevel.LOCAL_ADMIN);
+        ctx.assertAndLog(this, AuditAction.USER_DELETE, AuthLevel.LOCAL_ADMIN);
         members.remove(user.getId());
     }
 
     public User getUser(Context ctx, UUID id) {
-        ctx.assertAndLog(AuditAction.PRACTITIONER_READ_ASSIGNED, AuthLevel.PRACTITIONER);
+        ctx.assertAndLog(this, AuditAction.PRACTITIONER_READ_ASSIGNED, AuthLevel.PRACTITIONER);
         return members.get(id);
     }
 
     public Manager getManager(Context ctx, UUID id) {
-        ctx.assertAndLog(AuditAction.MANAGER_READ, AuthLevel.PRACTITIONER);
+        ctx.assertAndLog(this, AuditAction.MANAGER_READ, AuthLevel.PRACTITIONER);
         return (Manager) members.get(id);
     }
 
     public Practitioner getPractitioner(Context ctx, UUID id) {
-        ctx.assertAndLog(AuditAction.PRACTITIONER_READ, AuthLevel.PRACTITIONER);
+        ctx.assertAndLog(this, AuditAction.PRACTITIONER_READ, AuthLevel.PRACTITIONER);
         return (Practitioner) members.get(id);
     }
 
     public Patient getPatient(Context ctx, UUID id) {
-        ctx.assertAndLog(AuditAction.PATIENT_READ, AuthLevel.PRACTITIONER);
+        ctx.assertAndLog(this, AuditAction.PATIENT_READ, AuthLevel.PRACTITIONER);
         return (Patient) members.get(id);
     }
 
     public List<User> getUsers(Context ctx) {
-        ctx.assertAndLog(AuditAction.DEPARTMENT_USERS_READ, AuthLevel.PRACTITIONER);
+        ctx.assertAndLog(this, AuditAction.DEPARTMENT_USERS_READ, AuthLevel.PRACTITIONER);
         return new ArrayList<>(members.values());
     }
 

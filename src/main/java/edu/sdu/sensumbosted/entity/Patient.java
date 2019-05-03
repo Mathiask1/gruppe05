@@ -48,7 +48,7 @@ public class Patient extends User {
 
     public ArrayList<Practitioner> getAssignees(Context context) {
         if (context.getUser() == this) return assignees;
-        context.assertAndLog(AuditAction.PATIENT_READ, AuthLevel.PRACTITIONER);
+        context.assertAndLog(getDepartment(), AuditAction.PATIENT_READ, AuthLevel.PRACTITIONER);
         return assignees;
     }
 
