@@ -13,7 +13,9 @@ public class Department implements DataEntity {
         this.members = new HashMap<>();
     }
 
-    /** DB access */
+    /**
+     * DB access
+     */
     public Department(UUID id, String name) {
         this.id = id;
         this.name = name;
@@ -34,7 +36,9 @@ public class Department implements DataEntity {
     }
 
     @Override
-    public String getSqlTable() { return "departments"; }
+    public String getSqlTable() {
+        return "departments";
+    }
 
     public String getName() {
         return name;
@@ -56,47 +60,45 @@ public class Department implements DataEntity {
     }
 
     public void newManager(Context ctx, String name, AuthLevel auth) {
-        ctx.assertAndLog(AuditAction.USER_CREATE,AuthLevel.LOCAL_ADMIN);
+        ctx.assertAndLog(AuditAction.USER_CREATE, AuthLevel.LOCAL_ADMIN);
         User manager = new Manager(this, name, auth);
-        members.put(manager.getId(),manager);
+        members.put(manager.getId(), manager);
     }
 
     public void newPractitioner(Context ctx, String name) {
-        ctx.assertAndLog(AuditAction.USER_CREATE,AuthLevel.LOCAL_ADMIN);
+        ctx.assertAndLog(AuditAction.USER_CREATE, AuthLevel.LOCAL_ADMIN);
         User practitioner = new Practitioner(this, name);
-        members.put(practitioner.getId(),practitioner);
+        members.put(practitioner.getId(), practitioner);
     }
 
     public void newPatient(Context ctx, String name) {
-        ctx.assertAndLog(AuditAction.USER_CREATE,AuthLevel.CASEWORKER);
+        ctx.assertAndLog(AuditAction.USER_CREATE, AuthLevel.CASEWORKER);
         User patient = new Patient(this, name);
-        members.put(patient.getId(),patient);
+        members.put(patient.getId(), patient);
     }
 
     public void deleteUser(Context ctx, User user) {
-        ctx.assertAndLog(AuditAction.USER_DELETE,AuthLevel.LOCAL_ADMIN);
+        ctx.assertAndLog(AuditAction.USER_DELETE, AuthLevel.LOCAL_ADMIN);
         members.remove(user.getId());
     }
 
-    // TODO: Patienter bør kun se de practitioners, de er blevet tildelt
-
     public User getUser(Context ctx, UUID id) {
-        ctx.assertAndLog(AuditAction.PRACTITIONER_READ_ASSIGNED,AuthLevel.PRACTITIONER);
+        ctx.assertAndLog(AuditAction.PRACTITIONER_READ_ASSIGNED, AuthLevel.PRACTITIONER);
         return members.get(id);
     }
 
     public Manager getManager(Context ctx, UUID id) {
-        ctx.assertAndLog(AuditAction.MANAGER_READ,AuthLevel.PATIENT);
+        ctx.assertAndLog(AuditAction.MANAGER_READ, AuthLevel.PRACTITIONER);
         return (Manager) members.get(id);
     }
 
     public Practitioner getPractitioner(Context ctx, UUID id) {
-        ctx.assertAndLog(AuditAction.PRACTITIONER_READ,AuthLevel.PATIENT);
+        ctx.assertAndLog(AuditAction.PRACTITIONER_READ, AuthLevel.PRACTITIONER);
         return (Practitioner) members.get(id);
     }
 
     public Patient getPatient(Context ctx, UUID id) {
-        ctx.assertAndLog(AuditAction.PATIENT_READ,AuthLevel.PATIENT);
+        ctx.assertAndLog(AuditAction.PATIENT_READ, AuthLevel.PRACTITIONER);
         return (Patient) members.get(id);
     }
 
