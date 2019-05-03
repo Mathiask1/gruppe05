@@ -1,5 +1,6 @@
 package edu.sdu.sensumbosted.entity;
 
+import edu.sdu.sensumbosted.AuditAction;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,7 +13,6 @@ public class Patient extends User {
     private ArrayList<CalendarEntry> calendar = null;
     private ArrayList<Practitioner> assignees = null;
     private boolean enrolled;
-
 
     Patient(Department department, String name) {
         super(department, name);
@@ -45,6 +45,12 @@ public class Patient extends User {
 
     @Override
     public String getSqlTable() { return "patients"; }
+
+    public ArrayList<Practitioner> getAssignees(Context context) {
+        if (context.getUser() == this) return assignees;
+        context.assertAndLog(AuditAction.PATIENT_READ, AuthLevel.PRACTITIONER);
+        return assignees;
+    }
 
     public boolean isEnrolled() {
         return enrolled;
