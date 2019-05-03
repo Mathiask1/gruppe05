@@ -22,7 +22,7 @@ public class Main {
     }
 
     public void newDepartment(Context ctx, String name) {
-        ctx.assertAndLog(AuditAction.DEPARTMENT_CREATE, AuthLevel.SUPERUSER, () -> {
+        ctx.assertAndLog(null, AuditAction.DEPARTMENT_CREATE, AuthLevel.SUPERUSER, () -> {
             Department department = new Department(name);
             data.create(department);
             departments.put(department.getId(), department);

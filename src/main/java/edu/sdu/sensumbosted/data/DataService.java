@@ -43,31 +43,31 @@ public class DataService {
     }
 
     public void create(Manager manager) {
-        jdbc.update("INSERT INTO managers VALUES(?, ?, ?, ?);", ps -> {
-            ps.setString(1, manager.getIdString());
-            ps.setString(2, manager.getDepartment().getIdString());
-            ps.setString(3, manager.getName());
-            ps.setInt(4, manager.getAuth().ordinal());
-        });
+        jdbc.update("INSERT INTO managers VALUES(?, ?, ?, ?);", varargs(
+            manager.getIdString(),
+            manager.getDepartment().getIdString(),
+            manager.getName(),
+            manager.getAuth().ordinal()
+        ));
     }
 
     public void create(Patient patient) {
-        jdbc.update("INSERT INTO patients VALUES(?, ?, ?, ?, ?, ?);", ps -> {
-            ps.setString(1, patient.getIdString());
-            ps.setString(2, patient.getDepartment().getIdString());
-            ps.setString(3, patient.getName());
-            ps.setBoolean(4, patient.isEnrolled());
-            ps.setString(5, patient.getDiaryJson().toString());
-            ps.setString(6, patient.getCalendarJson().toString());
-        });
+        jdbc.update("INSERT INTO patients VALUES(?, ?, ?, ?, ?, ?);", varargs(
+            patient.getIdString(),
+            patient.getDepartment().getIdString(),
+            patient.getName(),
+            patient.isEnrolled(),
+            patient.getDiaryJson().toString(),
+            patient.getCalendarJson().toString()
+        ));
     }
 
     public void create(Practitioner practitioner) {
-        jdbc.update("INSERT INTO practitioners VALUES(?, ?, ?);", ps -> {
-            ps.setString(1, practitioner.getIdString());
-            ps.setString(2, practitioner.getDepartment().getIdString());
-            ps.setString(3, practitioner.getName());
-        });
+        jdbc.update("INSERT INTO practitioners VALUES(?, ?, ?);", varargs(
+            practitioner.getIdString(),
+            practitioner.getDepartment().getIdString(),
+            practitioner.getName()
+        ));
     }
 
     public void update(Department department) {

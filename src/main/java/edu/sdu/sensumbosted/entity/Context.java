@@ -2,6 +2,7 @@ package edu.sdu.sensumbosted.entity;
 
 import edu.sdu.sensumbosted.AuditAction;
 import edu.sdu.sensumbosted.data.DataService;
+import org.jetbrains.annotations.Nullable;
 
 public class Context {
 
@@ -28,8 +29,18 @@ public class Context {
         return auth.ordinal() >= getAuth().ordinal();
     }
 
-    public void assertMinimum(AuditAction action, AuthLevel auth) {
-        if (checkMinimum(auth)) return;
+    public boolean checkAccess(@Nullable Department department) {
+        return department == null
+                || checkMinimum(AuthLevel.SUPERUSER)
+                || (getUser() != null && getUser().getDepartment() == department);
+    }
+
+    public boolean checkMinimum(@Nullable Department department, AuthLevel auth) {
+        return auth.ordinal() >= getAuth().ordinal() && checkAccess(department);
+    }
+
+    public void assertMinimum(@Nullable Department department, AuditAction action, AuthLevel auth) {
+        if (checkMinimum(auth) && checkAccess(department)) return;
         throw new SensumAccessException(this, action);
     }
 
@@ -37,8 +48,8 @@ public class Context {
      * Assert that the current user has at least a certain AuthLevel. Throws exception otherwise.
      * The action will be logged.
      */
-    public void assertAndLog(AuditAction action, AuthLevel auth) {
-        assertMinimum(action, auth);
+    public void assertAndLog(@Nullable Department department, AuditAction action, AuthLevel auth) {
+        assertMinimum(department, action, auth);
         data.log(this, action);
     }
 
@@ -47,8 +58,8 @@ public class Context {
      * The callback will be run afterwards.
      * The action will be logged.
      */
-    public void assertAndLog(AuditAction action, AuthLevel auth, Runnable runnable) {
-        assertMinimum(action, auth);
+    public void assertAndLog(Department department, AuditAction action, AuthLevel auth, Runnable runnable) {
+        assertMinimum(department, action, auth);
         runnable.run();
         data.log(this, action);
     }
