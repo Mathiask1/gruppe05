@@ -2,6 +2,7 @@ package edu.sdu.sensumbosted.entity;
 
 import edu.sdu.sensumbosted.AuditAction;
 import edu.sdu.sensumbosted.data.DataService;
+import org.jetbrains.annotations.Nullable;
 
 public class Context {
 
@@ -28,15 +29,17 @@ public class Context {
         return auth.ordinal() >= getAuth().ordinal();
     }
 
-    public boolean checkMinimum(Department department, AuthLevel auth) {
+    public boolean checkAccess(@Nullable Department department) {
+        return department == null
+                || checkMinimum(AuthLevel.SUPERUSER)
+                || (getUser() != null && getUser().getDepartment() == department);
+    }
+
+    public boolean checkMinimum(@Nullable Department department, AuthLevel auth) {
         return auth.ordinal() >= getAuth().ordinal() && checkAccess(department);
     }
 
-    public boolean checkAccess(Department department) {
-        return checkMinimum(AuthLevel.SUPERUSER) || (getUser() != null && getUser().getDepartment() == department);
-    }
-
-    public void assertMinimum(Department department, AuditAction action, AuthLevel auth) {
+    public void assertMinimum(@Nullable Department department, AuditAction action, AuthLevel auth) {
         if (checkMinimum(auth) && checkAccess(department)) return;
         throw new SensumAccessException(this, action);
     }
@@ -45,7 +48,7 @@ public class Context {
      * Assert that the current user has at least a certain AuthLevel. Throws exception otherwise.
      * The action will be logged.
      */
-    public void assertAndLog(Department department, AuditAction action, AuthLevel auth) {
+    public void assertAndLog(@Nullable Department department, AuditAction action, AuthLevel auth) {
         assertMinimum(department, action, auth);
         data.log(this, action);
     }
