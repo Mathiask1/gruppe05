@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
@@ -45,6 +46,10 @@ public class MainWindowController implements Initializable {
     private ListView<?> userList;
     @FXML
     private Button selectUser;
+    @FXML
+    private ListView<?> diaryList;
+    @FXML
+    private TextArea diaryTextArea;
 
     /**
      * Initializes the controller class.
