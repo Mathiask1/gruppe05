@@ -3,16 +3,14 @@ package edu.sdu.sensumbosted.entity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class Patient extends User {
 
     private UUID id;
-    private Map<Integer, String> diary;
-    private List<CalendarEntry> calendar;
-    private List<Practitioner> assignees = null;
+    private HashMap<Integer, String> diary = null;
+    private ArrayList<CalendarEntry> calendar = null;
+    private ArrayList<Practitioner> assignees = null;
     private boolean enrolled;
 
 
@@ -21,16 +19,23 @@ public class Patient extends User {
     }
 
     /** DB access */
-    public Patient(UUID id, Department department, String name, Map<Integer, String> diary, boolean enrolled) {
+    public Patient(UUID id, Department department, String name, JSONObject diary, JSONArray calendar, boolean enrolled) {
         super(department, name);
         this.id = id;
-        this.diary = diary;
         this.enrolled = enrolled;
+        parseJson(diary, calendar);
+    }
+
+    private void parseJson(JSONObject diary, JSONArray calendar) {
+        this.diary = new HashMap<>();
+        this.calendar = new ArrayList<>();
+        diary.toMap().forEach((s, o) -> this.diary.put(Integer.parseInt(s), (String) o));
+        calendar.iterator().forEachRemaining(o -> new CalendarEntry((JSONObject) o));
     }
 
     public void lateInit(List<Practitioner> assignees) {
         if (assignees == null) throw new IllegalStateException("Assignees are already initialized");
-        this.assignees = assignees;
+        this.assignees = new ArrayList<>(assignees);
     }
 
     @Override
@@ -43,11 +48,6 @@ public class Patient extends User {
 
     public boolean isEnrolled() {
         return enrolled;
-    }
-
-    /** DB access */
-    public void postInit(JSONObject diary, JSONArray calendar) {
-        // TODO
     }
 
     public JSONObject getDiaryJson() {
