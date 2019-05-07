@@ -118,6 +118,7 @@ class DepartmentLoader(private val data: DataService) {
 
     private fun printDebug(deps: List<Department>) {
         log.debug(buildString {
+            append("\n")
             appendln("${deps.size} departments")
             deps.forEach { dep ->
                 appendln("├── $dep")
