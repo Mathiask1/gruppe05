@@ -14,7 +14,7 @@ public class Patient extends User {
     private ArrayList<Practitioner> assignees = null;
     private boolean enrolled;
 
-    Patient(Department department, String name) {
+    public Patient(Department department, String name) {
         super(department, name);
     }
 
