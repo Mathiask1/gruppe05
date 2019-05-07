@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.management.relation.Role;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +27,7 @@ public class Main extends Application {
     public Main() {
         instance = this;
         departments = data.loadDepartments();
+
     }
 
     @Override
@@ -72,5 +74,9 @@ public class Main extends Application {
 
     public Context getContext() {
         return context;
+    }
+
+    public HashMap<UUID, Department> getDepartments() {
+        return departments;
     }
 }

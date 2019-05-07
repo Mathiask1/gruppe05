@@ -7,9 +7,11 @@ package edu.sdu.sensumbosted.presentation;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 import edu.sdu.sensumbosted.Main;
 import edu.sdu.sensumbosted.entity.AuthLevel;
+import edu.sdu.sensumbosted.entity.Department;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,6 +29,7 @@ import javafx.stage.Stage;
  * @author birke
  */
 public class NewUserController implements Initializable {
+    private Main main = Main.getInstance();
 
     @FXML
     private TextField userNameTextField;
@@ -55,7 +58,21 @@ public class NewUserController implements Initializable {
 
     @FXML
     private void newUserButtonClicked(MouseEvent event) {
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(departmentIDTextField.getText());
+        } catch (IllegalStateException e) {
+            // TODO
+            return;
+        }
 
+        Department department = main.getDepartments().get(uuid);
+        if (department == null) {
+            // TODO
+            return;
+        }
+        // TODO
+        //department.newPatient(main.getContext(), userNameTextField.getText());
     }
     
 }

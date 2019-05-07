@@ -71,6 +71,8 @@ public class MainWindowController implements Initializable {
 
 
     ArrayList<User> userArray = new ArrayList<>();
+    @FXML
+    private Text currentUserTxtField;
 
     /**
      * Initializes the controller class.
@@ -102,8 +104,20 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void selectUserClicked(MouseEvent event) {
-        //todo
+        // TODO
         // Frederik, jeg skal have din hjælp!
+        try {
+            if (userSelectionMenu.getValue() == null) {
+                System.out.println("No user selected!");
+            } else {
+                main.getContext().setUser(userSelectionMenu.getValue());
+            }
+            refresh();
+
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
     }
 
     @FXML
@@ -115,6 +129,11 @@ public class MainWindowController implements Initializable {
         users.setAll(main.getUsers(main.getContext()));
         userSelectionMenu.setItems(users);
         userList.setItems(users);
+        if (main.getContext().getUser() == null) {
+            currentUserTxtField.setText("No current user!");
+        } else {
+            currentUserTxtField.setText(main.getContext().getUser().getName());
+        }
 
     }
 
