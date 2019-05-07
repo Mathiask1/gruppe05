@@ -46,8 +46,8 @@ public class DataService {
 
     public void create(Manager manager) {
         jdbc.update("INSERT INTO managers VALUES(?, ?, ?, ?);", varargs(
-            manager.getIdString(),
-            manager.getDepartment().getIdString(),
+            manager.getId(),
+            manager.getDepartment().getId(),
             manager.getName(),
             manager.getAuth().ordinal()
         ));
@@ -55,8 +55,8 @@ public class DataService {
 
     public void create(Patient patient) {
         jdbc.update("INSERT INTO patients VALUES(?, ?, ?, ?, ?, ?);", varargs(
-            patient.getIdString(),
-            patient.getDepartment().getIdString(),
+            patient.getId(),
+            patient.getDepartment().getId(),
             patient.getName(),
             patient.isEnrolled(),
             patient.getDiaryJson().toString(),
@@ -66,8 +66,8 @@ public class DataService {
 
     public void create(Practitioner practitioner) {
         jdbc.update("INSERT INTO practitioners VALUES(?, ?, ?);", varargs(
-            practitioner.getIdString(),
-            practitioner.getDepartment().getIdString(),
+            practitioner.getId(),
+            practitioner.getDepartment().getId(),
             practitioner.getName()
         ));
     }
@@ -111,17 +111,17 @@ public class DataService {
      * Create a new relation between a practitioner and a patient
      */
     public void associate(Practitioner practitioner, Patient patient) {
-        jdbc.update("INSERT INTO practitionerpatientrelation VALUES (?, ?);", ps -> {
-            ps.setString(1, practitioner.getIdString());
-            ps.setString(2, patient.getIdString());
-        });
+        jdbc.update("INSERT INTO practitionerpatientrelation VALUES (?, ?);", varargs(
+                practitioner.getId(),
+                patient.getId()
+        ));
     }
 
     public void disassociate(Practitioner practitioner, Patient patient) {
-        jdbc.update("DELETE FROM practitionerpatientrelation WHERE practitioner = ? AND patient = ?;", ps -> {
-            ps.setString(1, practitioner.getIdString());
-            ps.setString(2, patient.getIdString());
-        });
+        jdbc.update("DELETE FROM practitionerpatientrelation WHERE practitioner = ? AND patient = ?;", varargs(
+                practitioner.getId(),
+                patient.getId()
+        ));
     }
 
     /**
