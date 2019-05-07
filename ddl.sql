@@ -73,7 +73,7 @@ create table if not exists audit
         constraint audit_pk
             primary key,
     time time not null,
-    action text not null,
+    action text,
     description text not null,
     actor uuid not null
 );
