@@ -71,8 +71,8 @@ public class NewUserController implements Initializable {
             // TODO
             return;
         }
-
-        department.newPatient(main.getContext(), userNameTextField.getText());
+        // TODO
+        //department.newPatient(main.getContext(), userNameTextField.getText());
     }
     
 }

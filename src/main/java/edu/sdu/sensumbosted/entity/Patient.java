@@ -9,9 +9,9 @@ import java.util.*;
 public class Patient extends User {
 
     private UUID id;
-    private HashMap<Integer, String> diary = null;
-    private ArrayList<CalendarEntry> calendar = null;
-    private ArrayList<Practitioner> assignees = null;
+    private HashMap<Integer, String> diary = new HashMap<>();
+    private ArrayList<CalendarEntry> calendar = new ArrayList<>();
+    private ArrayList<Practitioner> assignees = new ArrayList<>();
     private boolean enrolled;
 
     public Patient(Department department, String name) {

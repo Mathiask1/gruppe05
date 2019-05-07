@@ -80,7 +80,6 @@ public class MainWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         refresh();
-
     }
 
     @FXML
@@ -105,10 +104,14 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void selectUserClicked(MouseEvent event) {
-        //todo
+        // TODO
         // Frederik, jeg skal have din hjælp!
         try {
+            if (userSelectionMenu.getValue() == null) {
+                System.out.println("No user selected!");
+            } else {
                 main.getContext().setUser(userSelectionMenu.getValue());
+            }
             refresh();
 
         } catch (Exception e) {
