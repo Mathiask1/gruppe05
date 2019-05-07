@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.PreparedStatementSetter;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.UUID;
@@ -166,6 +167,7 @@ public class DataService {
         public void setValues(PreparedStatement ps) throws SQLException {
             int i = 1;
             for (Object o : args) {
+                if (o instanceof Instant) o = Timestamp.from((Instant) o);
                 ps.setObject(i++, o);
             }
         }
