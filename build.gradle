@@ -21,6 +21,9 @@ repositories {
     jcenter()
 }
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 dependencies {
     implementation 'org.springframework:spring-jdbc:5.1.6.RELEASE'
     implementation 'org.postgresql:postgresql:42.2.5'

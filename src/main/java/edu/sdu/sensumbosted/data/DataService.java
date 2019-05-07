@@ -141,8 +141,11 @@ public class DataService {
 
     public void log(Context ctx, AuditAction action, String description) {
         log.info("{} {} {}", ctx.getUser(), action, description);
+        UUID userId = null;
+        User user = ctx.getUser();
+        if (user != null) userId = user.getId();
         jdbc.update("INSERT INTO audit (time, actor, action, description) VALUES(?, ?, ?, ?);", varargs(
-                Instant.now(), ctx.getUser().getId(), action.toString(), description
+                Instant.now(), userId, action.toString(), description
         ));
     }
 
