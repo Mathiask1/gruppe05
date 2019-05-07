@@ -122,7 +122,7 @@ class DepartmentLoader(private val data: DataService) {
             appendln("${deps.size} departments")
             deps.forEach { dep ->
                 appendln("├── $dep")
-                dep.getUsers(data.context).forEach {
+                dep.getUsers(data.systemContext).forEach {
                     appendln("│   ├── $it")
                 }
             }

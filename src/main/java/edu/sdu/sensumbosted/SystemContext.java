@@ -1,16 +1,16 @@
-package edu.sdu.sensumbosted.data;
+package edu.sdu.sensumbosted;
 
-import edu.sdu.sensumbosted.AuditAction;
+import edu.sdu.sensumbosted.data.DataService;
 import edu.sdu.sensumbosted.entity.AuthLevel;
 import edu.sdu.sensumbosted.entity.Context;
 import edu.sdu.sensumbosted.entity.Department;
 import edu.sdu.sensumbosted.entity.User;
 
 /**
- * This is used by the data layer for the purpose of bypassing the permission system
+ * This is used for the purpose of bypassing the permission system
  */
-public final class DatabaseContext extends Context {
-    DatabaseContext(DataService data) {
+public final class SystemContext extends Context {
+    SystemContext(DataService data) {
         super(data);
     }
 
@@ -35,7 +35,7 @@ public final class DatabaseContext extends Context {
 
     @Override
     public void setUser(User user) {
-        throw new UnsupportedOperationException("Attempt to set the user in the database context");
+        throw new UnsupportedOperationException("Attempt to set the user in the system context");
     }
 
     @Override

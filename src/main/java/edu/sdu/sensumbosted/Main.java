@@ -4,7 +4,6 @@ import edu.sdu.sensumbosted.data.DataService;
 import edu.sdu.sensumbosted.entity.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -14,11 +13,12 @@ public class Main {
     private final HashMap<UUID, Department> departments;
     private final DataService data = new DataService();
     private final Context context = new Context(data);
+    private final SystemContext systemContext = new SystemContext(data);
 
     public static void main(String[] args) { new Main(); }
 
     private Main() {
-        departments = data.loadDepartments();
+        departments = data.loadDepartments(systemContext);
     }
 
     public void newDepartment(Context ctx, String name) {
