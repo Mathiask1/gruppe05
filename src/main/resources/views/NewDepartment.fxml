@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="244.0" prefWidth="226.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.sdu.sensumbosted.presentation.NewDepartmentController">
+   <children>
+      <TextField fx:id="departmentNameTextField" layoutX="33.0" layoutY="66.0" />
+      <Text layoutX="33.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Navn" />
+      <Button fx:id="newDepartmentButton" layoutX="31.0" layoutY="166.0" mnemonicParsing="false" onMouseClicked="#newDepartmentButtonClicked" text="Ny afdeling" />
+      <Text fx:id="errorMessageTxt" fill="RED" layoutX="31.0" layoutY="204.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+   </children>
+</AnchorPane>
