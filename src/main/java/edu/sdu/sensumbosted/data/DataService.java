@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
+import org.springframework.lang.NonNull;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -140,7 +141,7 @@ public class DataService {
         log(ctx, action, "");
     }
 
-    public void log(Context ctx, AuditAction action, String description) {
+    public void log(@NonNull Context ctx, @NonNull AuditAction action, @NonNull String description) {
         log.info("{} {} {}", ctx.getUser(), action, description);
         UUID userId = null;
         User user = ctx.getUser();
