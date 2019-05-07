@@ -59,22 +59,28 @@ public class Department implements DataEntity {
         return id.hashCode();
     }
 
-    public void newManager(Context ctx, String name, AuthLevel auth) {
+    public Manager newManager(Context ctx, String name, AuthLevel auth) {
         ctx.assertAndLog(this, AuditAction.USER_CREATE, AuthLevel.LOCAL_ADMIN);
-        User manager = new Manager(this, name, auth);
+        Manager manager = new Manager(this, name, auth);
+        ctx.data.create(manager);
         members.put(manager.getId(), manager);
+        return manager;
     }
 
-    public void newPractitioner(Context ctx, String name) {
+    public Practitioner newPractitioner(Context ctx, String name) {
         ctx.assertAndLog(this, AuditAction.USER_CREATE, AuthLevel.LOCAL_ADMIN);
-        User practitioner = new Practitioner(this, name);
+        Practitioner practitioner = new Practitioner(this, name);
         members.put(practitioner.getId(), practitioner);
+        ctx.data.create(practitioner);
+        return practitioner;
     }
 
-    public void newPatient(Context ctx, String name) {
+    public Patient newPatient(Context ctx, String name) {
         ctx.assertAndLog(this, AuditAction.USER_CREATE, AuthLevel.CASEWORKER);
-        User patient = new Patient(this, name);
+        Patient patient = new Patient(this, name);
         members.put(patient.getId(), patient);
+        ctx.data.create(patient);
+        return patient;
     }
 
     public void deleteUser(Context ctx, User user) {
