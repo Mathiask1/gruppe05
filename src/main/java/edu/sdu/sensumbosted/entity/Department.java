@@ -7,6 +7,8 @@ import java.util.*;
 
 public class Department implements DataEntity {
 
+    public static final String SQL_TABLE = "departments";
+
     public Department(String name) {
         this.id = UUID.randomUUID();
         this.name = name;
@@ -37,7 +39,7 @@ public class Department implements DataEntity {
 
     @Override
     public String getSqlTable() {
-        return "departments";
+        return SQL_TABLE;
     }
 
     public String getName() {

@@ -7,6 +7,7 @@ import java.util.List;
 public class Practitioner extends User {
 
     private List<Patient> assigned = null;
+    public static final String SQL_TABLE = "practitioners";
 
     public Practitioner(Department department, String name) {
         super(department, name);
@@ -43,7 +44,7 @@ public class Practitioner extends User {
 
     @Override
     public String getSqlTable() {
-        return "practitioners";
+        return SQL_TABLE;
     }
 
 }

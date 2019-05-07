@@ -135,6 +135,17 @@ public class DataService {
         return changed > 0;
     }
 
+    /**
+     * @param id the UUID of the entity to delete
+     * @param table the table to delete from
+     * @return true if deleted
+     */
+    public boolean delete(UUID id, String table) {
+        @SuppressWarnings("SqlResolve")
+        int changed = jdbc.update("DELETE FROM ? WHERE id = ?;", varargs(id, table));
+        return changed > 0;
+    }
+
     public void log(Context ctx, AuditAction action) {
         log(ctx, action, "");
     }
