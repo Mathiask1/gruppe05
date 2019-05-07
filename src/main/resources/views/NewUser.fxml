@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="244.0" prefWidth="226.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="edu.sdu.sensumbosted.presentation.NewUserController">
+   <children>
+      <TextField fx:id="userNameTextField" layoutX="33.0" layoutY="66.0" />
+      <Text layoutX="33.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Navn" />
+      <Text layoutX="33.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Afdeling (ID)" />
+      <TextField fx:id="departmentIDTextField" layoutX="33.0" layoutY="125.0" />
+      <Button layoutX="31.0" layoutY="166.0" mnemonicParsing="false" text="Ny bruger" />
+   </children>
+</AnchorPane>
