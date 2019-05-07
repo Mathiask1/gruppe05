@@ -77,7 +77,7 @@ class DepartmentLoader(private val data: DataService) {
                     rs.getBoolean("enrolled")
             )
             log.info("Loaded $patient")
-            assignedRelations[patient.id] = mutableListOf()
+            assigneeRelations[patient.id] = mutableListOf()
             patient.addToDepartment(rs)
             patient
         }.associateBy { it.id }
