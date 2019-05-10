@@ -39,7 +39,7 @@ public class Patient extends User {
     }
 
     @Override
-    AuthLevel getAuth() {
+    public AuthLevel getAuth() {
         return AuthLevel.PATIENT;
     }
 

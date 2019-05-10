@@ -18,7 +18,7 @@ public class Practitioner extends User {
     }
 
     @Override
-    AuthLevel getAuth() {
+    public AuthLevel getAuth() {
         return AuthLevel.PRACTITIONER;
     }
 

@@ -60,6 +60,7 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private Button selectUser;
+    
     @FXML
     private TextArea diaryTextArea;
     @FXML
@@ -122,6 +123,13 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void newDiaryMouseClicked(MouseEvent event) {
+        try {
+            Patient patient = (Patient) userList.getSelectionModel().getSelectedItem();
+            
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -135,6 +143,18 @@ public class MainWindowController implements Initializable {
             currentUserTxtField.setText(main.getContext().getUser().getName());
         }
 
+    }
+
+    @FXML
+    private void userListViewClicked(MouseEvent event) {
+        User user = userList.getSelectionModel().getSelectedItem();
+        userName.setText(user.getName());
+        userRole.setText(user.getAuth().toString());
+        userDepartment.setText(user.getDepartment().toString());
+
+        Patient patient = (Patient) userList.getSelectionModel().getSelectedItem();
+
+        diaryTextArea.setText(patient.getDiaryJson().toString());
     }
 
 }

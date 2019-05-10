@@ -46,7 +46,7 @@
             <Text fx:id="currentUserTxtField" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textOrigin="CENTER" />
             </items>
         </ToolBar>
-        <ListView fx:id="userList" layoutY="78.0" prefHeight="454.0" prefWidth="298.0" />
+        <ListView fx:id="userList" layoutY="78.0" onMouseClicked="#userListViewClicked" prefHeight="454.0" prefWidth="298.0" />
         <Text fx:id="userName" layoutX="322.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vælg en bruger!">
             <font>
                 <Font size="30.0" />
