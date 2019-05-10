@@ -57,10 +57,10 @@ public class MainWindowController implements Initializable {
     private ListView<User> userList;
 
     private final ObservableList<User> users = FXCollections.observableArrayList();
+    private final ObservableList<User> usersSelectionList = FXCollections.observableArrayList();
 
     @FXML
     private Button selectUser;
-    
     @FXML
     private TextArea diaryTextArea;
     @FXML
@@ -69,9 +69,6 @@ public class MainWindowController implements Initializable {
     private TextArea newDiaryEntryTxtArea;
     @FXML
     private ListView<?> departmentListView;
-
-
-    ArrayList<User> userArray = new ArrayList<>();
     @FXML
     private Text currentUserTxtField;
 
@@ -105,8 +102,6 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void selectUserClicked(MouseEvent event) {
-        // TODO
-        // Frederik, jeg skal have din hjælp!
         try {
             if (userSelectionMenu.getValue() == null) {
                 System.out.println("No user selected!");
@@ -126,23 +121,44 @@ public class MainWindowController implements Initializable {
         try {
             Patient patient = (Patient) userList.getSelectionModel().getSelectedItem();
             
+            patient.newDiaryEntry(main.getContext(),newDiaryEntryTxtArea.getText());
+
+            diaryTextArea.setText(patient.getDiary());
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("User not a patient!");
         }
 
     }
 
+    /*
+    Refresh information on screen
+     */
     public void refresh() {
-        users.setAll(main.getUsers(main.getContext()));
-        userSelectionMenu.setItems(users);
-        userList.setItems(users);
+        usersSelectionList.setAll(main.getUsers(main.getContext()));
+        userSelectionMenu.setItems(usersSelectionList);
+
+        try {
+            userName.setText(main.getContext().getUser().getName());
+            userRole.setText(main.getContext().getUser().getAuth().toString());
+            userDepartment.setText(main.getContext().getUser().getDepartment().toString());
+
+            if (!main.getContext().checkMinimum(AuthLevel.PATIENT)) {
+                users.setAll(main.getUsers(main.getContext()));
+                userList.setItems(users);
+            } else {
+                users.setAll(main.getContext().getUser());
+                userList.setItems(users);
+            }
+        } catch (Exception e) {
+            System.out.println("No active user!");
+        }
+
         if (main.getContext().getUser() == null) {
             currentUserTxtField.setText("No current user!");
         } else {
             currentUserTxtField.setText(main.getContext().getUser().getName());
         }
-
     }
 
     @FXML
@@ -152,9 +168,19 @@ public class MainWindowController implements Initializable {
         userRole.setText(user.getAuth().toString());
         userDepartment.setText(user.getDepartment().toString());
 
-        Patient patient = (Patient) userList.getSelectionModel().getSelectedItem();
+        try {
+            if (userList.getSelectionModel().getSelectedItem().getAuth() == AuthLevel.PATIENT) {
+                Patient patient = (Patient) userList.getSelectionModel().getSelectedItem();
 
-        diaryTextArea.setText(patient.getDiaryJson().toString());
+                diaryTextArea.setText(patient.getDiary());
+            } else {
+                diaryTextArea.setText("User is not a patient!");
+            }
+
+        } catch (Exception e) {
+            System.out.println("User not a patient!");
+        }
+
     }
 
 }
