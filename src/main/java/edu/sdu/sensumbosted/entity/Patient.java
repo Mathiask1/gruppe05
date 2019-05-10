@@ -36,7 +36,6 @@ public class Patient extends User {
 
     }
 
-
     /** DB access */
     public Patient(UUID id, Department department, String name, JSONObject diary, JSONArray calendar, boolean enrolled) {
         super(department, name);
