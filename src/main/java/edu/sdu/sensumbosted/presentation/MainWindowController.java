@@ -163,12 +163,12 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private void userListViewClicked(MouseEvent event) {
-        User user = userList.getSelectionModel().getSelectedItem();
-        userName.setText(user.getName());
-        userRole.setText(user.getAuth().toString());
-        userDepartment.setText(user.getDepartment().toString());
-
         try {
+            User user = userList.getSelectionModel().getSelectedItem();
+            userName.setText(user.getName());
+            userRole.setText(user.getAuth().toString());
+            userDepartment.setText(user.getDepartment().toString());
+
             if (userList.getSelectionModel().getSelectedItem().getAuth() == AuthLevel.PATIENT) {
                 Patient patient = (Patient) userList.getSelectionModel().getSelectedItem();
 
