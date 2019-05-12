@@ -109,7 +109,7 @@ public class MainWindowController implements Initializable {
 
             diaryTextArea.setText(patient.getDiary());
 
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             log.error("User not a patient!", e);
         }
 
@@ -134,7 +134,7 @@ public class MainWindowController implements Initializable {
                 users.setAll(main.getContext().getUser());
                 userList.setItems(users);
             }
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             log.error("No active user!", e);
         }
 
@@ -161,7 +161,7 @@ public class MainWindowController implements Initializable {
                 diaryTextArea.setText("User is not a patient!");
             }
 
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
             log.error("User not a patient!", e);
         }
     }
