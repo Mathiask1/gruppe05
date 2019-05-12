@@ -8,7 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import javax.management.relation.Role;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;

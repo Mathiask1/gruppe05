@@ -20,6 +20,8 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,6 +34,7 @@ import java.util.ResourceBundle;
  */
 public class MainWindowController implements Initializable {
 
+    private static final Logger log = LoggerFactory.getLogger(MainWindowController.class);
     private Main main = Main.getInstance();
     @FXML private Button newUserButton;
     @FXML private Button newDepartmentbutton;
@@ -85,14 +88,14 @@ public class MainWindowController implements Initializable {
     private void selectUserClicked(MouseEvent event) {
         try {
             if (userSelectionMenu.getValue() == null) {
-                System.out.println("No user selected!");
+                log.warn("No user selected!");
             } else {
                 main.getContext().setUser(userSelectionMenu.getValue());
             }
             refresh();
 
-        } catch (Exception e) {
-            e.getStackTrace();
+        } catch (RuntimeException e) {
+            log.error("Exception after UI click", e);
         }
 
     }
@@ -107,7 +110,7 @@ public class MainWindowController implements Initializable {
             diaryTextArea.setText(patient.getDiary());
 
         } catch (Exception e) {
-            System.out.println("User not a patient!");
+            log.error("User not a patient!", e);
         }
 
     }
@@ -132,7 +135,7 @@ public class MainWindowController implements Initializable {
                 userList.setItems(users);
             }
         } catch (Exception e) {
-            System.out.println("No active user!");
+            log.error("No active user!", e);
         }
 
         if (main.getContext().getUser() == null) {
@@ -159,9 +162,7 @@ public class MainWindowController implements Initializable {
             }
 
         } catch (Exception e) {
-            System.out.println("User not a patient!");
+            log.error("User not a patient!", e);
         }
-
     }
-
 }
