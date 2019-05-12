@@ -35,7 +35,9 @@ public class Main extends Application {
 
         Scene scene = new Scene(root);
 
-        stage.setTitle("FXML Welcome");
+        stage.setMinWidth(640);
+        stage.setMinHeight(480);
+        stage.setTitle("Sensum Bosted");
         stage.setScene(scene);
         stage.show();
     }
