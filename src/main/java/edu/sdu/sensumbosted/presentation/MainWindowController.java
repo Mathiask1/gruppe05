@@ -125,26 +125,24 @@ public class MainWindowController implements Initializable {
         usersSelectionList.setAll(main.getUsers(main.getContext()));
         userSelectionMenu.setItems(usersSelectionList);
 
-        try {
-            userName.setText(main.getContext().getUser().getName());
-            userRole.setText(main.getContext().getUser().getAuth().toString());
-            userDepartment.setText(main.getContext().getUser().getDepartment().toString());
+        User user = main.getContext().getUser();
+
+        if (user != null) {
+            userName.setText(user.getName());
+            userRole.setText(user.getAuth().toString());
+            userDepartment.setText(user.getDepartment().toString());
 
             if (!main.getContext().checkMinimum(AuthLevel.PATIENT)) {
                 users.setAll(main.getUsers(main.getContext()));
                 userList.setItems(users);
             } else {
-                users.setAll(main.getContext().getUser());
+                users.setAll(user);
                 userList.setItems(users);
             }
-        } catch (RuntimeException e) {
-            log.error("No active user!", e);
-        }
 
-        if (main.getContext().getUser() == null) {
-            currentUserTxtField.setText("No current user!");
+            currentUserTxtField.setText(user.getName());
         } else {
-            currentUserTxtField.setText(main.getContext().getUser().getName());
+            currentUserTxtField.setText("No current user!");
         }
     }
 
