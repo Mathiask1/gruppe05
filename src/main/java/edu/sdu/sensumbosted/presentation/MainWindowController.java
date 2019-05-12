@@ -64,6 +64,7 @@ public class MainWindowController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        userSelectionMenu.setConverter(new UserStringConverter());
         refresh();
     }
 
