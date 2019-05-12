@@ -2,6 +2,7 @@ package edu.sdu.sensumbosted.entity;
 
 public class Manager extends User {
 
+    public static final String SQL_TABLE = "managers";
     private AuthLevel authLevel;
 
     Manager(Department department, String name) {
@@ -20,5 +21,5 @@ public class Manager extends User {
     }
 
     @Override
-    public String getSqlTable() { return "managers"; }
+    public String getSqlTable() { return SQL_TABLE; }
 }
