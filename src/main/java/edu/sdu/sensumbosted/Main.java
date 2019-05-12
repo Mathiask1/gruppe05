@@ -51,20 +51,10 @@ public class Main extends Application {
     /**
      * @return a set of users that the current user may see
      */
-    public Set<User> getUsers(Context context) {
-        User thisUser = context.getUser();
+    public Set<User> getUsers(Context ctx) {
         return departments.values().stream()
-                // Only superusers can see all departments
-                .filter(department -> {
-                   if (context.checkMinimum(AuthLevel.SUPERUSER)) return true;
-                   else return thisUser.getDepartment() == department;
-                }).flatMap(department -> department.getUsers(context).stream())
-                .filter(user -> {
-                    // Patients should be able to see who are assigned to them
-                    if (thisUser instanceof Patient && user instanceof Practitioner) {
-                        return ((Patient) thisUser).getAssignees(context).contains(user);
-                    } else return context.checkMinimum(AuthLevel.CASEWORKER);
-                }).collect(Collectors.toSet());
+                .flatMap(department -> department.getVisibleUsers(ctx).stream())
+                .collect(Collectors.toSet());
     }
 
     public static Main getInstance() {

@@ -4,6 +4,7 @@ import edu.sdu.sensumbosted.AuditAction;
 import edu.sdu.sensumbosted.data.DataEntity;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Department implements DataEntity {
 
@@ -115,6 +116,23 @@ public class Department implements DataEntity {
     public List<User> getUsers(Context ctx) {
         ctx.assertAndLog(this, AuditAction.DEPARTMENT_USERS_READ, AuthLevel.PRACTITIONER);
         return new ArrayList<>(members.values());
+    }
+
+    public Set<User> getVisibleUsers(Context ctx) {
+        User thisUser = ctx.getUser();
+
+        // Only superusers can see all departments
+        if (!ctx.checkAccess(this)) return Collections.emptySet();
+
+        Set<User> set = members.values().stream().filter(user -> {
+            // Patients should be able to see who are assigned to them
+            if (thisUser instanceof Patient && user instanceof Practitioner) {
+                return ((Patient) thisUser).getAssignees(ctx).contains(user);
+            } else return ctx.checkMinimum(AuthLevel.CASEWORKER);
+        }).collect(Collectors.toSet());
+
+        ctx.data.log(ctx, AuditAction.DEPARTMENT_USERS_READ);
+        return set;
     }
 
     @Override
