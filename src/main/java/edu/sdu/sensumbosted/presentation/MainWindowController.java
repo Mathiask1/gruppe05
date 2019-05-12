@@ -36,6 +36,8 @@ public class MainWindowController implements Initializable {
 
     private static final Logger log = LoggerFactory.getLogger(MainWindowController.class);
     private Main main = Main.getInstance();
+
+    //@formatter:off
     @FXML private Button newUserButton;
     @FXML private Button newDepartmentbutton;
     @FXML private Text userName;
@@ -52,6 +54,7 @@ public class MainWindowController implements Initializable {
     @FXML private TextArea newDiaryEntryTxtArea;
     @FXML private ListView<?> departmentListView;
     @FXML private Text currentUserTxtField;
+    //@formatter:on
 
     private final ObservableList<User> users = FXCollections.observableArrayList();
     private final ObservableList<User> usersSelectionList = FXCollections.observableArrayList();
@@ -115,10 +118,10 @@ public class MainWindowController implements Initializable {
 
     }
 
-    /*
-    Refresh information on screen
+    /**
+     * Refresh information on screen
      */
-    public void refresh() {
+    private void refresh() {
         usersSelectionList.setAll(main.getUsers(main.getContext()));
         userSelectionMenu.setItems(usersSelectionList);
 
