@@ -155,10 +155,8 @@ public class MainWindowController implements Initializable {
             userRole.setText(user.getAuth().toString());
             userDepartment.setText(user.getDepartment().toString());
 
-            if (userList.getSelectionModel().getSelectedItem().getAuth() == AuthLevel.PATIENT) {
-                Patient patient = (Patient) userList.getSelectionModel().getSelectedItem();
-
-                diaryTextArea.setText(patient.getDiary());
+            if (user instanceof Patient) {
+                diaryTextArea.setText(((Patient) user).getDiary());
             } else {
                 diaryTextArea.setText("User is not a patient!");
             }
