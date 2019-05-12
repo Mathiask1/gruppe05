@@ -5,12 +5,10 @@
  */
 package edu.sdu.sensumbosted.presentation;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
-
 import edu.sdu.sensumbosted.Main;
-import edu.sdu.sensumbosted.entity.*;
+import edu.sdu.sensumbosted.entity.AuthLevel;
+import edu.sdu.sensumbosted.entity.Patient;
+import edu.sdu.sensumbosted.entity.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,14 +16,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * FXML Controller class
@@ -35,42 +33,25 @@ import javafx.stage.Stage;
 public class MainWindowController implements Initializable {
 
     private Main main = Main.getInstance();
-    @FXML
-    private Button newUserButton;
-    @FXML
-    private Button newDepartmentbutton;
-    @FXML
-    private Text userName;
-    @FXML
-    private Text userRole;
-    @FXML
-    private Text userDepartment;
-    @FXML
-    private Tab diaryTab;
-    @FXML
-    private Tab calendarTab;
-    @FXML
-    private Tab administrationTab;
-    @FXML
-    private ChoiceBox<User> userSelectionMenu;
-    @FXML
-    private ListView<User> userList;
+    @FXML private Button newUserButton;
+    @FXML private Button newDepartmentbutton;
+    @FXML private Text userName;
+    @FXML private Text userRole;
+    @FXML private Text userDepartment;
+    @FXML private Tab diaryTab;
+    @FXML private Tab calendarTab;
+    @FXML private Tab administrationTab;
+    @FXML private ChoiceBox<User> userSelectionMenu;
+    @FXML private ListView<User> userList;
+    @FXML private Button selectUser;
+    @FXML private TextArea diaryTextArea;
+    @FXML private Button newDiaryButton;
+    @FXML private TextArea newDiaryEntryTxtArea;
+    @FXML private ListView<?> departmentListView;
+    @FXML private Text currentUserTxtField;
 
     private final ObservableList<User> users = FXCollections.observableArrayList();
     private final ObservableList<User> usersSelectionList = FXCollections.observableArrayList();
-
-    @FXML
-    private Button selectUser;
-    @FXML
-    private TextArea diaryTextArea;
-    @FXML
-    private Button newDiaryButton;
-    @FXML
-    private TextArea newDiaryEntryTxtArea;
-    @FXML
-    private ListView<?> departmentListView;
-    @FXML
-    private Text currentUserTxtField;
 
     /**
      * Initializes the controller class.
@@ -120,8 +101,8 @@ public class MainWindowController implements Initializable {
     private void newDiaryMouseClicked(MouseEvent event) {
         try {
             Patient patient = (Patient) userList.getSelectionModel().getSelectedItem();
-            
-            patient.newDiaryEntry(main.getContext(),newDiaryEntryTxtArea.getText());
+
+            patient.newDiaryEntry(main.getContext(), newDiaryEntryTxtArea.getText());
 
             diaryTextArea.setText(patient.getDiary());
 
