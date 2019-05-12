@@ -13,6 +13,7 @@ public class Patient extends User {
     private ArrayList<CalendarEntry> calendar = new ArrayList<>();
     private ArrayList<Practitioner> assignees = new ArrayList<>();
     private boolean enrolled;
+    public static final String SQL_TABLE = "patients";
 
     public Patient(Department department, String name) {
         super(department, name);
@@ -62,7 +63,7 @@ public class Patient extends User {
     }
 
     @Override
-    public String getSqlTable() { return "patients"; }
+    public String getSqlTable() { return SQL_TABLE; }
 
     public ArrayList<Practitioner> getAssignees(Context context) {
         if (context.getUser() == this) return assignees;

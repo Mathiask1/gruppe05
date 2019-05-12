@@ -7,6 +7,8 @@ import java.util.*;
 
 public class Department implements DataEntity {
 
+    public static final String SQL_TABLE = "departments";
+
     public Department(String name) {
         this.id = UUID.randomUUID();
         this.name = name;
@@ -37,7 +39,7 @@ public class Department implements DataEntity {
 
     @Override
     public String getSqlTable() {
-        return "departments";
+        return SQL_TABLE;
     }
 
     public String getName() {
@@ -84,8 +86,10 @@ public class Department implements DataEntity {
     }
 
     public void deleteUser(Context ctx, User user) {
+        if (this != user.getDepartment()) throw new IllegalArgumentException("Mismatching departments");
         ctx.assertAndLog(this, AuditAction.USER_DELETE, AuthLevel.LOCAL_ADMIN);
         members.remove(user.getId());
+        ctx.data.delete(user);
     }
 
     public User getUser(Context ctx, UUID id) {

@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 
 import javax.management.relation.Role;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -21,12 +20,13 @@ public class Main extends Application {
     private final DataService data = new DataService();
     private final Context context = new Context(data);
     private static Main instance = null;
+    private final SystemContext systemContext = new SystemContext(data);
 
     public static void main(String[] args) { launch(args); }
 
     public Main() {
         instance = this;
-        departments = data.loadDepartments();
+        departments = data.loadDepartments(systemContext);
 
     }
 
