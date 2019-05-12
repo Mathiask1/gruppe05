@@ -86,8 +86,10 @@ public class Department implements DataEntity {
     }
 
     public void deleteUser(Context ctx, User user) {
+        if (this != user.getDepartment()) throw new IllegalArgumentException("Mismatching departments");
         ctx.assertAndLog(this, AuditAction.USER_DELETE, AuthLevel.LOCAL_ADMIN);
         members.remove(user.getId());
+        ctx.data.delete(user);
     }
 
     public User getUser(Context ctx, UUID id) {
