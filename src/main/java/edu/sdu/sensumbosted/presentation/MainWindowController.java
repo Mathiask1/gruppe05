@@ -13,7 +13,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -32,10 +31,9 @@ import java.util.ResourceBundle;
  *
  * @author birke
  */
-public class MainWindowController implements Initializable {
+public class MainWindowController extends SensumController {
 
     private static final Logger log = LoggerFactory.getLogger(MainWindowController.class);
-    private Main main = Main.getInstance();
 
     //@formatter:off
     @FXML private Button newUserButton;
@@ -58,6 +56,10 @@ public class MainWindowController implements Initializable {
 
     private final ObservableList<User> users = FXCollections.observableArrayList();
     private final ObservableList<User> usersSelectionList = FXCollections.observableArrayList();
+
+    public MainWindowController(Main main) {
+        super(main);
+    }
 
     /**
      * Initializes the controller class.

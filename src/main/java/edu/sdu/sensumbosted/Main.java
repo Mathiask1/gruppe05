@@ -1,7 +1,11 @@
 package edu.sdu.sensumbosted;
 
 import edu.sdu.sensumbosted.data.DataService;
-import edu.sdu.sensumbosted.entity.*;
+import edu.sdu.sensumbosted.entity.AuthLevel;
+import edu.sdu.sensumbosted.entity.Context;
+import edu.sdu.sensumbosted.entity.Department;
+import edu.sdu.sensumbosted.entity.User;
+import edu.sdu.sensumbosted.presentation.SensumController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,20 +22,22 @@ public class Main extends Application {
     private final HashMap<UUID, Department> departments;
     private final DataService data = new DataService();
     private final Context context = new Context(data);
-    private static Main instance = null;
     private final SystemContext systemContext = new SystemContext(data);
 
     public static void main(String[] args) { launch(args); }
 
     public Main() {
-        instance = this;
         departments = data.loadDepartments(systemContext);
-
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/views/MainWindow.fxml"));
+        Parent root = FXMLLoader.load(
+                getClass().getResource("/views/MainWindow.fxml"),
+                null,
+                null,
+                this::controllerBuilder
+        );
 
         Scene scene = new Scene(root);
 
@@ -59,15 +65,23 @@ public class Main extends Application {
                 .collect(Collectors.toSet());
     }
 
-    public static Main getInstance() {
-        return instance;
-    }
-
     public Context getContext() {
         return context;
     }
 
     public HashMap<UUID, Department> getDepartments() {
         return departments;
+    }
+
+    /**
+     * Instantiates any SensumControllers with the instance of the main class using reflection.
+     * Any other controllers will be instantiated like JavaFX normally would -- with a public no-arg constructor.
+     */
+    private Object controllerBuilder(Class<?> clazz) {
+        try {
+            if (SensumController.class.isAssignableFrom(clazz))
+                return clazz.getConstructor(getClass()).newInstance(this);
+            else return clazz.getConstructor().newInstance();
+        } catch (ReflectiveOperationException e) { throw new RuntimeException(e); }
     }
 }
