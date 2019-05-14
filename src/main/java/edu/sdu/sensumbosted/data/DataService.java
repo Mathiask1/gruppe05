@@ -3,18 +3,22 @@ package edu.sdu.sensumbosted.data;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import edu.sdu.sensumbosted.AuditAction;
+import edu.sdu.sensumbosted.SystemContext;
 import edu.sdu.sensumbosted.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.lang.NonNull;
+import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class DataService {
@@ -22,7 +26,7 @@ public class DataService {
     final JdbcTemplate jdbc;
     private final DepartmentLoader departmentLoader;
     private static final Logger log = LoggerFactory.getLogger(DataService.class);
-    final DatabaseContext context = new DatabaseContext(this);
+    SystemContext systemContext = null;
 
     public DataService() {
         HikariConfig conf = new HikariConfig("database.properties");
@@ -33,7 +37,8 @@ public class DataService {
         departmentLoader = new DepartmentLoader(this);
     }
 
-    public HashMap<UUID, Department> loadDepartments() {
+    public HashMap<UUID, Department> loadDepartments(SystemContext systemContext) {
+        this.systemContext = systemContext;
         return departmentLoader.loadDepartments();
     }
 
@@ -135,6 +140,41 @@ public class DataService {
                 entity.getId())
         );
         return changed > 0;
+    }
+
+    /**
+     * @param id the UUID of the entity to delete
+     * @param table the table to delete from
+     * @return true if deleted
+     */
+    public boolean delete(UUID id, String table) {
+        @SuppressWarnings("SqlResolve")
+        int changed = jdbc.update("DELETE FROM ? WHERE id = ?;", varargs(id, table));
+        return changed > 0;
+    }
+
+    public List<Object> getRawUserRow(UUID id) {
+        RowMapper<List<Object>> rowMapper = (rs, rowNum) -> {
+            int i = 1;
+            ArrayList<Object> list = new ArrayList<>();
+            while (i < 100) {
+                try {
+                    list.add(rs.getObject(i++));
+                } catch (SQLException e) {
+                    break;
+                }
+            }
+            return list;
+        };
+        List<List<Object>> row = jdbc.query("SELECT * FROM managers WHERE id = ?;", varargs(id), rowMapper);
+        if (!row.isEmpty()) return row.get(0);
+
+        row = jdbc.query("SELECT * FROM practitioners WHERE id = ?;", varargs(id), rowMapper);
+        if (!row.isEmpty()) return row.get(0);
+
+        row = jdbc.query("SELECT * FROM patients WHERE id = ?;", varargs(id), rowMapper);
+        if (!row.isEmpty()) return row.get(0);
+        return null;
     }
 
     public void log(Context ctx, AuditAction action) {

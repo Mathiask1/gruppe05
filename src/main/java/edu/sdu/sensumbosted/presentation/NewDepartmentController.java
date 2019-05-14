@@ -5,35 +5,32 @@
  */
 package edu.sdu.sensumbosted.presentation;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import edu.sdu.sensumbosted.Main;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * FXML Controller class
  *
  * @author birke
  */
-public class NewDepartmentController implements Initializable {
-    private Main main = Main.getInstance();
-
+public class NewDepartmentController extends SensumController {
     @FXML
     private TextField departmentNameTextField;
     @FXML
     private Button newDepartmentButton;
     @FXML
     private Text errorMessageTxt;
+
+    public NewDepartmentController(Main main) {
+        super(main);
+    }
 
     /**
      * Initializes the controller class.
@@ -45,13 +42,14 @@ public class NewDepartmentController implements Initializable {
 
     @FXML
     private void newDepartmentButtonClicked(MouseEvent event) {
-        if (departmentNameTextField.getLength() <= 3) {
+        if (departmentNameTextField.getLength() < 3) {
             errorMessageTxt.setText("Indsæt et navn! Mindst 3 tegn");
         } else {
             main.getInstance().newDepartment(main.getContext(), departmentNameTextField.getText());
             Stage stage = (Stage) departmentNameTextField.getScene().getWindow();
             stage.close();
 
+            main.newDepartment(main.getContext(), departmentNameTextField.getText());
         }
     }
 

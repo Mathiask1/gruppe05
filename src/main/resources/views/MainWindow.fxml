@@ -19,9 +19,9 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TextArea fx:id="diaryTextArea" layoutX="249.0" prefHeight="406.0" prefWidth="729.0" />
+                        <TextArea fx:id="diaryTextArea" editable="false" layoutX="249.0" prefHeight="406.0" prefWidth="729.0" wrapText="true" />
                         <Button fx:id="newDiaryButton" layoutX="28.0" layoutY="232.0" mnemonicParsing="false" onMouseClicked="#newDiaryMouseClicked" text="Ny dagbogsentry" />
-                        <TextArea fx:id="newDiaryEntryTxtArea" layoutX="28.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" />
+                        <TextArea fx:id="newDiaryEntryTxtArea" layoutX="28.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
                      </children></AnchorPane>
                     </content>
                 </Tab>
@@ -46,7 +46,7 @@
             <Text fx:id="currentUserTxtField" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textOrigin="CENTER" />
             </items>
         </ToolBar>
-        <ListView fx:id="userList" layoutY="78.0" prefHeight="454.0" prefWidth="298.0" />
+        <ListView fx:id="userList" layoutY="78.0" onMouseClicked="#userListViewClicked" prefHeight="454.0" prefWidth="298.0" />
         <Text fx:id="userName" layoutX="322.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vælg en bruger!">
             <font>
                 <Font size="30.0" />

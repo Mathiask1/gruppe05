@@ -5,32 +5,25 @@
  */
 package edu.sdu.sensumbosted.presentation;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.UUID;
-
 import edu.sdu.sensumbosted.Main;
 import edu.sdu.sensumbosted.entity.AuthLevel;
 import edu.sdu.sensumbosted.entity.Department;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.UUID;
 
 /**
  * FXML Controller class
  *
  * @author birke
  */
-public class NewUserController implements Initializable {
-    private Main main = Main.getInstance();
-
+public class NewUserController extends SensumController {
     @FXML
     private TextField userNameTextField;
     @FXML
@@ -40,6 +33,10 @@ public class NewUserController implements Initializable {
     @FXML
     private ChoiceBox<String> userRole;
 
+    public NewUserController(Main main) {
+        super(main);
+    }
+
     /**
      * Initializes the controller class.
      */
@@ -47,11 +44,11 @@ public class NewUserController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
 
-        if (Main.getInstance().getContext().checkMinimum(AuthLevel.SUPERUSER)) {
-            userRole.getItems().setAll("Patient","Læge","Sagsbehandler","Lokal Admin","Superbruger");
-        } else if (Main.getInstance().getContext().checkMinimum(AuthLevel.LOCAL_ADMIN)) {
-            userRole.getItems().setAll("Patient","Læge","Sagsbehandler","Lokal Admin");
-        } else if (Main.getInstance().getContext().checkMinimum(AuthLevel.CASEWORKER)) {
+        if (main.getContext().checkMinimum(AuthLevel.SUPERUSER)) {
+            userRole.getItems().setAll("Patient", "Læge", "Sagsbehandler", "Lokal Admin", "Superbruger");
+        } else if (main.getContext().checkMinimum(AuthLevel.LOCAL_ADMIN)) {
+            userRole.getItems().setAll("Patient", "Læge", "Sagsbehandler", "Lokal Admin");
+        } else if (main.getContext().checkMinimum(AuthLevel.CASEWORKER)) {
             userRole.getItems().setAll("Patient");
         };
 
@@ -75,5 +72,5 @@ public class NewUserController implements Initializable {
         // TODO
         department.newPatient(main.getContext(), userNameTextField.getText());
     }
-    
+
 }
