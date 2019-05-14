@@ -81,7 +81,8 @@ public class MainWindowController extends SensumController {
         Parent root = FXMLLoader.load(getClass().getResource("/views/NewUser.fxml"));
         Scene scene = new Scene(root);
         Stage stage = new Stage();
-        stage.setTitle("FXML Welcome");
+        stage.setTitle("Ny bruger");
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }
@@ -91,7 +92,8 @@ public class MainWindowController extends SensumController {
         Parent root = FXMLLoader.load(getClass().getResource("/views/NewDepartment.fxml"));
         Scene scene = new Scene(root);
         Stage stage = new Stage();
-        stage.setTitle("FXML Welcome");
+        stage.setTitle("Ny afdeling");
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }

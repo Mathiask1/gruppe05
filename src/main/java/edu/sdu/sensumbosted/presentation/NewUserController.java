@@ -65,6 +65,7 @@ public class NewUserController extends SensumController {
         }
 
         Department department = main.getDepartments().get(uuid);
+
         if (department == null) {
             // TODO
             return;
