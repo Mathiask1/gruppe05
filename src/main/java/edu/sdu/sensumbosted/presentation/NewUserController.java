@@ -47,8 +47,10 @@ public class NewUserController extends SensumController {
     public void initialize(URL url, ResourceBundle rb) {
 
         // TODO
+    }
 
-        if (main.getContext().checkMinimum(AuthLevel.SUPERUSER)) {
+    public void refresh() {
+        if (!main.getContext().checkMinimum(AuthLevel.SUPERUSER)) {
             userRole.getItems().setAll("Patient", "Læge", "Sagsbehandler", "Lokal Admin", "Superbruger");
         } else if (main.getContext().checkMinimum(AuthLevel.LOCAL_ADMIN)) {
             userRole.getItems().setAll("Patient", "Læge", "Sagsbehandler", "Lokal Admin");
@@ -59,7 +61,7 @@ public class NewUserController extends SensumController {
 
     @Override
     public void onShow() {
-        log.info("Shown!");
+        refresh();
     }
 
     @FXML
