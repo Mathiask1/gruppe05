@@ -40,12 +40,13 @@ public class ControllerLauncher {
 
     private Parent launch(String path) {
         try {
-            return FXMLLoader.load(
-                    getClass().getResource(path),
-                    null,
-                    null,
-                    this::controllerBuilder
-            );
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getResource(path));
+            fxmlLoader.setControllerFactory(this::controllerBuilder);
+            Parent parent = fxmlLoader.load();
+            SensumController sensumController = fxmlLoader.getController();
+            sensumController.onShow();
+            return parent;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
