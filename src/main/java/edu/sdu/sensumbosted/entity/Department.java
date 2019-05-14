@@ -131,9 +131,8 @@ public class Department implements DataEntity {
             } else if (thisUser instanceof Practitioner && user instanceof Patient) {
                 return ((Practitioner) thisUser).getPatients(ctx).contains(user);
             } else {
-                return ctx.checkMinimum(AuthLevel.CASEWORKER);
+                return ctx.checkMinimum(AuthLevel.PRACTITIONER);
             }
-            } else return ctx.checkMinimum(AuthLevel.PRACTITIONER);
         }).collect(Collectors.toSet());
 
         ctx.data.log(ctx, AuditAction.DEPARTMENT_USERS_READ);
