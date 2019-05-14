@@ -33,18 +33,10 @@ public class MainWindowController extends SensumController {
 
     private static final Logger log = LoggerFactory.getLogger(MainWindowController.class);
 
-    //@formatter:off
-    @FXML private Button newUserButton;
-    @FXML private Button newDepartmentbutton;
     @FXML private Text userName;
     @FXML private Text userRole;
     @FXML private Text userDepartment;
-    @FXML private Tab diaryTab;
-    @FXML private Tab calendarTab;
-    @FXML private Tab administrationTab;
-    @FXML private Button selectUser;
     @FXML private TextArea diaryTextArea;
-    @FXML private Button newDiaryButton;
     @FXML private TextArea newDiaryEntryTxtArea;
     @FXML private Text currentUserTxtField;
     @FXML private ChoiceBox<User> userSelectionMenu;
@@ -118,8 +110,6 @@ public class MainWindowController extends SensumController {
     /*
     Refresh information in the main window.
      */
-
-	 
     private void refresh() {
         usersSelectionList.setAll(main.getUsers(main.getSystemContext()));
         userSelectionMenu.setItems(usersSelectionList);
