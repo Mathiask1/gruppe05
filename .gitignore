@@ -38,3 +38,4 @@ pom.xml.tag
 /out/
 /.gradle/
 /database.properties
+/.nb-gradle/

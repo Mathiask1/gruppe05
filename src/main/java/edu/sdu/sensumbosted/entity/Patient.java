@@ -9,14 +9,32 @@ import java.util.*;
 public class Patient extends User {
 
     private UUID id;
-    private HashMap<Integer, String> diary = null;
-    private ArrayList<CalendarEntry> calendar = null;
-    private ArrayList<Practitioner> assignees = null;
+    private HashMap<UUID, String> diary = new HashMap<>();
+    private ArrayList<CalendarEntry> calendar = new ArrayList<>();
+    private ArrayList<Practitioner> assignees = new ArrayList<>();
     private boolean enrolled;
     public static final String SQL_TABLE = "patients";
 
-    Patient(Department department, String name) {
+    public Patient(Department department, String name) {
         super(department, name);
+    }
+
+    // Fatter ikke dit Json halløj, så har lavet for at teste...
+    public void newDiaryEntry(Context ctx, String diaryEntry) {
+        ctx.assertAndLog(null, AuditAction.DIARY_WRITE, AuthLevel.PRACTITIONER);
+        UUID diaryId = UUID.randomUUID();
+        diary.put(diaryId, diaryEntry);
+    }
+
+    public String getDiary() {
+        String result = "";
+        for (Map.Entry<UUID, String> entry : diary.entrySet()) {
+            UUID s = entry.getKey();
+            String o = entry.getValue();
+            result += s + "\n" + o + "\n" + "\n";
+        }
+        return result;
+
     }
 
     /** DB access */
@@ -30,7 +48,7 @@ public class Patient extends User {
     private void parseJson(JSONObject diary, JSONArray calendar) {
         this.diary = new HashMap<>();
         this.calendar = new ArrayList<>();
-        diary.toMap().forEach((s, o) -> this.diary.put(Integer.parseInt(s), (String) o));
+        diary.toMap().forEach((s, o) -> this.diary.put(UUID.fromString(s), (String) o));
         calendar.iterator().forEachRemaining(o -> new CalendarEntry((JSONObject) o));
     }
 
@@ -40,7 +58,7 @@ public class Patient extends User {
     }
 
     @Override
-    AuthLevel getAuth() {
+    public AuthLevel getAuth() {
         return AuthLevel.PATIENT;
     }
 
