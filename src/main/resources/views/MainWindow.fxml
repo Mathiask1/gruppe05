@@ -39,6 +39,9 @@
                         <Button layoutX="38.0" layoutY="244.0" mnemonicParsing="false" onMouseClicked="#deleteUserButtonClicked" text="Slet!" />
                         <ChoiceBox fx:id="selectUserRoleChoiceBox" layoutX="38.0" layoutY="110.0" prefWidth="150.0" />
                         <Button layoutX="39.0" layoutY="144.0" mnemonicParsing="false" onMouseClicked="#changeRoleButtonClicked" text="Ændre rolle" />
+                        <ChoiceBox fx:id="assignPractitionerChoicebox" layoutX="289.0" layoutY="110.0" prefWidth="150.0" />
+                        <Text layoutX="289.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tildel patient til læge" />
+                        <Button layoutX="289.0" layoutY="144.0" mnemonicParsing="false" onMouseClicked="#assignPractitionerMouseClicked" text="Tildel" />
                      </children></AnchorPane>
                     </content>
                 </Tab>

@@ -133,7 +133,7 @@ public class MainWindowController extends SensumController {
                 users.setAll(main.getUsers(main.getContext()));
                 userList.setItems(users);
             } else {
-                users.setAll(user);
+                users.setAll(main.getUsers(main.getContext()));
                 userList.setItems(users);
             }
 
@@ -147,9 +147,13 @@ public class MainWindowController extends SensumController {
     private void userListViewClicked(MouseEvent event) {
         try {
             User user = userList.getSelectionModel().getSelectedItem();
-            userName.setText(user.getName());
-            userRole.setText(user.getAuth().toString());
-            userDepartment.setText(user.getDepartment().toString());
+
+            if (user != null) {
+                userName.setText(user.getName());
+                userRole.setText(user.getAuth().toString());
+                userDepartment.setText(user.getDepartment().toString());
+            }
+
 
             if (user instanceof Patient) {
               //  diaryTextArea.setText(((Patient) user).getDiary());
@@ -158,7 +162,7 @@ public class MainWindowController extends SensumController {
             }
 
         } catch (RuntimeException e) {
-            log.error("User not a patient!", e);
+            log.error("Error clicking on user listview", e);
         }
     }
 
