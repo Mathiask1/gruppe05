@@ -5,12 +5,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.*;
 
 public class Patient extends User {
 
     private UUID id;
-    private HashMap<Date, String> diary = new HashMap<>();
+    private HashMap<LocalDate, String> diary = new HashMap<>();
     private ArrayList<CalendarEntry> calendar = new ArrayList<>();
     private ArrayList<Practitioner> assignees = new ArrayList<>();
     private boolean enrolled;
@@ -29,7 +30,7 @@ public class Patient extends User {
     }
 
 
-    public Map<Date, String> getDiary(Context ctx) {
+    public Map<LocalDate, String> getDiary(Context ctx) {
         ctx.assertAndLog(getDepartment(), AuditAction.DIARY_READ, AuthLevel.PRACTITIONER);
         return Collections.unmodifiableMap(diary);
     }
@@ -41,14 +42,14 @@ public class Patient extends User {
 
     public void setTodaysDiaryEntry(Context ctx, String str) {
         ctx.assertAndLog(getDepartment(), AuditAction.DIARY_WRITE, AuthLevel.PRACTITIONER);
-        diary.put(Date.from(Instant.now()), str);
+        diary.put(LocalDate.from(Instant.now()), str);
         ctx.data.update(this);
     }
 
     private void parseJson(JSONObject diary, JSONArray calendar) {
         this.diary = new HashMap<>();
         this.calendar = new ArrayList<>();
-        diary.toMap().forEach((s, o) -> this.diary.put(Date.from(Instant.parse(s)), (String) o));
+        diary.toMap().forEach((s, o) -> this.diary.put(LocalDate.parse(s), (String) o));
         calendar.iterator().forEachRemaining(o -> new CalendarEntry((JSONObject) o));
     }
 
@@ -77,7 +78,7 @@ public class Patient extends User {
 
     public JSONObject getDiaryJson() {
         JSONObject json = new JSONObject();
-        diary.forEach((i, str) -> json.put(i.toInstant().toString(), str));
+        diary.forEach((i, str) -> json.put(i.toString(), str));
         return json;
     }
 
