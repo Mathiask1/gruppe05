@@ -11,4 +11,6 @@ abstract class SensumController implements Initializable {
         this.main = main;
     }
 
+    public void onShow() {}
+
 }

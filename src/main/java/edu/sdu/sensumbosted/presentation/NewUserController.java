@@ -13,6 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -24,6 +26,7 @@ import java.util.UUID;
  * @author birke
  */
 public class NewUserController extends SensumController {
+    private static final Logger log = LoggerFactory.getLogger(NewUserController.class);
     @FXML
     private TextField userNameTextField;
     @FXML
@@ -42,6 +45,7 @@ public class NewUserController extends SensumController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         // TODO
 
         if (main.getContext().checkMinimum(AuthLevel.SUPERUSER)) {
@@ -50,8 +54,12 @@ public class NewUserController extends SensumController {
             userRole.getItems().setAll("Patient", "Læge", "Sagsbehandler", "Lokal Admin");
         } else if (main.getContext().checkMinimum(AuthLevel.CASEWORKER)) {
             userRole.getItems().setAll("Patient");
-        };
+        }
+    }
 
+    @Override
+    public void onShow() {
+        log.info("Shown!");
     }
 
     @FXML
