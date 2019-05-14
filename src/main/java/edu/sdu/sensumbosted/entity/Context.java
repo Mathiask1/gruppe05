@@ -26,7 +26,7 @@ public class Context {
     }
 
     public boolean checkMinimum(AuthLevel auth) {
-        return auth.ordinal() >= getAuth().ordinal();
+        return auth.ordinal() <= getAuth().ordinal();
     }
 
     public boolean checkAccess(@Nullable Department department) {

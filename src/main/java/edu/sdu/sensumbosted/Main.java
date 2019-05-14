@@ -63,4 +63,8 @@ public class Main extends Application {
     public HashMap<UUID, Department> getDepartments() {
         return departments;
     }
+
+    public SystemContext getSystemContext() {
+        return systemContext;
+    }
 }
