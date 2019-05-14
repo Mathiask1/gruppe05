@@ -97,9 +97,11 @@ public class MainWindowController extends SensumController {
         try {
             Patient patient = (Patient) userList.getSelectionModel().getSelectedItem();
 
-            //patient.newDiaryEntry(main.getContext(), newDiaryEntryTxtArea.getText());
-
-            //diaryTextArea.setText(patient.getDiary());
+            patient.setTodaysDiaryEntry(main.getContext(), newDiaryEntryTxtArea.getText());
+            diaryTextArea.setText(patient.getDiary(main.getContext()).toString());
+            if (patient.getTodaysDiaryEntry(main.getContext()).isPresent()) {
+                newDiaryEntryTxtArea.setText(patient.getTodaysDiaryEntry(main.getContext()).get());
+            }
 
         } catch (RuntimeException e) {
             log.error("User not a patient!", e);
@@ -121,13 +123,8 @@ public class MainWindowController extends SensumController {
             userRole.setText(user.getAuth().toString());
             userDepartment.setText(user.getDepartment().toString());
 
-            if (!main.getContext().checkMinimum(AuthLevel.PATIENT)) {
-                users.setAll(main.getUsers(main.getContext()));
-                userList.setItems(users);
-            } else {
-                users.setAll(main.getUsers(main.getContext()));
-                userList.setItems(users);
-            }
+            users.setAll(main.getUsers(main.getContext()));
+            userList.setItems(users);
 
             currentUserTxtField.setText(user.getName());
         } else {
@@ -146,13 +143,18 @@ public class MainWindowController extends SensumController {
                 userDepartment.setText(user.getDepartment().toString());
             }
 
-
             if (user instanceof Patient) {
-              //  diaryTextArea.setText(((Patient) user).getDiary());
+                if (((Patient) user).getDiary(main.getContext()) == null) {
+                    diaryTextArea.setText("Ingen dagbog!");
+                } else {
+                    diaryTextArea.setText(((Patient) user).getDiary(main.getContext()).toString());
+                    if (((Patient) user).getTodaysDiaryEntry(main.getContext()).isPresent()) {
+                        newDiaryEntryTxtArea.setText(((Patient) user).getTodaysDiaryEntry(main.getContext()).get());
+                    }
+                }
             } else {
-                diaryTextArea.setText("User is not a patient!");
+                diaryTextArea.setText("Denne bruger er ikke en patient");
             }
-
         } catch (RuntimeException e) {
             log.error("Error clicking on user listview", e);
         }
