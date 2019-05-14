@@ -57,7 +57,7 @@ public class DataService {
             manager.getId(),
             manager.getDepartment().getId(),
             manager.getName(),
-            manager.getAuth().ordinal()
+            manager.getAuth().toString()
         ));
     }
 
@@ -108,7 +108,7 @@ public class DataService {
     }
 
     public void update(Practitioner practitioner) {
-        jdbc.update("UPDATE managers SET department = ?, name = ? WHERE id = ?;", varargs(
+        jdbc.update("UPDATE practitioners SET department = ?, name = ? WHERE id = ?;", varargs(
                 practitioner.getDepartment().getId(),
                 practitioner.getName(),
                 practitioner.getId()
