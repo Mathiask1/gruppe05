@@ -12,13 +12,9 @@ import edu.sdu.sensumbosted.entity.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,22 +68,12 @@ public class MainWindowController extends SensumController {
 
     @FXML
     private void newUserClicked(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/views/NewUser.fxml"));
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setTitle("FXML Welcome");
-        stage.setScene(scene);
-        stage.show();
+        main.launcher.launchNewUserDialog();
     }
 
     @FXML
     private void newDepartmentClicked(MouseEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/views/NewDepartment.fxml"));
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.setTitle("FXML Welcome");
-        stage.setScene(scene);
-        stage.show();
+        main.launcher.launchNewDepartmentDialog();
     }
 
     @FXML

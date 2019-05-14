@@ -10,4 +10,5 @@ public abstract class SensumController implements Initializable {
     SensumController(Main main) {
         this.main = main;
     }
+
 }

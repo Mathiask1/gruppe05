@@ -5,10 +5,8 @@ import edu.sdu.sensumbosted.entity.AuthLevel;
 import edu.sdu.sensumbosted.entity.Context;
 import edu.sdu.sensumbosted.entity.Department;
 import edu.sdu.sensumbosted.entity.User;
-import edu.sdu.sensumbosted.presentation.SensumController;
+import edu.sdu.sensumbosted.presentation.ControllerLauncher;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -23,6 +21,7 @@ public class Main extends Application {
     private final DataService data = new DataService();
     private final Context context = new Context(data);
     private final SystemContext systemContext = new SystemContext(data);
+    public final ControllerLauncher launcher = new ControllerLauncher(this);
 
     public static void main(String[] args) { launch(args); }
 
@@ -32,15 +31,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(
-                getClass().getResource("/views/MainWindow.fxml"),
-                null,
-                null,
-                this::controllerBuilder
-        );
-
-        Scene scene = new Scene(root);
-
+        Scene scene = new Scene(launcher.launchMain());
         stage.setMinWidth(640);
         stage.setMinHeight(480);
         stage.setTitle("Sensum Bosted");
@@ -71,17 +62,5 @@ public class Main extends Application {
 
     public HashMap<UUID, Department> getDepartments() {
         return departments;
-    }
-
-    /**
-     * Instantiates any SensumControllers with the instance of the main class using reflection.
-     * Any other controllers will be instantiated like JavaFX normally would -- with a public no-arg constructor.
-     */
-    private Object controllerBuilder(Class<?> clazz) {
-        try {
-            if (SensumController.class.isAssignableFrom(clazz))
-                return clazz.getConstructor(getClass()).newInstance(this);
-            else return clazz.getConstructor().newInstance();
-        } catch (ReflectiveOperationException e) { throw new RuntimeException(e); }
     }
 }
