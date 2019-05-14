@@ -53,7 +53,8 @@ public class NewUserController implements Initializable {
             userRole.getItems().setAll("Patient","Læge","Sagsbehandler","Lokal Admin");
         } else if (Main.getInstance().getContext().checkMinimum(AuthLevel.CASEWORKER)) {
             userRole.getItems().setAll("Patient");
-        }
+        };
+
     }
 
     @FXML
@@ -72,7 +73,7 @@ public class NewUserController implements Initializable {
             return;
         }
         // TODO
-        //department.newPatient(main.getContext(), userNameTextField.getText());
+        department.newPatient(main.getContext(), userNameTextField.getText());
     }
     
 }

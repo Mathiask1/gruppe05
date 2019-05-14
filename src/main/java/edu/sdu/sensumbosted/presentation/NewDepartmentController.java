@@ -49,6 +49,9 @@ public class NewDepartmentController implements Initializable {
             errorMessageTxt.setText("Indsæt et navn! Mindst 3 tegn");
         } else {
             main.getInstance().newDepartment(main.getContext(), departmentNameTextField.getText());
+            Stage stage = (Stage) departmentNameTextField.getScene().getWindow();
+            stage.close();
+
         }
     }
 

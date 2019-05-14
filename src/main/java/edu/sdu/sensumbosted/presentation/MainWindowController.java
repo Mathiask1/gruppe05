@@ -56,7 +56,7 @@ public class MainWindowController implements Initializable {
     @FXML
     private ListView<User> userList;
 
-    private final ObservableList<User> users = FXCollections.observableArrayList();
+    private final ObservableList<User> userObservableList = FXCollections.observableArrayList();
 
     @FXML
     private Button selectUser;
@@ -66,8 +66,10 @@ public class MainWindowController implements Initializable {
     private Button newDiaryButton;
     @FXML
     private TextArea newDiaryEntryTxtArea;
+
+    private final ObservableList<Department> departmentObservableList = FXCollections.observableArrayList();
     @FXML
-    private ListView<?> departmentListView;
+    private ListView<Department> departmentListView;
 
 
     ArrayList<User> userArray = new ArrayList<>();
@@ -125,10 +127,18 @@ public class MainWindowController implements Initializable {
 
     }
 
+    /*
+    Refresh information in the main window.
+     */
     public void refresh() {
-        users.setAll(main.getUsers(main.getContext()));
-        userSelectionMenu.setItems(users);
-        userList.setItems(users);
+        userObservableList.setAll(main.getUsers(main.getContext()));
+        userSelectionMenu.setItems(userObservableList);
+        userList.setItems(userObservableList);
+
+        departmentObservableList.setAll(main.getDepartments().values());
+        departmentListView.setItems(departmentObservableList);
+
+
         if (main.getContext().getUser() == null) {
             currentUserTxtField.setText("No current user!");
         } else {
