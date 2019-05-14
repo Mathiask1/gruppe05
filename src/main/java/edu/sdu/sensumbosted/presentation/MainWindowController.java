@@ -58,6 +58,8 @@ public class MainWindowController extends SensumController {
     private final ObservableList<User> usersSelectionList = FXCollections.observableArrayList();
     @FXML
     private ChoiceBox<?> selectUserRoleChoiceBox;
+    @FXML
+    private ChoiceBox<?> assignPractitionerChoicebox;
 
     public MainWindowController(Main main) {
         super(main);
@@ -172,5 +174,9 @@ public class MainWindowController extends SensumController {
 
     @FXML
     private void changeRoleButtonClicked(MouseEvent event) {
+    }
+
+    @FXML
+    private void assignPractitionerMouseClicked(MouseEvent event) {
     }
 }
