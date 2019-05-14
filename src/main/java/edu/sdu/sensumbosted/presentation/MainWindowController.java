@@ -56,6 +56,8 @@ public class MainWindowController extends SensumController {
     private final ObservableList<User> userObservableList = FXCollections.observableArrayList();
     private final ObservableList<User> users = FXCollections.observableArrayList();
     private final ObservableList<User> usersSelectionList = FXCollections.observableArrayList();
+    @FXML
+    private ChoiceBox<?> selectUserRoleChoiceBox;
 
     public MainWindowController(Main main) {
         super(main);
@@ -158,5 +160,13 @@ public class MainWindowController extends SensumController {
         } catch (RuntimeException e) {
             log.error("User not a patient!", e);
         }
+    }
+
+    @FXML
+    private void deleteUserButtonClicked(MouseEvent event) {
+    }
+
+    @FXML
+    private void changeRoleButtonClicked(MouseEvent event) {
     }
 }
