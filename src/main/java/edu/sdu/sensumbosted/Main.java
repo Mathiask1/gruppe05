@@ -36,7 +36,9 @@ public class Main extends Application {
         stage.setMinHeight(480);
         stage.setTitle("Sensum Bosted");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
+
     }
 
     public void newDepartment(Context ctx, String name) {

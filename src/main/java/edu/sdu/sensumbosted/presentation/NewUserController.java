@@ -50,7 +50,8 @@ public class NewUserController extends SensumController {
             userRole.getItems().setAll("Patient", "Læge", "Sagsbehandler", "Lokal Admin");
         } else if (main.getContext().checkMinimum(AuthLevel.CASEWORKER)) {
             userRole.getItems().setAll("Patient");
-        }
+        };
+
     }
 
     @FXML
@@ -64,12 +65,13 @@ public class NewUserController extends SensumController {
         }
 
         Department department = main.getDepartments().get(uuid);
+
         if (department == null) {
             // TODO
             return;
         }
         // TODO
-        //department.newPatient(main.getContext(), userNameTextField.getText());
+        department.newPatient(main.getContext(), userNameTextField.getText());
     }
 
 }
