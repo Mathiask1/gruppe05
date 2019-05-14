@@ -5,6 +5,9 @@ import com.zaxxer.hikari.HikariDataSource;
 import edu.sdu.sensumbosted.AuditAction;
 import edu.sdu.sensumbosted.SystemContext;
 import edu.sdu.sensumbosted.entity.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.postgresql.util.PGobject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -64,8 +67,8 @@ public class DataService {
             patient.getDepartment().getId(),
             patient.getName(),
             patient.isEnrolled(),
-            patient.getDiaryJson().toString(),
-            patient.getCalendarJson().toString()
+            patient.getDiaryJson(),
+            patient.getCalendarJson()
         ));
     }
 
@@ -98,8 +101,8 @@ public class DataService {
                 patient.getDepartment().getId(),
                 patient.getName(),
                 patient.isEnrolled(),
-                patient.getDiaryJson().toString(),
-                patient.getCalendarJson().toString(),
+                patient.getDiaryJson(),
+                patient.getCalendarJson(),
                 patient.getId()
         ));
     }
@@ -209,6 +212,12 @@ public class DataService {
             int i = 1;
             for (Object o : args) {
                 if (o instanceof Instant) o = Timestamp.from((Instant) o);
+                else if (o instanceof JSONObject || o instanceof JSONArray) {
+                    PGobject pgo = new PGobject();
+                    pgo.setType("json");
+                    pgo.setValue(o.toString());
+                    o = pgo;
+                }
                 ps.setObject(i++, o);
             }
         }
@@ -217,6 +226,7 @@ public class DataService {
     /**
      * Convenience function
      */
+    @SuppressWarnings("WeakerAccess")
     VarargSetter varargs(Object... args) {
         return new VarargSetter(args);
     }
