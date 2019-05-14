@@ -5,7 +5,6 @@ import edu.sdu.sensumbosted.Util;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -36,12 +35,12 @@ public class Patient extends User {
 
     public Optional<String> getTodaysDiaryEntry(Context ctx) {
         ctx.assertAndLog(getDepartment(), AuditAction.DIARY_READ, AuthLevel.PRACTITIONER);
-        return Optional.ofNullable(diary.getOrDefault(Date.from(Instant.now()), null));
+        return Optional.ofNullable(diary.getOrDefault(LocalDate.now(), null));
     }
 
     public void setTodaysDiaryEntry(Context ctx, String str) {
         ctx.assertAndLog(getDepartment(), AuditAction.DIARY_WRITE, AuthLevel.PRACTITIONER);
-        diary.put(LocalDate.from(Instant.now()), str);
+        diary.put(LocalDate.now(), str);
         ctx.data.update(this);
     }
 
