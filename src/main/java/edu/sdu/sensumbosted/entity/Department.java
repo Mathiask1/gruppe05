@@ -128,8 +128,6 @@ public class Department implements DataEntity {
             // Patients should be able to see who are assigned to them
             if (thisUser instanceof Patient && user instanceof Practitioner) {
                 return ((Patient) thisUser).getAssignees(ctx).contains(user);
-            } else if (thisUser instanceof Practitioner && user instanceof Patient) {
-                return ((Practitioner) thisUser).getPatients(ctx).contains(user);
             } else {
                 return ctx.checkMinimum(AuthLevel.PRACTITIONER);
             }
