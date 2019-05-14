@@ -103,9 +103,9 @@ public class MainWindowController extends SensumController {
         try {
             Patient patient = (Patient) userList.getSelectionModel().getSelectedItem();
 
-            patient.newDiaryEntry(main.getContext(), newDiaryEntryTxtArea.getText());
+            //patient.newDiaryEntry(main.getContext(), newDiaryEntryTxtArea.getText());
 
-            diaryTextArea.setText(patient.getDiary());
+            //diaryTextArea.setText(patient.getDiary());
 
         } catch (RuntimeException e) {
             log.error("User not a patient!", e);
@@ -152,7 +152,7 @@ public class MainWindowController extends SensumController {
             userDepartment.setText(user.getDepartment().toString());
 
             if (user instanceof Patient) {
-                diaryTextArea.setText(((Patient) user).getDiary());
+              //  diaryTextArea.setText(((Patient) user).getDiary());
             } else {
                 diaryTextArea.setText("User is not a patient!");
             }
