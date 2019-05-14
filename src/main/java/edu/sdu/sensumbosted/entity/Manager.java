@@ -1,19 +1,22 @@
 package edu.sdu.sensumbosted.entity;
 
 import edu.sdu.sensumbosted.AuditAction;
+import edu.sdu.sensumbosted.Util;
+
+import java.util.UUID;
 
 public class Manager extends User {
 
     public static final String SQL_TABLE = "managers";
     private AuthLevel authLevel;
 
-    Manager(Department department, String name) {
-        super(department, name);
-        authLevel = AuthLevel.NO_AUTH;
+    Manager(Department department, String name, AuthLevel authLevel) {
+        super(Util.newId(), department, name);
+        this.authLevel = authLevel;
     }
 
-    public Manager(Department department, String name, AuthLevel authLevel) {
-        super(department, name);
+    public Manager(UUID id, Department department, String name, AuthLevel authLevel) {
+        super(id, department, name);
         this.authLevel = authLevel;
     }
 

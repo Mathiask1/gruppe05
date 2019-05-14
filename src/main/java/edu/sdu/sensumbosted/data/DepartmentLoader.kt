@@ -45,6 +45,7 @@ class DepartmentLoader(private val data: DataService) {
 
         val managers = data.jdbc.query("SELECT * FROM managers;") { rs, rowNum ->
             val manager = Manager(
+                    rs.getId("id"),
                     departments.getDepartment(rs),
                     rs.getString("name"),
                     AuthLevel.valueOf(rs.getString("auth"))
@@ -60,7 +61,7 @@ class DepartmentLoader(private val data: DataService) {
         val assigneeRelations = mutableMapOf<UUID, MutableList<Practitioner>>()
 
         val practitioners = data.jdbc.query("SELECT * FROM practitioners;") { rs, _ ->
-            val practitioner = Practitioner(departments.getDepartment(rs), rs.getString("name"))
+            val practitioner = Practitioner(rs.getId("id"), departments.getDepartment(rs), rs.getString("name"))
             log.info("Loaded $practitioner")
             assignedRelations[practitioner.id] = mutableListOf()
             practitioner.addToDepartment(rs)

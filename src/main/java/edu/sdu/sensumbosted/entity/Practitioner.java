@@ -1,16 +1,22 @@
 package edu.sdu.sensumbosted.entity;
 
 import edu.sdu.sensumbosted.AuditAction;
+import edu.sdu.sensumbosted.Util;
 
 import java.util.List;
+import java.util.UUID;
 
 public class Practitioner extends User {
 
     private List<Patient> assigned = null;
     public static final String SQL_TABLE = "practitioners";
 
-    public Practitioner(Department department, String name) {
-        super(department, name);
+    Practitioner(Department department, String name) {
+        super(Util.newId(), department, name);
+    }
+
+    public Practitioner(UUID id, Department department, String name) {
+        super(id, department, name);
     }
 
     public void lateInit(List<Patient> assigned) {

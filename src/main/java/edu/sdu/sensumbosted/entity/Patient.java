@@ -1,6 +1,7 @@
 package edu.sdu.sensumbosted.entity;
 
 import edu.sdu.sensumbosted.AuditAction;
+import edu.sdu.sensumbosted.Util;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -10,21 +11,19 @@ import java.util.*;
 
 public class Patient extends User {
 
-    private UUID id;
     private HashMap<LocalDate, String> diary = new HashMap<>();
     private ArrayList<CalendarEntry> calendar = new ArrayList<>();
     private ArrayList<Practitioner> assignees = new ArrayList<>();
     private boolean enrolled;
     public static final String SQL_TABLE = "patients";
 
-    public Patient(Department department, String name) {
-        super(department, name);
+    Patient(Department department, String name) {
+        super(Util.newId(), department, name);
     }
 
     /** DB access */
     public Patient(UUID id, Department department, String name, JSONObject diary, JSONArray calendar, boolean enrolled) {
-        super(department, name);
-        this.id = id;
+        super(id, department, name);
         this.enrolled = enrolled;
         parseJson(diary, calendar);
     }
