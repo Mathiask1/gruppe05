@@ -44,6 +44,7 @@ public class Practitioner extends User {
     }
 
     public List<Patient> getPatients(Context ctx) {
+        if (ctx.getUser() == this) return assigned;
         ctx.assertAndLog(getDepartment(), AuditAction.PRACTITIONER_READ_ASSIGNED, AuthLevel.CASEWORKER);
         return this.assigned;
     }
