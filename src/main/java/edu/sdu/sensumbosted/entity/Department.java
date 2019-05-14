@@ -133,6 +133,7 @@ public class Department implements DataEntity {
             } else {
                 return ctx.checkMinimum(AuthLevel.CASEWORKER);
             }
+            } else return ctx.checkMinimum(AuthLevel.PRACTITIONER);
         }).collect(Collectors.toSet());
 
         ctx.data.log(ctx, AuditAction.DEPARTMENT_USERS_READ);
