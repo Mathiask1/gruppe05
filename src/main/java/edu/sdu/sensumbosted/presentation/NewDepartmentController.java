@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -45,11 +46,11 @@ public class NewDepartmentController extends SensumController {
         if (departmentNameTextField.getLength() < 3) {
             errorMessageTxt.setText("Indsæt et navn! Mindst 3 tegn");
         } else {
-            main.getInstance().newDepartment(main.getContext(), departmentNameTextField.getText());
-            Stage stage = (Stage) departmentNameTextField.getScene().getWindow();
-            stage.close();
 
             main.newDepartment(main.getContext(), departmentNameTextField.getText());
+
+            Stage stage = (Stage) departmentNameTextField.getScene().getWindow();
+            stage.close();
         }
     }
 

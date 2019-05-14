@@ -7,6 +7,7 @@ package edu.sdu.sensumbosted.presentation;
 
 import edu.sdu.sensumbosted.Main;
 import edu.sdu.sensumbosted.entity.AuthLevel;
+import edu.sdu.sensumbosted.entity.Department;
 import edu.sdu.sensumbosted.entity.Patient;
 import edu.sdu.sensumbosted.entity.User;
 import javafx.collections.FXCollections;
@@ -24,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -44,35 +46,20 @@ public class MainWindowController extends SensumController {
     @FXML private Tab diaryTab;
     @FXML private Tab calendarTab;
     @FXML private Tab administrationTab;
-    @FXML private ChoiceBox<User> userSelectionMenu;
-    @FXML private ListView<User> userList;
     @FXML private Button selectUser;
     @FXML private TextArea diaryTextArea;
     @FXML private Button newDiaryButton;
     @FXML private TextArea newDiaryEntryTxtArea;
-    @FXML private ListView<?> departmentListView;
     @FXML private Text currentUserTxtField;
     //@formatter:on
 
     private final ObservableList<User> userObservableList = FXCollections.observableArrayList();
-
-    @FXML
-    private Button selectUser;
-    @FXML
-    private TextArea diaryTextArea;
-    @FXML
-    private Button newDiaryButton;
-    @FXML
-    private TextArea newDiaryEntryTxtArea;
+    @FXML private ChoiceBox<User> userSelectionMenu;
+    @FXML private ListView<User> userList;
 
     private final ObservableList<Department> departmentObservableList = FXCollections.observableArrayList();
-    @FXML
-    private ListView<Department> departmentListView;
+    @FXML private ListView<Department> departmentListView;
 
-
-    ArrayList<User> userArray = new ArrayList<>();
-    @FXML
-    private Text currentUserTxtField;
     private final ObservableList<User> users = FXCollections.observableArrayList();
     private final ObservableList<User> usersSelectionList = FXCollections.observableArrayList();
 
@@ -143,20 +130,7 @@ public class MainWindowController extends SensumController {
     /*
     Refresh information in the main window.
      */
-    public void refresh() {
-        userObservableList.setAll(main.getUsers(main.getContext()));
-        userSelectionMenu.setItems(userObservableList);
-        userList.setItems(userObservableList);
 
-        departmentObservableList.setAll(main.getDepartments().values());
-        departmentListView.setItems(departmentObservableList);
-
-
-        if (main.getContext().getUser() == null) {
-            currentUserTxtField.setText("No current user!");
-    /**
-     * Refresh information on screen
-     */
 	 
     private void refresh() {
         usersSelectionList.setAll(main.getUsers(main.getContext()));
