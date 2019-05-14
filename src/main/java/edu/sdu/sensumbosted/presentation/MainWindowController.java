@@ -47,15 +47,13 @@ public class MainWindowController extends SensumController {
     @FXML private Button newDiaryButton;
     @FXML private TextArea newDiaryEntryTxtArea;
     @FXML private Text currentUserTxtField;
-    //@formatter:on
-
-    private final ObservableList<User> userObservableList = FXCollections.observableArrayList();
     @FXML private ChoiceBox<User> userSelectionMenu;
     @FXML private ListView<User> userList;
+    @FXML private ListView<Department> departmentListView;
+    //@formatter:on
 
     private final ObservableList<Department> departmentObservableList = FXCollections.observableArrayList();
-    @FXML private ListView<Department> departmentListView;
-
+    private final ObservableList<User> userObservableList = FXCollections.observableArrayList();
     private final ObservableList<User> users = FXCollections.observableArrayList();
     private final ObservableList<User> usersSelectionList = FXCollections.observableArrayList();
 
