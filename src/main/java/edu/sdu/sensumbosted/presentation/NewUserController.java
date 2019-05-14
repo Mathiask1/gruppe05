@@ -13,12 +13,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.UUID;
+import javafx.scene.text.Text;
 
 /**
  * FXML Controller class
@@ -35,6 +37,10 @@ public class NewUserController extends SensumController {
     private Button newUserButton;
     @FXML
     private ChoiceBox<String> userRole;
+    @FXML
+    private Text errorMessageDepartment;
+    @FXML
+    private Text errorMessageRole;
 
     public NewUserController(Main main) {
         super(main);
@@ -67,10 +73,12 @@ public class NewUserController extends SensumController {
     @FXML
     private void newUserButtonClicked(MouseEvent event) {
         UUID uuid;
+
         try {
             uuid = UUID.fromString(departmentIDTextField.getText());
         } catch (IllegalStateException e) {
             // TODO
+            errorMessageDepartment.setText("Indtast venglist ID.");
             return;
         }
 
@@ -78,10 +86,25 @@ public class NewUserController extends SensumController {
 
         if (department == null) {
             // TODO
+            errorMessageDepartment.setText("Indtast venglist ID.");
             return;
         }
+
+        if (userRole.getValue() == "Patient") {
+            department.newPatient(main.getContext(), userNameTextField.getText());
+        } else if (userRole.getValue() == "Læge") {
+            department.newPractitioner(main.getContext(), userNameTextField.getText());
+        } else if (userRole.getValue() == "Sagsbehandler") {
+            department.newManager(main.getContext(), userNameTextField.getText(), AuthLevel.CASEWORKER);
+        } else if (userRole.getValue() == "Lokal Admin") {
+            department.newManager(main.getContext(), userNameTextField.getText(), AuthLevel.LOCAL_ADMIN);
+        } else if (userRole.getValue() == "Superbruger") {
+            department.newManager(main.getContext(), userNameTextField.getText(), AuthLevel.SUPERUSER);
+        }
+        Stage closeWindow = (Stage) userNameTextField.getScene().getWindow();
+        closeWindow.close();
+
         // TODO
-        department.newPatient(main.getContext(), userNameTextField.getText());
     }
 
 }
