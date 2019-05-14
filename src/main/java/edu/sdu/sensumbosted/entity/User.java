@@ -9,7 +9,6 @@ public abstract class User implements DataEntity  {
     private UUID id;
     private Department department;
     private String name;
-    private AuthLevel authLevel;
 
     User(Department department, String name) {
         this.department = department;
@@ -17,9 +16,7 @@ public abstract class User implements DataEntity  {
         this.id = Util.newId();
     }
 
-    public AuthLevel getAuth() {
-        return authLevel;
-    }
+    public abstract AuthLevel getAuth();
 
     public String getName() {
         return name;
