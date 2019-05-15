@@ -42,8 +42,8 @@ public class MainWindowController extends SensumController {
     @FXML private ChoiceBox<User> userSelectionMenu;
     @FXML private ListView<User> userList;
     @FXML private ListView<Department> departmentListView;
-    @FXML private ChoiceBox<?> selectUserRoleChoiceBox;
-    @FXML private ChoiceBox<?> assignPractitionerChoicebox;
+    @FXML private ChoiceBox<User> selectUserRoleChoiceBox;
+    @FXML private ChoiceBox<User> assignPractitionerChoicebox;
 
     //@formatter:on
 
