@@ -119,7 +119,7 @@ public class MainWindowController extends SensumController {
         User user = main.getContext().getUser();
 
         if (user != null) {
-            userName.setText(user.getName());
+            userName.setText(user.getName() + ": " + user.getId());
             userRole.setText(user.getAuth().toString());
             userDepartment.setText(user.getDepartment().toString());
 
