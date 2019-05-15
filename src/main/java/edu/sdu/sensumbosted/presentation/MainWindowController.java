@@ -48,7 +48,6 @@ public class MainWindowController extends SensumController {
     //@formatter:on
 
     private final ObservableList<Department> departmentObservableList = FXCollections.observableArrayList();
-    private final ObservableList<User> userObservableList = FXCollections.observableArrayList();
     private final ObservableList<User> users = FXCollections.observableArrayList();
     private final ObservableList<User> usersSelectionList = FXCollections.observableArrayList();
 
