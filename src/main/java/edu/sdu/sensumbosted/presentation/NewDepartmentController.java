@@ -23,12 +23,9 @@ import java.util.ResourceBundle;
  * @author birke
  */
 public class NewDepartmentController extends SensumController {
-    @FXML
-    private TextField departmentNameTextField;
-    @FXML
-    private Button newDepartmentButton;
-    @FXML
-    private Text errorMessageTxt;
+    @FXML private TextField departmentNameTextField;
+    @FXML private Button newDepartmentButton;
+    @FXML private Text errorMessageTxt;
 
     public NewDepartmentController(Main main) {
         super(main);

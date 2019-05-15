@@ -52,7 +52,6 @@ public class MainWindowController extends SensumController {
     private final ObservableList<User> users = FXCollections.observableArrayList();
     private final ObservableList<User> usersSelectionList = FXCollections.observableArrayList();
 
-
     public MainWindowController(Main main) {
         super(main);
     }
@@ -106,13 +105,12 @@ public class MainWindowController extends SensumController {
         } catch (RuntimeException e) {
             log.error("User not a patient!", e);
         }
-
     }
 
     /*
     Refresh information in the main window.
      */
-    private void refresh() {
+    public void refresh() {
         usersSelectionList.setAll(main.getUsers(main.getSystemContext()));
         userSelectionMenu.setItems(usersSelectionList);
 
