@@ -42,16 +42,16 @@ public class MainWindowController extends SensumController {
     @FXML private ChoiceBox<User> userSelectionMenu;
     @FXML private ListView<User> userList;
     @FXML private ListView<Department> departmentListView;
+    @FXML private ChoiceBox<?> selectUserRoleChoiceBox;
+    @FXML private ChoiceBox<?> assignPractitionerChoicebox;
+
     //@formatter:on
 
     private final ObservableList<Department> departmentObservableList = FXCollections.observableArrayList();
     private final ObservableList<User> userObservableList = FXCollections.observableArrayList();
     private final ObservableList<User> users = FXCollections.observableArrayList();
     private final ObservableList<User> usersSelectionList = FXCollections.observableArrayList();
-    @FXML
-    private ChoiceBox<?> selectUserRoleChoiceBox;
-    @FXML
-    private ChoiceBox<?> assignPractitionerChoicebox;
+
 
     public MainWindowController(Main main) {
         super(main);
