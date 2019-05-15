@@ -29,18 +29,18 @@ import javafx.scene.text.Text;
  */
 public class NewUserController extends SensumController {
     private static final Logger log = LoggerFactory.getLogger(NewUserController.class);
-    @FXML
-    private TextField userNameTextField;
-    @FXML
-    private TextField departmentIDTextField;
-    @FXML
-    private Button newUserButton;
-    @FXML
-    private ChoiceBox<String> userRole;
-    @FXML
-    private Text errorMessageDepartment;
-    @FXML
-    private Text errorMessageRole;
+
+    //@formatter:off
+
+    @FXML private TextField userNameTextField;
+    @FXML private TextField departmentIDTextField;
+    @FXML private Button newUserButton;
+    @FXML private ChoiceBox<String> userRole;
+    @FXML private Text errorMessageDepartment;
+    @FXML private Text errorMessageRole;
+
+    //@formatter:on
+
 
     public NewUserController(Main main) {
         super(main);

@@ -32,6 +32,7 @@ import java.util.ResourceBundle;
 public class MainWindowController extends SensumController {
 
     private static final Logger log = LoggerFactory.getLogger(MainWindowController.class);
+    //@formatter:off
 
     @FXML private Text userName;
     @FXML private Text userRole;
