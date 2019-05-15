@@ -6,6 +6,7 @@
 package edu.sdu.sensumbosted.presentation;
 
 import edu.sdu.sensumbosted.Main;
+import edu.sdu.sensumbosted.entity.AuthLevel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -45,13 +46,11 @@ public class NewDepartmentController extends SensumController {
     private void newDepartmentButtonClicked(MouseEvent event) {
         if (departmentNameTextField.getLength() < 3) {
             errorMessageTxt.setText("Indsæt et navn! Mindst 3 tegn");
-        } else {
-
+        } else if (main.getContext().checkMinimum(AuthLevel.SUPERUSER)) {
             main.newDepartment(main.getContext(), departmentNameTextField.getText());
 
             Stage stage = (Stage) departmentNameTextField.getScene().getWindow();
             stage.close();
         }
     }
-
 }

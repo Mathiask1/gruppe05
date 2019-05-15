@@ -130,6 +130,8 @@ public class MainWindowController extends SensumController {
         } else {
             currentUserTxtField.setText("No current user!");
         }
+        departmentObservableList.setAll(main.getDepartments().values());
+        departmentListView.setItems(departmentObservableList);
     }
 
     @FXML
