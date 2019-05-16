@@ -6,14 +6,13 @@
 package edu.sdu.sensumbosted.presentation;
 
 import edu.sdu.sensumbosted.Main;
-import edu.sdu.sensumbosted.entity.AuthLevel;
-import edu.sdu.sensumbosted.entity.Department;
-import edu.sdu.sensumbosted.entity.Patient;
-import edu.sdu.sensumbosted.entity.User;
+import edu.sdu.sensumbosted.entity.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import org.slf4j.Logger;
@@ -21,8 +20,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 /**
  * FXML Controller class
@@ -43,7 +44,7 @@ public class MainWindowController extends SensumController {
     @FXML private ChoiceBox<User> userSelectionMenu;
     @FXML private ListView<User> userList;
     @FXML private ListView<Department> departmentListView;
-    @FXML private ChoiceBox<User> selectUserRoleChoiceBox;
+    @FXML private ChoiceBox<AuthLevel> selectUserRoleChoiceBox;
     @FXML private ChoiceBox<User> assignPractitionerChoicebox;
 
     //@formatter:on
@@ -51,6 +52,8 @@ public class MainWindowController extends SensumController {
     private final ObservableList<Department> departmentObservableList = FXCollections.observableArrayList();
     private final ObservableList<User> users = FXCollections.observableArrayList();
     private final ObservableList<User> usersSelectionList = FXCollections.observableArrayList();
+    private final ObservableList<AuthLevel> selectableLevels = FXCollections.observableArrayList();
+    private User selectedUser = null;
 
     public MainWindowController(Main main) {
         super(main);
@@ -62,6 +65,9 @@ public class MainWindowController extends SensumController {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         userSelectionMenu.setConverter(new UserStringConverter());
+        assignPractitionerChoicebox.setConverter(new UserStringConverter());
+        selectUserRoleChoiceBox.setConverter(new AuthLevelStringConverter());
+        selectUserRoleChoiceBox.setItems(selectableLevels);
         refresh();
     }
 
@@ -107,8 +113,8 @@ public class MainWindowController extends SensumController {
         }
     }
 
-    /*
-    Refresh information in the main window.
+    /**
+     * Refresh information in the main window.
      */
     public void refresh() {
         usersSelectionList.setAll(main.getUsers(main.getSystemContext()));
@@ -130,31 +136,45 @@ public class MainWindowController extends SensumController {
         }
         departmentObservableList.setAll(main.getDepartments().values());
         departmentListView.setItems(departmentObservableList);
+        updateAdminPanel();
+    }
+
+    private void updateAdminPanel() {
+        if (selectedUser instanceof Manager) {
+            Manager manager = (Manager) selectedUser;
+            List<AuthLevel> levels = Arrays.stream(AuthLevel.values())
+                    .filter(authLevel -> !manager.canSetAuthLevel(main.getContext(), authLevel).isPresent())
+                    .collect(Collectors.toList());
+            selectableLevels.setAll(levels);
+        } else {
+            selectableLevels.clear();
+        }
     }
 
     @FXML
     private void userListViewClicked(MouseEvent event) {
         try {
-            User user = userList.getSelectionModel().getSelectedItem();
+            selectedUser = userList.getSelectionModel().getSelectedItem();
 
-            if (user != null) {
-                userName.setText(user.getName());
-                userRole.setText(user.getAuth().toString());
-                userDepartment.setText(user.getDepartment().toString());
+            if (selectedUser != null) {
+                userName.setText(selectedUser.getName());
+                userRole.setText(selectedUser.getAuth().toString());
+                userDepartment.setText(selectedUser.getDepartment().toString());
             }
 
-            if (user instanceof Patient) {
-                if (((Patient) user).getDiary(main.getContext()) == null) {
+            if (selectedUser instanceof Patient) {
+                if (((Patient) selectedUser).getDiary(main.getContext()) == null) {
                     diaryTextArea.setText("Ingen dagbog!");
                 } else {
-                    diaryTextArea.setText(((Patient) user).getDiary(main.getContext()).toString());
-                    if (((Patient) user).getTodaysDiaryEntry(main.getContext()).isPresent()) {
-                        newDiaryEntryTxtArea.setText(((Patient) user).getTodaysDiaryEntry(main.getContext()).get());
+                    diaryTextArea.setText(((Patient) selectedUser).getDiary(main.getContext()).toString());
+                    if (((Patient) selectedUser).getTodaysDiaryEntry(main.getContext()).isPresent()) {
+                        newDiaryEntryTxtArea.setText(((Patient) selectedUser).getTodaysDiaryEntry(main.getContext()).get());
                     }
                 }
             } else {
                 diaryTextArea.setText("Denne bruger er ikke en patient");
             }
+            updateAdminPanel();
         } catch (RuntimeException e) {
             log.error("Error clicking on user listview", e);
         }
@@ -162,6 +182,7 @@ public class MainWindowController extends SensumController {
 
     @FXML
     private void deleteUserButtonClicked(MouseEvent event) {
+
     }
 
     @FXML
