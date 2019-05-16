@@ -36,7 +36,7 @@ public class Context {
     }
 
     public boolean checkMinimum(@Nullable Department department, AuthLevel auth) {
-        return auth.ordinal() >= getAuth().ordinal() && checkAccess(department);
+        return checkMinimum(auth) && checkAccess(department);
     }
 
     public void assertMinimum(@Nullable Department department, AuditAction action, AuthLevel auth) {
