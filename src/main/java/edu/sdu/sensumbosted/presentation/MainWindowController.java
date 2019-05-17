@@ -202,4 +202,8 @@ public class MainWindowController extends SensumController {
     @FXML
     private void assignPractitionerMouseClicked(MouseEvent event) {
     }
+
+    @FXML
+    private void removeRelationButtonClicked(MouseEvent event) {
+    }
 }
