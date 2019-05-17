@@ -8,6 +8,7 @@ package edu.sdu.sensumbosted.presentation;
 import edu.sdu.sensumbosted.Main;
 import edu.sdu.sensumbosted.entity.*;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -71,10 +72,9 @@ public class MainWindowController extends SensumController {
         userSelectionMenu.setConverter(new UserStringConverter<>());
         selectUserRoleChoiceBox.setConverter(new AuthLevelStringConverter());
         selectUserRoleChoiceBox.setItems(selectableLevels);
-
-        UserStringConverter<Practitioner> converter = new UserStringConverter<>(true);
-        relationsListView.setCellFactory(
-                CheckBoxListCell.forListView(param -> new SimpleBooleanProperty(false), converter)
+        relationsListView.setCellFactory(CheckBoxListCell.forListView(
+                this::createAssignmentCheckbox,
+                new UserStringConverter<>(true))
         );
         relationsListView.setItems(assignablePractitioners);
         refresh();
@@ -235,5 +235,21 @@ public class MainWindowController extends SensumController {
      */
     private User getUser() {
         return main.getContext().getUser();
+    }
+
+    /**
+     * @return an observable boolean which represents the practitioner's relation checkbox
+     */
+    private ObservableValue<Boolean> createAssignmentCheckbox(Practitioner practitioner) {
+        //noinspection SuspiciousMethodCalls
+        boolean assigned = practitioner.getPatients(main.getContext()).contains(selectedUser);
+        SimpleBooleanProperty checkbox = new SimpleBooleanProperty(assigned);
+        checkbox.addListener((__, ___, newValue) -> onPractitionerAssignmentChange(practitioner, newValue));
+        return checkbox;
+    }
+
+    private void onPractitionerAssignmentChange(Practitioner practitioner, boolean assigned) {
+        if (assigned) practitioner.assign(main.getContext(), (Patient) selectedUser);
+        else practitioner.unassign(main.getContext(), (Patient) selectedUser);
     }
 }
