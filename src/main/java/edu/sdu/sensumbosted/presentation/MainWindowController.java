@@ -7,12 +7,15 @@ package edu.sdu.sensumbosted.presentation;
 
 import edu.sdu.sensumbosted.Main;
 import edu.sdu.sensumbosted.entity.*;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import org.slf4j.Logger;
@@ -23,6 +26,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -45,7 +49,7 @@ public class MainWindowController extends SensumController {
     @FXML private ListView<User> userList;
     @FXML private ListView<Department> departmentListView;
     @FXML private ChoiceBox<AuthLevel> selectUserRoleChoiceBox;
-    @FXML private ChoiceBox<User> assignPractitionerChoicebox;
+    @FXML private ListView<Practitioner> relationsListView;
 
     //@formatter:on
 
@@ -53,9 +57,8 @@ public class MainWindowController extends SensumController {
     private final ObservableList<User> users = FXCollections.observableArrayList();
     private final ObservableList<User> usersSelectionList = FXCollections.observableArrayList();
     private final ObservableList<AuthLevel> selectableLevels = FXCollections.observableArrayList();
+    private final ObservableList<Practitioner> assignablePractitioners = FXCollections.observableArrayList();
     private User selectedUser = null;
-    @FXML
-    private ChoiceBox<?> removePatientRelation;
 
     public MainWindowController(Main main) {
         super(main);
@@ -66,10 +69,14 @@ public class MainWindowController extends SensumController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        userSelectionMenu.setConverter(new UserStringConverter());
-        assignPractitionerChoicebox.setConverter(new UserStringConverter());
+        userSelectionMenu.setConverter(new UserStringConverter<>());
         selectUserRoleChoiceBox.setConverter(new AuthLevelStringConverter());
         selectUserRoleChoiceBox.setItems(selectableLevels);
+        relationsListView.setCellFactory(CheckBoxListCell.forListView(
+                this::createAssignmentCheckbox,
+                new UserStringConverter<>(true))
+        );
+        relationsListView.setItems(assignablePractitioners);
         refresh();
     }
 
@@ -155,6 +162,13 @@ public class MainWindowController extends SensumController {
         } else {
             selectableLevels.clear();
         }
+
+        if (selectedUser instanceof Patient && main.getContext().checkMinimum(AuthLevel.CASEWORKER)) {
+            Set<Practitioner> practitioners = getUser().getDepartment().getPractitioners(main.getContext());
+            assignablePractitioners.setAll(practitioners);
+        } else {
+            assignablePractitioners.clear();
+        }
     }
 
     @FXML
@@ -205,14 +219,26 @@ public class MainWindowController extends SensumController {
         refresh();
     }
 
-    @FXML
-    private void assignPractitionerMouseClicked(MouseEvent event) {
-        Practitioner practitioner = (Practitioner) main.getContext().getUser();
-        Patient patient = (Patient) selectedUser;
-        practitioner.assign(main.getContext(), patient);
+    /**
+     * Shorthand
+     */
+    private User getUser() {
+        return main.getContext().getUser();
     }
 
-    @FXML
-    private void removeRelationButtonClicked(MouseEvent event) {
+    /**
+     * @return an observable boolean which represents the practitioner's relation checkbox
+     */
+    private ObservableValue<Boolean> createAssignmentCheckbox(Practitioner practitioner) {
+        //noinspection SuspiciousMethodCalls
+        boolean assigned = practitioner.getPatients(main.getContext()).contains(selectedUser);
+        SimpleBooleanProperty checkbox = new SimpleBooleanProperty(assigned);
+        checkbox.addListener((__, ___, newValue) -> onPractitionerAssignmentChange(practitioner, newValue));
+        return checkbox;
+    }
+
+    private void onPractitionerAssignmentChange(Practitioner practitioner, boolean assigned) {
+        if (assigned) practitioner.assign(main.getContext(), (Patient) selectedUser);
+        else practitioner.unassign(main.getContext(), (Patient) selectedUser);
     }
 }

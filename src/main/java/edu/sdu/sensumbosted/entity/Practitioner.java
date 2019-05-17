@@ -3,6 +3,7 @@ package edu.sdu.sensumbosted.entity;
 import edu.sdu.sensumbosted.AuditAction;
 import edu.sdu.sensumbosted.Util;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,7 +47,7 @@ public class Practitioner extends User {
     public List<Patient> getPatients(Context ctx) {
         if (ctx.getUser() == this) return assigned;
         ctx.assertAndLog(getDepartment(), AuditAction.PRACTITIONER_READ_ASSIGNED, AuthLevel.CASEWORKER);
-        return this.assigned;
+        return Collections.unmodifiableList(this.assigned);
     }
 
     @Override

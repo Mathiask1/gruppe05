@@ -5,6 +5,7 @@ import edu.sdu.sensumbosted.data.DataEntity;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Department implements DataEntity {
 
@@ -118,6 +119,14 @@ public class Department implements DataEntity {
     public List<User> getUsers(Context ctx) {
         ctx.assertAndLog(this, AuditAction.DEPARTMENT_USERS_READ, AuthLevel.PRACTITIONER);
         return new ArrayList<>(members.values());
+    }
+
+    public Set<Practitioner> getPractitioners(Context ctx) {
+        ctx.assertAndLog(this, AuditAction.DEPARTMENT_USERS_READ, AuthLevel.PRACTITIONER);
+        return members.values().stream().flatMap(user -> {
+            if (user instanceof Practitioner) return Stream.of((Practitioner) user);
+            return Stream.empty();
+        }).collect(Collectors.toSet());
     }
 
     public Set<User> getVisibleUsers(Context ctx) {
