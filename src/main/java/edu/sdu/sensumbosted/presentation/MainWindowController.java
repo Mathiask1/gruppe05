@@ -7,12 +7,14 @@ package edu.sdu.sensumbosted.presentation;
 
 import edu.sdu.sensumbosted.Main;
 import edu.sdu.sensumbosted.entity.*;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import org.slf4j.Logger;
@@ -23,6 +25,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -45,7 +48,7 @@ public class MainWindowController extends SensumController {
     @FXML private ListView<User> userList;
     @FXML private ListView<Department> departmentListView;
     @FXML private ChoiceBox<AuthLevel> selectUserRoleChoiceBox;
-    @FXML private ChoiceBox<User> assignPractitionerChoicebox;
+    @FXML private ListView<Practitioner> relationsListView;
 
     //@formatter:on
 
@@ -53,9 +56,8 @@ public class MainWindowController extends SensumController {
     private final ObservableList<User> users = FXCollections.observableArrayList();
     private final ObservableList<User> usersSelectionList = FXCollections.observableArrayList();
     private final ObservableList<AuthLevel> selectableLevels = FXCollections.observableArrayList();
+    private final ObservableList<Practitioner> assignablePractitioners = FXCollections.observableArrayList();
     private User selectedUser = null;
-    @FXML
-    private ChoiceBox<?> removePatientRelation;
 
     public MainWindowController(Main main) {
         super(main);
@@ -66,10 +68,15 @@ public class MainWindowController extends SensumController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        userSelectionMenu.setConverter(new UserStringConverter());
-        assignPractitionerChoicebox.setConverter(new UserStringConverter());
+        userSelectionMenu.setConverter(new UserStringConverter<>());
         selectUserRoleChoiceBox.setConverter(new AuthLevelStringConverter());
         selectUserRoleChoiceBox.setItems(selectableLevels);
+
+        UserStringConverter<Practitioner> converter = new UserStringConverter<>(true);
+        relationsListView.setCellFactory(
+                CheckBoxListCell.forListView(param -> new SimpleBooleanProperty(false), converter)
+        );
+        relationsListView.setItems(assignablePractitioners);
         refresh();
     }
 
@@ -155,6 +162,13 @@ public class MainWindowController extends SensumController {
         } else {
             selectableLevels.clear();
         }
+
+        if (selectedUser instanceof Patient && main.getContext().checkMinimum(AuthLevel.CASEWORKER)) {
+            Set<Practitioner> practitioners = getUser().getDepartment().getPractitioners(main.getContext());
+            assignablePractitioners.setAll(practitioners);
+        } else {
+            assignablePractitioners.clear();
+        }
     }
 
     @FXML
@@ -214,5 +228,12 @@ public class MainWindowController extends SensumController {
 
     @FXML
     private void removeRelationButtonClicked(MouseEvent event) {
+    }
+
+    /**
+     * Shorthand
+     */
+    private User getUser() {
+        return main.getContext().getUser();
     }
 }
