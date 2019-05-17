@@ -197,6 +197,9 @@ public class MainWindowController extends SensumController {
 
     @FXML
     private void changeRoleButtonClicked(MouseEvent event) {
+        Manager manager = (Manager) selectedUser;
+        manager.canSetAuthLevel(main.getContext(), selectUserRoleChoiceBox.getValue());
+        refresh();
     }
 
     @FXML
