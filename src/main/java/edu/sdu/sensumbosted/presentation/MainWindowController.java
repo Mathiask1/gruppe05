@@ -204,5 +204,8 @@ public class MainWindowController extends SensumController {
 
     @FXML
     private void assignPractitionerMouseClicked(MouseEvent event) {
+        Practitioner practitioner = (Practitioner) main.getContext().getUser();
+        Patient patient = (Patient) selectedUser;
+        practitioner.assign(main.getContext(), patient);
     }
 }
