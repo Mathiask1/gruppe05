@@ -190,7 +190,9 @@ public class MainWindowController extends SensumController {
 
     @FXML
     private void deleteUserButtonClicked(MouseEvent event) {
-
+        selectedUser.getDepartment().deleteUser(main.getContext(), selectedUser);
+        selectedUser = null;
+        refresh();
     }
 
     @FXML
