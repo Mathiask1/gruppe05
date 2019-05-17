@@ -27,20 +27,17 @@ import javafx.scene.text.Text;
  *
  * @author birke
  */
+
 public class NewUserController extends SensumController {
     private static final Logger log = LoggerFactory.getLogger(NewUserController.class);
 
     //@formatter:off
-
     @FXML private TextField userNameTextField;
     @FXML private TextField departmentIDTextField;
-    @FXML private Button newUserButton;
     @FXML private ChoiceBox<String> userRole;
     @FXML private Text errorMessageDepartment;
     @FXML private Text errorMessageRole;
-
     //@formatter:on
-
 
     public NewUserController(Main main) {
         super(main);
@@ -51,8 +48,6 @@ public class NewUserController extends SensumController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        // TODO
     }
 
     public void refresh() {
@@ -90,7 +85,10 @@ public class NewUserController extends SensumController {
             return;
         }
 
-        if (userRole.getValue() == "Patient") {
+        if (userRole.getValue() == null) {
+            errorMessageRole.setText("Vælg en rolle!");
+            return;
+        } else if (userRole.getValue() == "Patient") {
             department.newPatient(main.getContext(), userNameTextField.getText());
         } else if (userRole.getValue() == "Læge") {
             department.newPractitioner(main.getContext(), userNameTextField.getText());
@@ -103,8 +101,5 @@ public class NewUserController extends SensumController {
         }
         Stage closeWindow = (Stage) userNameTextField.getScene().getWindow();
         closeWindow.close();
-
-        // TODO
     }
-
 }

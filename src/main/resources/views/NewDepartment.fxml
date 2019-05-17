@@ -9,7 +9,7 @@
    <children>
       <TextField fx:id="departmentNameTextField" layoutX="33.0" layoutY="66.0" />
       <Text layoutX="33.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Navn" />
-      <Button fx:id="newDepartmentButton" layoutX="31.0" layoutY="166.0" mnemonicParsing="false" onMouseClicked="#newDepartmentButtonClicked" text="Ny afdeling" />
+      <Button layoutX="31.0" layoutY="166.0" mnemonicParsing="false" onMouseClicked="#newDepartmentButtonClicked" text="Ny afdeling" />
       <Text fx:id="errorMessageTxt" fill="RED" layoutX="31.0" layoutY="204.0" strokeType="OUTSIDE" strokeWidth="0.0" />
    </children>
 </AnchorPane>
