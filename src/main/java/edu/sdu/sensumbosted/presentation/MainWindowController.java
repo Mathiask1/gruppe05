@@ -54,6 +54,8 @@ public class MainWindowController extends SensumController {
     private final ObservableList<User> usersSelectionList = FXCollections.observableArrayList();
     private final ObservableList<AuthLevel> selectableLevels = FXCollections.observableArrayList();
     private User selectedUser = null;
+    @FXML
+    private ChoiceBox<?> removePatientRelation;
 
     public MainWindowController(Main main) {
         super(main);
