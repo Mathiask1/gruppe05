@@ -171,12 +171,13 @@ public class MainWindowController extends SensumController {
             }
 
             if (selectedUser instanceof Patient) {
-                if (((Patient) selectedUser).getDiary(main.getContext()) == null) {
+                Patient patient = (Patient) selectedUser;
+                if (patient.getDiary(main.getContext()) == null) {
                     diaryTextArea.setText("Ingen dagbog!");
                 } else {
-                    diaryTextArea.setText(((Patient) selectedUser).getDiary(main.getContext()).toString());
-                    if (((Patient) selectedUser).getTodaysDiaryEntry(main.getContext()).isPresent()) {
-                        newDiaryEntryTxtArea.setText(((Patient) selectedUser).getTodaysDiaryEntry(main.getContext()).get());
+                    diaryTextArea.setText(patient.getDiary(main.getContext()).toString());
+                    if (patient.getTodaysDiaryEntry(main.getContext()).isPresent()) {
+                        newDiaryEntryTxtArea.setText(patient.getTodaysDiaryEntry(main.getContext()).get());
                     }
                 }
             } else {
