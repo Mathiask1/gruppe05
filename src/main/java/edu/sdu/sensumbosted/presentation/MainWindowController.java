@@ -123,7 +123,11 @@ public class MainWindowController extends SensumController {
         User user = main.getContext().getUser();
 
         if (user != null) {
-            userName.setText(user.getName() + ": " + user.getId());
+            if (main.getContext().checkMinimum(AuthLevel.PRACTITIONER)) {
+                userName.setText(user.getName() + ": " + user.getId());
+            } else {
+                userName.setText(user.getName());
+            }
             userRole.setText(user.getAuth().toString());
             userDepartment.setText(user.getDepartment().toString());
 
@@ -157,7 +161,11 @@ public class MainWindowController extends SensumController {
             selectedUser = userList.getSelectionModel().getSelectedItem();
 
             if (selectedUser != null) {
-                userName.setText(selectedUser.getName());
+                if (main.getContext().checkMinimum(AuthLevel.PRACTITIONER)) {
+                    userName.setText(selectedUser.getName() + ": " + selectedUser.getId().toString());
+                } else {
+                    userName.setText(selectedUser.getName());
+                }
                 userRole.setText(selectedUser.getAuth().toString());
                 userDepartment.setText(selectedUser.getDepartment().toString());
             }
