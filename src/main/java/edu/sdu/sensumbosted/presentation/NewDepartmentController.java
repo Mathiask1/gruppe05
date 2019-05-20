@@ -44,7 +44,7 @@ public class NewDepartmentController extends SensumController {
     private void newDepartmentButtonClicked(MouseEvent event) {
         if (departmentNameTextField.getLength() < 3) {
             errorMessageTxt.setText("Indsæt et navn! Mindst 3 tegn");
-        } else if (main.getContext().checkMinimum(AuthLevel.SUPERUSER)) {
+        } else  {
             main.newDepartment(main.getContext(), departmentNameTextField.getText());
 
             Stage stage = (Stage) departmentNameTextField.getScene().getWindow();
