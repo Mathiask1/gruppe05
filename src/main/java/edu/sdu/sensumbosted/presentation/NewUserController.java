@@ -47,8 +47,7 @@ public class NewUserController extends SensumController {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-    }
+    public void initialize(URL url, ResourceBundle rb) { }
 
     public void refresh() {
         if (main.getContext().checkMinimum(AuthLevel.SUPERUSER)) {
@@ -68,19 +67,20 @@ public class NewUserController extends SensumController {
     @FXML
     private void newUserButtonClicked(MouseEvent event) {
         UUID uuid;
+        errorMessageDepartment.setText("");
+        errorMessageRole.setText("");
 
         try {
             uuid = UUID.fromString(departmentIDTextField.getText());
+
         } catch (IllegalStateException e) {
-            // TODO
-            errorMessageDepartment.setText("Indtast venglist ID.");
+            e.getStackTrace();
             return;
         }
 
         Department department = main.getDepartments().get(uuid);
 
         if (department == null) {
-            // TODO
             errorMessageDepartment.setText("Indtast venglist ID.");
             return;
         }
