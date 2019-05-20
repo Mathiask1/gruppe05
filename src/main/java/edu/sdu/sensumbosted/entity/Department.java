@@ -2,14 +2,13 @@ package edu.sdu.sensumbosted.entity;
 
 import edu.sdu.sensumbosted.AuditAction;
 import edu.sdu.sensumbosted.data.DataEntity;
+import edu.sdu.sensumbosted.data.SqlTable;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Department implements DataEntity {
-
-    public static final String SQL_TABLE = "departments";
 
     public Department(String name) {
         this.id = UUID.randomUUID();
@@ -40,8 +39,8 @@ public class Department implements DataEntity {
     }
 
     @Override
-    public String getSqlTable() {
-        return SQL_TABLE;
+    public SqlTable getSqlTable() {
+        return SqlTable.DEPARTMENT ;
     }
 
     public String getName() {

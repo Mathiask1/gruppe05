@@ -2,13 +2,13 @@ package edu.sdu.sensumbosted.entity;
 
 import edu.sdu.sensumbosted.AuditAction;
 import edu.sdu.sensumbosted.Util;
+import edu.sdu.sensumbosted.data.SqlTable;
 
 import java.util.Optional;
 import java.util.UUID;
 
 public class Manager extends User {
 
-    public static final String SQL_TABLE = "managers";
     private AuthLevel authLevel;
 
     Manager(Department department, String name, AuthLevel authLevel) {
@@ -56,5 +56,7 @@ public class Manager extends User {
     }
 
     @Override
-    public String getSqlTable() { return SQL_TABLE; }
+    public SqlTable getSqlTable() {
+        return SqlTable.MANAGER;
+    }
 }

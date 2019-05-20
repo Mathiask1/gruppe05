@@ -138,8 +138,7 @@ public class DataService {
      */
     public boolean delete(DataEntity entity) {
         @SuppressWarnings("SqlResolve")
-        int changed = jdbc.update("DELETE FROM ? WHERE id = ?;", varargs(
-                entity.getSqlTable(),
+        int changed = jdbc.update("DELETE FROM " + entity.getSqlTable().getTableName() + " WHERE id = ?;", varargs(
                 entity.getId())
         );
         return changed > 0;

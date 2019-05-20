@@ -2,6 +2,7 @@ package edu.sdu.sensumbosted.entity;
 
 import edu.sdu.sensumbosted.AuditAction;
 import edu.sdu.sensumbosted.Util;
+import edu.sdu.sensumbosted.data.SqlTable;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,7 +11,6 @@ import java.util.UUID;
 public class Practitioner extends User {
 
     private List<Patient> assigned = null;
-    public static final String SQL_TABLE = "practitioners";
 
     Practitioner(Department department, String name) {
         super(Util.newId(), department, name);
@@ -51,8 +51,8 @@ public class Practitioner extends User {
     }
 
     @Override
-    public String getSqlTable() {
-        return SQL_TABLE;
+    public SqlTable getSqlTable() {
+        return SqlTable.PRACTITIONER;
     }
 
 }
