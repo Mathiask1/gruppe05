@@ -74,7 +74,7 @@ public class NewUserController extends SensumController {
             uuid = UUID.fromString(departmentIDTextField.getText());
 
         } catch (IllegalStateException e) {
-            e.getStackTrace();
+            log.error("Error clicking on New User button.", e);
             return;
         }
 
