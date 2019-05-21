@@ -16,7 +16,7 @@
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.sdu.sensumbosted.presentation.MainWindowController"
             maxHeight="400" maxWidth="600">
     <TabPane layoutX="388.0" layoutY="363.0" prefHeight="439.0" prefWidth="894.0" tabClosingPolicy="UNAVAILABLE">
-        <Tab text="Dagbog">
+        <Tab fx:id="diaryTab" text="Dagbog">
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                 <TextArea fx:id="diaryTextArea" editable="false" layoutX="249.0" layoutY="15.0" prefHeight="372.0"
                           prefWidth="628.0" wrapText="true"/>
@@ -43,7 +43,8 @@
                 <Button fx:id="deleteUserButton" layoutX="14.0" layoutY="173.0" mnemonicParsing="false"
                         onMouseClicked="#deleteUserButtonClicked" prefHeight="23.0" prefWidth="150.0" text="Slet"/>
                 <ChoiceBox fx:id="selectUserRoleChoiceBox" layoutX="14.0" layoutY="50.0" prefWidth="150.0"/>
-                <Button layoutX="14.0" layoutY="83.0" mnemonicParsing="false" onMouseClicked="#changeRoleButtonClicked"
+                <Button fx:id="changeRoleButton" layoutX="14.0" layoutY="83.0" mnemonicParsing="false"
+                        onMouseClicked="#changeRoleButtonClicked"
                         prefHeight="23.0" prefWidth="150.0" text="Ændre rolle"/>
                 <Text layoutX="253.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0"
                       text="Tildel patient til læger"/>

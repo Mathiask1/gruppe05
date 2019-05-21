@@ -42,8 +42,8 @@ public class MainWindowController extends SensumController {
     @FXML private TextArea diaryTextArea;
     @FXML private TextArea newDiaryEntryTxtArea;
     @FXML private Text currentUserTxtField;
-    @FXML private  Button newUserButton;
-    @FXML private  Button newDepartmentButton;
+    @FXML private Button newUserButton;
+    @FXML private Button newDepartmentButton;
     @FXML private ChoiceBox<DataEntity> userSelectionMenu;
     @FXML private Button selectUserButton;
     @FXML private ListView<User> userList;
@@ -51,7 +51,9 @@ public class MainWindowController extends SensumController {
     @FXML private ChoiceBox<AuthLevel> selectUserRoleChoiceBox;
     @FXML private ListView<Practitioner> relationsListView;
     @FXML private Button deleteUserButton;
-    @FXML public Tab adminTab;
+    @FXML private Button changeRoleButton;
+    @FXML private Tab adminTab;
+    @FXML private Tab diaryTab;
     //@formatter:on
 
     private final ObservableList<Department> departmentObservableList = FXCollections.observableArrayList();
@@ -98,6 +100,7 @@ public class MainWindowController extends SensumController {
 
     @FXML
     private void selectUserClicked(MouseEvent event) {
+<<<<<<< HEAD
         try {
             if (userSelectionMenu.getValue() == null) {
                 log.warn("No user selected!");
@@ -110,7 +113,9 @@ public class MainWindowController extends SensumController {
         } catch (RuntimeException e) {
             log.error("Exception after UI click", e);
         }
-
+        
+        main.getContext().setUser((User) userSelectionMenu.getValue());
+        refresh();
     }
 
     @FXML
@@ -173,26 +178,32 @@ public class MainWindowController extends SensumController {
     }
 
     private void refreshAdminPanel() {
-        if (selectedUser == null) { //TODO
+        Context ctx = main.getContext(); // TODO set diary tab
+        if (selectedUser == null || !ctx.checkMinimum(AuthLevel.CASEWORKER)) {
             adminTab.setDisable(true);
+            diaryTab.getTabPane().getSelectionModel().select(diaryTab);
             return;
         }
         adminTab.setDisable(false);
 
-        deleteUserButton.setDisable(!main.getContext().checkMinimum(selectedUser.getAuth()));
+        boolean mayDelete = ctx.checkMinimum(selectedUser.getAuth())
+                && ctx.checkMinimum(AuthLevel.LOCAL_ADMIN);
+        boolean mayChangeRole = mayDelete && ctx.checkMinimum(selectedUser.getAuth());
+        deleteUserButton.setDisable(!mayDelete);
+        changeRoleButton.setDisable(!mayChangeRole);
 
         if (selectedUser instanceof Manager) {
             Manager manager = (Manager) selectedUser;
             List<AuthLevel> levels = Arrays.stream(AuthLevel.values())
-                    .filter(authLevel -> !manager.canSetAuthLevel(main.getContext(), authLevel).isPresent())
+                    .filter(authLevel -> !manager.canSetAuthLevel(ctx, authLevel).isPresent())
                     .collect(Collectors.toList());
             selectableLevels.setAll(levels);
         } else {
             selectableLevels.clear();
         }
 
-        if (selectedUser instanceof Patient && main.getContext().checkMinimum(AuthLevel.CASEWORKER)) {
-            Set<Practitioner> practitioners = getUser().getDepartment().getPractitioners(main.getContext());
+        if (selectedUser instanceof Patient && ctx.checkMinimum(AuthLevel.CASEWORKER)) {
+            Set<Practitioner> practitioners = getUser().getDepartment().getPractitioners(ctx);
             assignablePractitioners.setAll(practitioners);
         } else {
             assignablePractitioners.clear();
