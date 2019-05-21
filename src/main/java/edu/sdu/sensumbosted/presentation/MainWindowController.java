@@ -41,6 +41,8 @@ public class MainWindowController extends SensumController {
     @FXML private TextArea diaryTextArea;
     @FXML private TextArea newDiaryEntryTxtArea;
     @FXML private Text currentUserTxtField;
+    @FXML private  Button newUserButton;
+    @FXML private  Button newDepartmentButton;
     @FXML private ChoiceBox<DataEntity> userSelectionMenu;
     @FXML private Button selectUserButton;
     @FXML private ListView<User> userList;
@@ -133,6 +135,9 @@ public class MainWindowController extends SensumController {
         userSelectionMenu.setItems(usc.withDepartments(users));
 
         User user = main.getContext().getUser();
+
+        newDepartmentButton.setDisable(!main.getContext().checkMinimum(AuthLevel.SUPERUSER));
+        newUserButton.setDisable(!main.getContext().checkMinimum(AuthLevel.PRACTITIONER));
 
         if (user != null) {
             if (main.getContext().checkMinimum(AuthLevel.PRACTITIONER)) {

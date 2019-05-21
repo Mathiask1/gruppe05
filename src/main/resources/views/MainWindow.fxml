@@ -50,8 +50,10 @@
         </Tab>
     </TabPane>
     <ToolBar layoutX="386.0" prefHeight="40.0" prefWidth="894.0">
-        <Button mnemonicParsing="false" onMouseClicked="#newUserClicked" text="Ny Bruger"/>
-        <Button mnemonicParsing="false" onMouseClicked="#newDepartmentClicked" text="Ny Afdeling"/>
+        <Button fx:id="newUserButton" mnemonicParsing="false" onMouseClicked="#newUserClicked" text="Ny Bruger"
+                disable="true"/>
+        <Button fx:id="newDepartmentButton" mnemonicParsing="false" onMouseClicked="#newDepartmentClicked"
+                text="Ny Afdeling" disable="true"/>
         <ChoiceBox fx:id="userSelectionMenu" prefWidth="150.0"/>
         <Button fx:id="selectUserButton" mnemonicParsing="false" onMouseClicked="#selectUserClicked"
                 text="Select User" disable="true"/>
