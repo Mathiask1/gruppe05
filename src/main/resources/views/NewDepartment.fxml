@@ -4,10 +4,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
-<AnchorPane id="AnchorPane" prefHeight="244.0" prefWidth="226.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.sdu.sensumbosted.presentation.NewDepartmentController">
-   <children>
-      <TextField fx:id="departmentNameTextField" layoutX="33.0" layoutY="66.0" />
-      <Text layoutX="33.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Navn" />
-      <Button fx:id="submitButton" layoutX="31.0" layoutY="166.0" mnemonicParsing="false" onMouseClicked="#newDepartmentButtonClicked" text="Ny afdeling" disable="true"/>
-   </children>
+<AnchorPane id="AnchorPane" prefHeight="244.0" prefWidth="226.0" xmlns="http://javafx.com/javafx/10.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.sdu.sensumbosted.presentation.NewDepartmentController">
+    <TextField fx:id="departmentNameTextField" layoutX="33.0" layoutY="66.0"/>
+    <Text layoutX="33.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Navn"/>
+    <Button fx:id="submitButton" layoutX="31.0" layoutY="166.0" mnemonicParsing="false"
+            onMouseClicked="#newDepartmentButtonClicked" text="Ny afdeling" disable="true"/>
 </AnchorPane>
