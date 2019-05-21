@@ -137,11 +137,7 @@ public class DataService {
      * @return true if deleted
      */
     public boolean delete(DataEntity entity) {
-        @SuppressWarnings("SqlResolve")
-        int changed = jdbc.update("DELETE FROM " + entity.getSqlTable().getTableName() + " WHERE id = ?;", varargs(
-                entity.getId())
-        );
-        return changed > 0;
+        return delete(entity.getId(), entity.getSqlTable());
     }
 
     /**
@@ -149,9 +145,9 @@ public class DataService {
      * @param table the table to delete from
      * @return true if deleted
      */
-    public boolean delete(UUID id, String table) {
+    public boolean delete(UUID id, SqlTable table) {
         @SuppressWarnings("SqlResolve")
-        int changed = jdbc.update("DELETE FROM ? WHERE id = ?;", varargs(id, table));
+        int changed = jdbc.update("DELETE FROM " + table.getTableName() + " WHERE id = ?;", varargs(id));
         return changed > 0;
     }
 
