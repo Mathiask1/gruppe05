@@ -8,17 +8,19 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.CubicCurve?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.172-ea"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.sdu.sensumbosted.presentation.MainWindowController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.sdu.sensumbosted.presentation.MainWindowController"
+            maxHeight="400" maxWidth="600">
     <TabPane layoutX="388.0" layoutY="363.0" prefHeight="439.0" prefWidth="894.0" tabClosingPolicy="UNAVAILABLE">
         <Tab text="Dagbog">
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                 <TextArea fx:id="diaryTextArea" editable="false" layoutX="249.0" layoutY="15.0" prefHeight="372.0"
                           prefWidth="628.0" wrapText="true"/>
-                <Button layoutX="14.0" layoutY="227.0" mnemonicParsing="false" onMouseClicked="#newDiaryMouseClicked"
+                <Button layoutX="14.0" layoutY="228.0" mnemonicParsing="false" onMouseClicked="#newDiaryMouseClicked"
                         text="Ny dagbogsentry"/>
                 <TextArea fx:id="newDiaryEntryTxtArea" layoutX="14.0" layoutY="14.0" prefHeight="200.0"
                           prefWidth="200.0" wrapText="true"/>
@@ -36,17 +38,17 @@
         </Tab>
         <Tab fx:id="adminTab" text="Administration">
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                <Text layoutX="38.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ændre bruger rolle"/>
-                <Text layoutX="38.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Slet bruger"/>
-                <Button fx:id="deleteUserButton" layoutX="38.0" layoutY="244.0" mnemonicParsing="false"
-                        onMouseClicked="#deleteUserButtonClicked" text="Slet!"/>
-                <ChoiceBox fx:id="selectUserRoleChoiceBox" layoutX="38.0" layoutY="110.0" prefWidth="150.0"/>
-                <Button layoutX="39.0" layoutY="144.0" mnemonicParsing="false" onMouseClicked="#changeRoleButtonClicked"
-                        text="Ændre rolle"/>
-                <Text layoutX="289.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0"
+                <Text layoutX="18.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ændre bruger rolle"/>
+                <Text layoutX="16.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Slet bruger"/>
+                <Button fx:id="deleteUserButton" layoutX="14.0" layoutY="173.0" mnemonicParsing="false"
+                        onMouseClicked="#deleteUserButtonClicked" prefHeight="23.0" prefWidth="150.0" text="Slet"/>
+                <ChoiceBox fx:id="selectUserRoleChoiceBox" layoutX="14.0" layoutY="50.0" prefWidth="150.0"/>
+                <Button layoutX="14.0" layoutY="83.0" mnemonicParsing="false" onMouseClicked="#changeRoleButtonClicked"
+                        prefHeight="23.0" prefWidth="150.0" text="Ændre rolle"/>
+                <Text layoutX="253.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0"
                       text="Tildel patient til læger"/>
-                <ListView fx:id="relationsListView" layoutX="289.0" layoutY="110.0" prefHeight="249.0"
-                          prefWidth="234.0"/>
+                <ListView fx:id="relationsListView" layoutX="253.0" layoutY="49.0" prefHeight="321.0"
+                          prefWidth="265.0"/>
             </AnchorPane>
         </Tab>
     </TabPane>
@@ -60,21 +62,24 @@
                 text="Select User"/>
         <Text fx:id="currentUserTxtField" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textOrigin="CENTER"/>
     </ToolBar>
-    <ListView fx:id="userList" layoutX="14.0" layoutY="89.0" onMouseClicked="#userListViewClicked" prefHeight="387.0"
+    <ListView fx:id="userList" layoutX="14.0" layoutY="100.0" onMouseClicked="#userListViewClicked" prefHeight="376.0"
               prefWidth="355.0"/>
-    <Text fx:id="userName" layoutX="394.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vælg en bruger!">
+    <Text fx:id="userName" layoutX="406.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0"
+          text="Ingen bruger valgt">
         <font>
             <Font size="30.0"/>
         </font>
     </Text>
-    <Text fx:id="userRole" layoutX="426.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0">
+    <Text fx:id="userRole" layoutX="406.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0"
+          wrappingWidth="401.99999509751797">
         <font>
-            <Font size="20.0"/>
+            <Font size="24.0"/>
         </font>
     </Text>
-    <Text fx:id="userDepartment" layoutX="426.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0">
+    <Text fx:id="userDepartment" layoutX="406.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0"
+          wrappingWidth="412.0000044107437">
         <font>
-            <Font size="20.0"/>
+            <Font size="24.0"/>
         </font>
     </Text>
     <Text layoutX="15.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sensum Bosted">
@@ -83,7 +88,7 @@
         </font>
     </Text>
     <ListView fx:id="departmentListView" layoutX="13.0" layoutY="538.0" prefHeight="252.0" prefWidth="355.0"/>
-    <Text layoutX="15.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Brugerliste">
+    <Text layoutX="11.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Brugerliste">
         <font>
             <Font size="20.0"/>
         </font>
@@ -93,4 +98,7 @@
             <Font size="20.0"/>
         </font>
     </Text>
+    <CubicCurve controlX1="-275.0" controlX2="-273.0" controlY1="-240.99996948242188" controlY2="561.0" endX="-273.0"
+                endY="561.0" fill="DODGERBLUE" layoutX="661.0" layoutY="241.0" startX="-275.0" startY="-241.0"
+                stroke="BLACK"/>
 </AnchorPane>
