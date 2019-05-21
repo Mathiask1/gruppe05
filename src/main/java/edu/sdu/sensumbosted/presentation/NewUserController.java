@@ -94,7 +94,7 @@ public class NewUserController extends SensumController {
         switch (userRole.getValue()) {
             case PATIENT:
                 department.newPatient(main.getContext(), userNameTextField.getText());
-                return;
+                break;
             case PRACTITIONER:
                 department.newPractitioner(main.getContext(), userNameTextField.getText());
                 break;
