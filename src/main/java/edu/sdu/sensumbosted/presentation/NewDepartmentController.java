@@ -6,12 +6,10 @@
 package edu.sdu.sensumbosted.presentation;
 
 import edu.sdu.sensumbosted.Main;
-import edu.sdu.sensumbosted.entity.AuthLevel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -25,7 +23,7 @@ import java.util.ResourceBundle;
 public class NewDepartmentController extends SensumController {
     //@formatter:off
     @FXML private TextField departmentNameTextField;
-    @FXML private Text errorMessageTxt;
+    @FXML private Button submitButton;
     //@formatter:on
 
     public NewDepartmentController(Main main) {
@@ -37,18 +35,15 @@ public class NewDepartmentController extends SensumController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        departmentNameTextField.textProperty().addListener((__, ___, newValue) ->
+                submitButton.setDisable(newValue.length() < 3));
     }
 
     @FXML
     private void newDepartmentButtonClicked(MouseEvent event) {
-        if (departmentNameTextField.getLength() < 3) {
-            errorMessageTxt.setText("Indsæt et navn! Mindst 3 tegn");
-        } else  {
-            main.newDepartment(main.getContext(), departmentNameTextField.getText());
+        main.newDepartment(main.getContext(), departmentNameTextField.getText());
 
-            Stage stage = (Stage) departmentNameTextField.getScene().getWindow();
-            stage.close();
-        }
+        Stage stage = (Stage) departmentNameTextField.getScene().getWindow();
+        stage.close();
     }
 }
