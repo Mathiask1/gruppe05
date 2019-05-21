@@ -29,12 +29,12 @@ public class Patient extends User {
 
 
     public Map<LocalDate, String> getDiary(Context ctx) {
-        ctx.assertAndLog(getDepartment(), AuditAction.DIARY_READ, AuthLevel.PRACTITIONER);
+        ctx.assertAndLog(getDepartment(), AuditAction.DIARY_READ, AuthLevel.PRACTITIONER, "Read all entries");
         return Collections.unmodifiableMap(diary);
     }
 
     public Optional<String> getTodaysDiaryEntry(Context ctx) {
-        ctx.assertAndLog(getDepartment(), AuditAction.DIARY_READ, AuthLevel.PRACTITIONER);
+        ctx.assertAndLog(getDepartment(), AuditAction.DIARY_READ, AuthLevel.PRACTITIONER, "Read today's entry");
         return Optional.ofNullable(diary.getOrDefault(LocalDate.now(), null));
     }
 
