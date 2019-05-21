@@ -12,9 +12,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
@@ -37,8 +35,8 @@ import java.util.stream.Collectors;
 public class MainWindowController extends SensumController {
 
     private static final Logger log = LoggerFactory.getLogger(MainWindowController.class);
-    //@formatter:off
 
+    //@formatter:off
     @FXML private Text userName;
     @FXML private Text userRole;
     @FXML private Text userDepartment;
@@ -50,7 +48,8 @@ public class MainWindowController extends SensumController {
     @FXML private ListView<Department> departmentListView;
     @FXML private ChoiceBox<AuthLevel> selectUserRoleChoiceBox;
     @FXML private ListView<Practitioner> relationsListView;
-
+    @FXML private Button deleteUserButton;
+    @FXML public Tab adminTab;
     //@formatter:on
 
     private final ObservableList<Department> departmentObservableList = FXCollections.observableArrayList();
@@ -149,10 +148,18 @@ public class MainWindowController extends SensumController {
         }
         departmentObservableList.setAll(main.getDepartments().values());
         departmentListView.setItems(departmentObservableList);
-        updateAdminPanel();
+        refreshAdminPanel();
     }
 
-    private void updateAdminPanel() {
+    private void refreshAdminPanel() {
+        if (selectedUser == null) { //TODO
+            adminTab.setDisable(true);
+            return;
+        }
+        adminTab.setDisable(false);
+
+        deleteUserButton.setDisable(!main.getContext().checkMinimum(selectedUser.getAuth()));
+
         if (selectedUser instanceof Manager) {
             Manager manager = (Manager) selectedUser;
             List<AuthLevel> levels = Arrays.stream(AuthLevel.values())
@@ -199,7 +206,7 @@ public class MainWindowController extends SensumController {
             } else {
                 diaryTextArea.setText("Denne bruger er ikke en patient");
             }
-            updateAdminPanel();
+            refreshAdminPanel();
         } catch (RuntimeException e) {
             log.error("Error clicking on user listview", e);
         }
