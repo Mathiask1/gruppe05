@@ -8,9 +8,6 @@ package edu.sdu.sensumbosted.presentation;
 import edu.sdu.sensumbosted.Main;
 import edu.sdu.sensumbosted.entity.AuthLevel;
 import edu.sdu.sensumbosted.entity.Department;
-import edu.sdu.sensumbosted.entity.User;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -22,7 +19,6 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.UUID;
 import javafx.scene.text.Text;
 
@@ -37,15 +33,11 @@ public class NewUserController extends SensumController {
 
     //@formatter:off
     @FXML private TextField userNameTextField;
-    private TextField departmentIDTextField;
+    @FXML private TextField departmentIDTextField;
     @FXML private ChoiceBox<String> userRole;
     @FXML private Text errorMessageDepartment;
     @FXML private Text errorMessageRole;
     //@formatter:on
-    private final ObservableList<Department> departmentSelectionList = FXCollections.observableArrayList();
-
-    @FXML
-    private ChoiceBox<Department> departmentChoiceBox;
 
     public NewUserController(Main main) {
         super(main);
@@ -58,15 +50,6 @@ public class NewUserController extends SensumController {
     public void initialize(URL url, ResourceBundle rb) { }
 
     public void refresh() {
-        if (!main.getContext().checkMinimum(AuthLevel.SUPERUSER)) {
-            departmentSelectionList.setAll(main.getContext().getUser().getDepartment());
-            departmentChoiceBox.setItems(departmentSelectionList);
-        } else {
-            departmentSelectionList.setAll(main.getDepartments().values());
-            departmentChoiceBox.setItems(departmentSelectionList);
-        }
-
-
         if (main.getContext().checkMinimum(AuthLevel.SUPERUSER)) {
             userRole.getItems().setAll("Patient", "Læge", "Sagsbehandler", "Lokal Admin", "Superbruger");
         } else if (main.getContext().checkMinimum(AuthLevel.LOCAL_ADMIN)) {
@@ -88,9 +71,7 @@ public class NewUserController extends SensumController {
         errorMessageRole.setText("");
 
         try {
-            //   uuid = UUID.fromString(departmentIDTextField.getText());
-
-            uuid = UUID.fromString(departmentChoiceBox.getValue().getId().toString());
+            uuid = UUID.fromString(departmentIDTextField.getText());
 
         } catch (IllegalStateException e) {
             log.error("Error clicking on New User button.", e);
@@ -100,7 +81,7 @@ public class NewUserController extends SensumController {
         Department department = main.getDepartments().get(uuid);
 
         if (department == null) {
-            errorMessageDepartment.setText("Vælg venligst afdeling");
+            errorMessageDepartment.setText("Indtast venglist ID.");
             return;
         }
 
