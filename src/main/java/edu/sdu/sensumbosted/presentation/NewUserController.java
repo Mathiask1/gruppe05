@@ -56,10 +56,13 @@ public class NewUserController extends SensumController {
     public void refresh() {
         if (main.getContext().checkMinimum(AuthLevel.SUPERUSER)) {
             userRole.getItems().setAll(PATIENT, PRACTITIONER, CASEWORKER, LOCAL_ADMIN, SUPERUSER);
+            userRole.setDisable(false);
         } else if (main.getContext().checkMinimum(AuthLevel.LOCAL_ADMIN)) {
             userRole.getItems().setAll(PATIENT, PRACTITIONER, CASEWORKER, LOCAL_ADMIN);
+            userRole.setDisable(false);
         } else if (main.getContext().checkMinimum(AuthLevel.CASEWORKER)) {
             userRole.getItems().setAll(PATIENT);
+            userRole.setDisable(true);
         } else {
             log.warn("User should not have permission to view this dialog!");
         }
