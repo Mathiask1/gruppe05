@@ -54,7 +54,7 @@
                 <Button mnemonicParsing="false" onMouseClicked="#newUserClicked" text="Ny Bruger" />
                 <Button mnemonicParsing="false" onMouseClicked="#newDepartmentClicked" text="Ny Afdeling" />
                 <ChoiceBox fx:id="userSelectionMenu" prefWidth="150.0" />
-                <Button mnemonicParsing="false" onMouseClicked="#selectUserClicked" text="Select User" />
+                <Button fx:id="selectUserButton" mnemonicParsing="false" onMouseClicked="#selectUserClicked" text="Select User" disable="true"/>
             <Text fx:id="currentUserTxtField" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textOrigin="CENTER" />
             </items>
         </ToolBar>

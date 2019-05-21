@@ -55,6 +55,15 @@ public class Context {
 
     /**
      * Assert that the current user has at least a certain AuthLevel. Throws exception otherwise.
+     * The action will be logged.
+     */
+    public void assertAndLog(@Nullable Department department, AuditAction action, AuthLevel auth, String description) {
+        assertMinimum(department, action, auth);
+        data.log(this, action, description);
+    }
+
+    /**
+     * Assert that the current user has at least a certain AuthLevel. Throws exception otherwise.
      * The callback will be run afterwards.
      * The action will be logged.
      */

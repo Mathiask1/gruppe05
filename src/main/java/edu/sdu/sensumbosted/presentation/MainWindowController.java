@@ -6,6 +6,7 @@
 package edu.sdu.sensumbosted.presentation;
 
 import edu.sdu.sensumbosted.Main;
+import edu.sdu.sensumbosted.data.DataEntity;
 import edu.sdu.sensumbosted.entity.*;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
@@ -19,7 +20,6 @@ import javafx.scene.text.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
@@ -41,7 +41,8 @@ public class MainWindowController extends SensumController {
     @FXML private TextArea diaryTextArea;
     @FXML private TextArea newDiaryEntryTxtArea;
     @FXML private Text currentUserTxtField;
-    @FXML private ChoiceBox<User> userSelectionMenu;
+    @FXML private ChoiceBox<DataEntity> userSelectionMenu;
+    @FXML private Button selectUserButton;
     @FXML private ListView<User> userList;
     @FXML private ListView<Department> departmentListView;
     @FXML private ChoiceBox<AuthLevel> selectUserRoleChoiceBox;
@@ -50,6 +51,7 @@ public class MainWindowController extends SensumController {
     @FXML public Tab adminTab;
     //@formatter:on
 
+    private final UserSelectConverter usc = new UserSelectConverter();
     private final ObservableList<Department> departmentObservableList = FXCollections.observableArrayList();
     private final ObservableList<User> users = FXCollections.observableArrayList();
     private final ObservableList<User> usersSelectionList = FXCollections.observableArrayList();
@@ -66,7 +68,10 @@ public class MainWindowController extends SensumController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        userSelectionMenu.setConverter(new UserStringConverter<>());
+        userSelectionMenu.setConverter(usc);
+        userSelectionMenu.setOnAction(event ->
+                selectUserButton.setDisable(!(userSelectionMenu.getValue() instanceof User))
+        );
         selectUserRoleChoiceBox.setConverter(new AuthLevelStringConverter());
         selectUserRoleChoiceBox.setItems(selectableLevels);
         relationsListView.setCellFactory(CheckBoxListCell.forListView(
@@ -78,12 +83,12 @@ public class MainWindowController extends SensumController {
     }
 
     @FXML
-    private void newUserClicked(MouseEvent event) throws IOException {
+    private void newUserClicked(MouseEvent event) {
         main.launcher.launchNewUserDialog();
     }
 
     @FXML
-    private void newDepartmentClicked(MouseEvent event) throws IOException {
+    private void newDepartmentClicked(MouseEvent event) {
         main.launcher.launchNewDepartmentDialog();
     }
 
@@ -93,7 +98,7 @@ public class MainWindowController extends SensumController {
             if (userSelectionMenu.getValue() == null) {
                 log.warn("No user selected!");
             } else {
-                main.getContext().setUser(userSelectionMenu.getValue());
+                main.getContext().setUser((User) userSelectionMenu.getValue());
             }
             refresh();
 
@@ -123,8 +128,9 @@ public class MainWindowController extends SensumController {
      * Refresh information in the main window.
      */
     public void refresh() {
-        usersSelectionList.setAll(main.getUsers(main.getSystemContext()));
-        userSelectionMenu.setItems(usersSelectionList);
+        Set<User> users = main.getUsers(main.getSystemContext());
+        usersSelectionList.setAll(users);
+        userSelectionMenu.setItems(usc.withDepartments(users));
 
         User user = main.getContext().getUser();
 
@@ -137,8 +143,8 @@ public class MainWindowController extends SensumController {
             userRole.setText(user.getAuth().toString());
             userDepartment.setText(user.getDepartment().toString());
 
-            users.setAll(main.getUsers(main.getContext()));
-            userList.setItems(users);
+            this.users.setAll(main.getUsers(main.getContext()));
+            userList.setItems(this.users);
 
             currentUserTxtField.setText(user.getName());
         } else {
