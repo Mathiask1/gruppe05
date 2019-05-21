@@ -100,22 +100,9 @@ public class MainWindowController extends SensumController {
 
     @FXML
     private void selectUserClicked(MouseEvent event) {
-<<<<<<< HEAD
-        try {
-            if (userSelectionMenu.getValue() == null) {
-                log.warn("No user selected!");
-            } else {
-                main.getContext().setUser((User) userSelectionMenu.getValue());
-            }
-            refresh();
-            refreshUser();
-
-        } catch (RuntimeException e) {
-            log.error("Exception after UI click", e);
-        }
-        
         main.getContext().setUser((User) userSelectionMenu.getValue());
         refresh();
+        refreshUser();
     }
 
     @FXML
@@ -160,21 +147,21 @@ public class MainWindowController extends SensumController {
         refreshAdminPanel();
     }
 
-    void refreshUser() {
+    private void refreshUser() {
         User user = main.getContext().getUser();
 
-        if (user != null) {
-            if (main.getContext().checkMinimum(AuthLevel.PRACTITIONER)) {
-                userName.setText(user.getName() + ": " + user.getId());
-            } else {
-                userName.setText(user.getName());
-            }
-            userRole.setText(user.getAuth().getUiName());
-            userDepartment.setText(user.getDepartment().getName());
-
-        } else {
-            currentUserTxtField.setText("Ingen nuværende bruger!");
+        if (user == null) {
+            currentUserTxtField.setText("Ingen bruger valgt");
+            return;
         }
+
+        if (main.getContext().checkMinimum(AuthLevel.PRACTITIONER)) {
+            userName.setText(user.getName() + ": " + user.getId());
+        } else {
+            userName.setText(user.getName());
+        }
+        userRole.setText(user.getAuth().getUiName());
+        userDepartment.setText(user.getDepartment().getName());
     }
 
     private void refreshAdminPanel() {
