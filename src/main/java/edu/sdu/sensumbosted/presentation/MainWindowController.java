@@ -141,8 +141,9 @@ public class MainWindowController extends SensumController {
 
             currentUserTxtField.setText(user.getName());
         } else {
-            currentUserTxtField.setText("No current user!");
+            currentUserTxtField.setText("Ingen bruger valgt");
         }
+
         departmentObservableList.setAll(main.getDepartments().values());
         departmentListView.setItems(departmentObservableList);
         refreshAdminPanel();
@@ -206,7 +207,7 @@ public class MainWindowController extends SensumController {
             if (selectedUser != null) {
                 userName.setText(selectedUser.getName() + ": " + selectedUser.getId());
             } else {
-                userName.setText(selectedUser.getName());
+                userName.setText("Ingen bruger valgt");
             }
             userRole.setText(selectedUser.getAuth().getUiName());
             userDepartment.setText(selectedUser.getDepartment().getName());
