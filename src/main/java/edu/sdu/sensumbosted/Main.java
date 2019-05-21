@@ -51,6 +51,7 @@ public class Main extends Application {
      * @return a set of users that the current user may see
      */
     public Set<User> getUsers(Context ctx) {
+        ctx.data.log(ctx, AuditAction.DEPARTMENT_USERS_READ);
         return departments.values().stream()
                 .flatMap(department -> department.getVisibleUsers(ctx).stream())
                 .collect(Collectors.toSet());

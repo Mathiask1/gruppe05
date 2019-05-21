@@ -143,7 +143,7 @@ public class Department implements DataEntity {
             }
         }).collect(Collectors.toSet());
 
-        ctx.data.log(ctx, AuditAction.DEPARTMENT_USERS_READ);
+        //ctx.data.log(ctx, AuditAction.DEPARTMENT_USERS_READ); // This is iterated and is spammy af
         return set;
     }
 
