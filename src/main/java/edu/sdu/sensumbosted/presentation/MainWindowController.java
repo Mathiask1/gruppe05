@@ -178,7 +178,7 @@ public class MainWindowController extends SensumController {
     }
 
     private void refreshAdminPanel() {
-        Context ctx = main.getContext(); // TODO set diary tab
+        Context ctx = main.getContext();
         if (selectedUser == null || !ctx.checkMinimum(AuthLevel.CASEWORKER)) {
             adminTab.setDisable(true);
             diaryTab.getTabPane().getSelectionModel().select(diaryTab);
