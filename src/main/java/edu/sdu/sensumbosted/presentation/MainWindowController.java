@@ -128,6 +128,7 @@ public class MainWindowController extends SensumController {
         Set<User> users = main.getUsers(main.getSystemContext());
         usersSelectionList.setAll(users);
         userSelectionMenu.setItems(StringConverters.USER_SELECT.withDepartments(users));
+        userSelectionMenu.setValue(main.getContext().getUser());
 
         User user = main.getContext().getUser();
 
