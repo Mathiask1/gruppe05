@@ -137,7 +137,7 @@ public class MainWindowController extends SensumController {
         User user = main.getContext().getUser();
 
         newDepartmentButton.setDisable(!main.getContext().checkMinimum(AuthLevel.SUPERUSER));
-        newUserButton.setDisable(!main.getContext().checkMinimum(AuthLevel.PRACTITIONER));
+        newUserButton.setDisable(!main.getContext().checkMinimum(AuthLevel.CASEWORKER));
 
         if (user != null) {
             if (main.getContext().checkMinimum(AuthLevel.PRACTITIONER)) {

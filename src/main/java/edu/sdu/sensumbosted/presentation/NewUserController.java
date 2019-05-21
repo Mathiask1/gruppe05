@@ -14,13 +14,14 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.UUID;
-import javafx.scene.text.Text;
+
+import static edu.sdu.sensumbosted.entity.AuthLevel.*;
 
 /**
  * FXML Controller class
@@ -32,11 +33,10 @@ public class NewUserController extends SensumController {
     private static final Logger log = LoggerFactory.getLogger(NewUserController.class);
 
     //@formatter:off
+    @FXML private Button submitButton;
     @FXML private TextField userNameTextField;
-    @FXML private TextField departmentIDTextField;
-    @FXML private ChoiceBox<String> userRole;
-    @FXML private Text errorMessageDepartment;
-    @FXML private Text errorMessageRole;
+    @FXML private ChoiceBox<Department> departmentChoiceBox;
+    @FXML private ChoiceBox<AuthLevel> userRole;
     //@formatter:on
 
     public NewUserController(Main main) {
@@ -47,15 +47,32 @@ public class NewUserController extends SensumController {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) { }
+    public void initialize(URL url, ResourceBundle rb) {
+        userNameTextField.textProperty().addListener((__, ___, ____) -> validate());
+        departmentChoiceBox.setOnAction(__ -> validate());
+        userRole.setConverter(new AuthLevelConverter());
+    }
 
     public void refresh() {
         if (main.getContext().checkMinimum(AuthLevel.SUPERUSER)) {
-            userRole.getItems().setAll("Patient", "Læge", "Sagsbehandler", "Lokal Admin", "Superbruger");
+            userRole.getItems().setAll(PATIENT, PRACTITIONER, CASEWORKER, LOCAL_ADMIN, SUPERUSER);
         } else if (main.getContext().checkMinimum(AuthLevel.LOCAL_ADMIN)) {
-            userRole.getItems().setAll("Patient", "Læge", "Sagsbehandler", "Lokal Admin");
+            userRole.getItems().setAll(PATIENT, PRACTITIONER, CASEWORKER, LOCAL_ADMIN);
         } else if (main.getContext().checkMinimum(AuthLevel.CASEWORKER)) {
-            userRole.getItems().setAll("Patient");
+            userRole.getItems().setAll(PATIENT);
+        } else {
+            log.warn("User should not have permission to view this dialog!");
+        }
+        if (userRole.getValue() == null) userRole.setValue(PATIENT);
+
+        if (main.getContext().checkMinimum(AuthLevel.SUPERUSER)) {
+            departmentChoiceBox.setDisable(false);
+            departmentChoiceBox.getItems().setAll(main.getDepartments().values());
+        } else {
+            departmentChoiceBox.setDisable(true);
+            Department department = main.getContext().getUser().getDepartment();
+            departmentChoiceBox.setValue(department);
+            departmentChoiceBox.getItems().setAll(department);
         }
     }
 
@@ -64,42 +81,47 @@ public class NewUserController extends SensumController {
         refresh();
     }
 
+    private void validate() {
+        submitButton.setDisable(userNameTextField.getText().length() < 3 || departmentChoiceBox.getValue() == null);
+    }
+
     @FXML
     private void newUserButtonClicked(MouseEvent event) {
-        UUID uuid;
-        errorMessageDepartment.setText("");
-        errorMessageRole.setText("");
+        Department department = departmentChoiceBox.getValue();
 
-        try {
-            uuid = UUID.fromString(departmentIDTextField.getText());
-
-        } catch (IllegalStateException e) {
-            log.error("Error clicking on New User button.", e);
-            return;
+        switch (userRole.getValue()) {
+            case PATIENT:
+                department.newPatient(main.getContext(), userNameTextField.getText());
+                return;
+            case PRACTITIONER:
+                department.newPractitioner(main.getContext(), userNameTextField.getText());
+                break;
+            case CASEWORKER:
+                department.newManager(main.getContext(), userNameTextField.getText(), AuthLevel.CASEWORKER);
+                break;
+            case LOCAL_ADMIN:
+                department.newManager(main.getContext(), userNameTextField.getText(), AuthLevel.LOCAL_ADMIN);
+                break;
+            case SUPERUSER:
+                department.newManager(main.getContext(), userNameTextField.getText(), AuthLevel.SUPERUSER);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + userRole.getValue());
         }
 
-        Department department = main.getDepartments().get(uuid);
-
-        if (department == null) {
-            errorMessageDepartment.setText("Indtast venglist ID.");
-            return;
-        }
-
-        if (userRole.getValue() == null) {
-            errorMessageRole.setText("Vælg en rolle!");
-            return;
-        } else if (userRole.getValue() == "Patient") {
-            department.newPatient(main.getContext(), userNameTextField.getText());
-        } else if (userRole.getValue() == "Læge") {
-            department.newPractitioner(main.getContext(), userNameTextField.getText());
-        } else if (userRole.getValue() == "Sagsbehandler") {
-            department.newManager(main.getContext(), userNameTextField.getText(), AuthLevel.CASEWORKER);
-        } else if (userRole.getValue() == "Lokal Admin") {
-            department.newManager(main.getContext(), userNameTextField.getText(), AuthLevel.LOCAL_ADMIN);
-        } else if (userRole.getValue() == "Superbruger") {
-            department.newManager(main.getContext(), userNameTextField.getText(), AuthLevel.SUPERUSER);
-        }
         Stage closeWindow = (Stage) userNameTextField.getScene().getWindow();
         closeWindow.close();
+    }
+
+    private class AuthLevelConverter extends StringConverter<AuthLevel> {
+        @Override
+        public String toString(AuthLevel object) {
+            return object.getUiName();
+        }
+
+        @Override
+        public AuthLevel fromString(String string) {
+            return AuthLevel.valueOf(string);
+        }
     }
 }

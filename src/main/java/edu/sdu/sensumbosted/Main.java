@@ -10,9 +10,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.util.HashMap;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main extends Application {
@@ -61,8 +59,8 @@ public class Main extends Application {
         return context;
     }
 
-    public HashMap<UUID, Department> getDepartments() {
-        return departments;
+    public Map<UUID, Department> getDepartments() {
+        return Collections.unmodifiableMap(departments);
     }
 
     public SystemContext getSystemContext() {
