@@ -11,6 +11,7 @@ import java.io.IOException;
 public class ControllerLauncher {
 
     private final Main main;
+    private MainWindowController mainWindowController;
 
     public ControllerLauncher(Main main) {
         this.main = main;
@@ -38,6 +39,10 @@ public class ControllerLauncher {
         stage.show();
     }
 
+    void refreshMain() {
+        mainWindowController.refresh();
+    }
+
     private Parent launch(String path) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -45,6 +50,9 @@ public class ControllerLauncher {
             fxmlLoader.setControllerFactory(this::controllerBuilder);
             Parent parent = fxmlLoader.load();
             SensumController sensumController = fxmlLoader.getController();
+            if (sensumController instanceof MainWindowController) {
+                mainWindowController = (MainWindowController) sensumController;
+            }
             sensumController.onShow();
             return parent;
         } catch (IOException e) {

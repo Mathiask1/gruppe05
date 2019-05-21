@@ -129,7 +129,7 @@ public class MainWindowController extends SensumController {
     /**
      * Refresh information in the main window.
      */
-    public void refresh() {
+    void refresh() {
         Set<User> users = main.getUsers(main.getSystemContext());
         usersSelectionList.setAll(users);
         userSelectionMenu.setItems(usc.withDepartments(users));

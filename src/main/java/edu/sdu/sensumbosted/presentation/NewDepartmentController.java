@@ -45,5 +45,6 @@ public class NewDepartmentController extends SensumController {
 
         Stage stage = (Stage) departmentNameTextField.getScene().getWindow();
         stage.close();
+        main.getControllerLauncher().refreshMain();
     }
 }

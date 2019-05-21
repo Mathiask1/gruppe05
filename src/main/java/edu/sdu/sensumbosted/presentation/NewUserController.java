@@ -111,6 +111,7 @@ public class NewUserController extends SensumController {
 
         Stage closeWindow = (Stage) userNameTextField.getScene().getWindow();
         closeWindow.close();
+        main.getControllerLauncher().refreshMain();
     }
 
     private class AuthLevelConverter extends StringConverter<AuthLevel> {

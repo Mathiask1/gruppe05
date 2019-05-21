@@ -66,4 +66,8 @@ public class Main extends Application {
     public SystemContext getSystemContext() {
         return systemContext;
     }
+
+    public ControllerLauncher getControllerLauncher() {
+        return launcher;
+    }
 }
