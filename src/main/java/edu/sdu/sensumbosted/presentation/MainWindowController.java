@@ -21,10 +21,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -195,13 +193,12 @@ public class MainWindowController extends SensumController {
 
             if (selectedUser instanceof Patient) {
                 Patient patient = (Patient) selectedUser;
-                if (patient.getDiary(main.getContext()) == null) {
+                Map<LocalDate, String> diary = patient.getDiary(main.getContext());
+                if (diary == null) {
                     diaryTextArea.setText("Ingen dagbog!");
                 } else {
-                    diaryTextArea.setText(patient.getDiary(main.getContext()).toString());
-                    if (patient.getTodaysDiaryEntry(main.getContext()).isPresent()) {
-                        newDiaryEntryTxtArea.setText(patient.getTodaysDiaryEntry(main.getContext()).get());
-                    }
+                    diaryTextArea.setText(diary.toString());
+                    patient.getTodaysDiaryEntry(main.getContext()).ifPresent(newDiaryEntryTxtArea::setText);
                 }
             } else {
                 diaryTextArea.setText("Denne bruger er ikke en patient");
