@@ -195,14 +195,12 @@ public class MainWindowController extends SensumController {
             selectedUser = userList.getSelectionModel().getSelectedItem();
 
             if (selectedUser != null) {
-                if (main.getContext().checkMinimum(AuthLevel.PRACTITIONER)) {
-                    userName.setText(selectedUser.getName() + ": " + selectedUser.getId().toString());
-                } else {
-                    userName.setText(selectedUser.getName());
-                }
-                userRole.setText(selectedUser.getAuth().toString());
-                userDepartment.setText(selectedUser.getDepartment().toString());
+                userName.setText(selectedUser.getName() + ": " + selectedUser.getId());
+            } else {
+                userName.setText(selectedUser.getName());
             }
+            userRole.setText(selectedUser.getAuth().getUiName());
+            userDepartment.setText(selectedUser.getDepartment().getName());
 
             if (selectedUser instanceof Patient) {
                 Patient patient = (Patient) selectedUser;
