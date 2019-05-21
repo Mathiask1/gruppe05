@@ -1,9 +1,7 @@
 package edu.sdu.sensumbosted;
 
 import edu.sdu.sensumbosted.data.DataService;
-import edu.sdu.sensumbosted.entity.Manager;
-import edu.sdu.sensumbosted.entity.Patient;
-import edu.sdu.sensumbosted.entity.Practitioner;
+import edu.sdu.sensumbosted.data.SqlTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,9 +36,9 @@ public class GdprActions {
 
     private static void delete(UUID id) {
         String type = null;
-        if(data.delete(id, Manager.SQL_TABLE)) type = "manager";
-        else if(data.delete(id, Practitioner.SQL_TABLE)) type = "practitioner";
-        else if(data.delete(id, Patient.SQL_TABLE)) type = "patient";
+        if(data.delete(id, SqlTable.MANAGER)) type = "manager";
+        else if(data.delete(id, SqlTable.PRACTITIONER)) type = "practitioner";
+        else if(data.delete(id, SqlTable.PATIENT)) type = "patient";
 
         if (type == null) {
             log.error("No user found for that ID");
