@@ -105,6 +105,7 @@ public class MainWindowController extends SensumController {
                 main.getContext().setUser((User) userSelectionMenu.getValue());
             }
             refresh();
+            refreshUser();
 
         } catch (RuntimeException e) {
             log.error("Exception after UI click", e);
@@ -142,14 +143,6 @@ public class MainWindowController extends SensumController {
         newUserButton.setDisable(!main.getContext().checkMinimum(AuthLevel.CASEWORKER));
 
         if (user != null) {
-            if (main.getContext().checkMinimum(AuthLevel.PRACTITIONER)) {
-                userName.setText(user.getName() + ": " + user.getId());
-            } else {
-                userName.setText(user.getName());
-            }
-            userRole.setText(user.getAuth().getUiName());
-            userDepartment.setText(user.getDepartment().getName());
-
             this.users.setAll(main.getUsers(main.getContext()));
             userList.setItems(this.users);
 
@@ -160,6 +153,23 @@ public class MainWindowController extends SensumController {
         departmentObservableList.setAll(main.getDepartments().values());
         departmentListView.setItems(departmentObservableList);
         refreshAdminPanel();
+    }
+
+    void refreshUser() {
+        User user = main.getContext().getUser();
+
+        if (user != null) {
+            if (main.getContext().checkMinimum(AuthLevel.PRACTITIONER)) {
+                userName.setText(user.getName() + ": " + user.getId());
+            } else {
+                userName.setText(user.getName());
+            }
+            userRole.setText(user.getAuth().getUiName());
+            userDepartment.setText(user.getDepartment().getName());
+
+        } else {
+            currentUserTxtField.setText("Ingen nuværende bruger!");
+        }
     }
 
     private void refreshAdminPanel() {
