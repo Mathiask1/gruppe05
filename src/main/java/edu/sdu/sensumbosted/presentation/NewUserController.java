@@ -14,7 +14,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +49,7 @@ public class NewUserController extends SensumController {
     public void initialize(URL url, ResourceBundle rb) {
         userNameTextField.textProperty().addListener((__, ___, ____) -> validate());
         departmentChoiceBox.setOnAction(__ -> validate());
-        userRole.setConverter(new AuthLevelConverter());
+        userRole.setConverter(StringConverters.AUTH_LEVEL);
     }
 
     public void refresh() {
@@ -115,17 +114,5 @@ public class NewUserController extends SensumController {
         Stage closeWindow = (Stage) userNameTextField.getScene().getWindow();
         closeWindow.close();
         main.getControllerLauncher().refreshMain();
-    }
-
-    private class AuthLevelConverter extends StringConverter<AuthLevel> {
-        @Override
-        public String toString(AuthLevel object) {
-            return object.getUiName();
-        }
-
-        @Override
-        public AuthLevel fromString(String string) {
-            return AuthLevel.valueOf(string);
-        }
     }
 }

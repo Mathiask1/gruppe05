@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxListCell;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import org.slf4j.Logger;
@@ -53,7 +54,6 @@ public class MainWindowController extends SensumController {
     @FXML public Tab adminTab;
     //@formatter:on
 
-    private final UserSelectConverter usc = new UserSelectConverter();
     private final ObservableList<Department> departmentObservableList = FXCollections.observableArrayList();
     private final ObservableList<User> users = FXCollections.observableArrayList();
     private final ObservableList<User> usersSelectionList = FXCollections.observableArrayList();
@@ -70,17 +70,19 @@ public class MainWindowController extends SensumController {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        userSelectionMenu.setConverter(usc);
+        userSelectionMenu.setConverter(StringConverters.USER_SELECT);
         userSelectionMenu.setOnAction(event ->
                 selectUserButton.setDisable(!(userSelectionMenu.getValue() instanceof User))
         );
-        selectUserRoleChoiceBox.setConverter(new AuthLevelStringConverter());
+        selectUserRoleChoiceBox.setConverter(StringConverters.AUTH_LEVEL);
         selectUserRoleChoiceBox.setItems(selectableLevels);
         relationsListView.setCellFactory(CheckBoxListCell.forListView(
                 this::createAssignmentCheckbox,
-                new UserStringConverter<>(true))
+                StringConverters.PRACTITIONER)
         );
         relationsListView.setItems(assignablePractitioners);
+        userList.setCellFactory(TextFieldListCell.forListView(StringConverters.USER_WITH_ROLE));
+        departmentListView.setCellFactory(TextFieldListCell.forListView(StringConverters.DEPARTMENTS));
         refresh();
     }
 
@@ -132,7 +134,7 @@ public class MainWindowController extends SensumController {
     void refresh() {
         Set<User> users = main.getUsers(main.getSystemContext());
         usersSelectionList.setAll(users);
-        userSelectionMenu.setItems(usc.withDepartments(users));
+        userSelectionMenu.setItems(StringConverters.USER_SELECT.withDepartments(users));
 
         User user = main.getContext().getUser();
 
@@ -145,8 +147,8 @@ public class MainWindowController extends SensumController {
             } else {
                 userName.setText(user.getName());
             }
-            userRole.setText(user.getAuth().toString());
-            userDepartment.setText(user.getDepartment().toString());
+            userRole.setText(user.getAuth().getUiName());
+            userDepartment.setText(user.getDepartment().getName());
 
             this.users.setAll(main.getUsers(main.getContext()));
             userList.setItems(this.users);
