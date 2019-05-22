@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 
+@Suppress("ClassName")
 class SecurityTests {
 
     val ctx = Context(mock(DataService::class.java))
