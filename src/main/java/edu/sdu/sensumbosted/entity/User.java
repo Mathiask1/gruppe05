@@ -55,6 +55,7 @@ public abstract class User implements DataEntity  {
     }
 
     boolean canDelete(Context context) {
+        if (context.getUser() == this) return false;
         if (!context.checkMinimum(getAuth())) return false;
         AuthLevel required = context.getUser().getDepartment().equals(getDepartment())
                 ? AuthLevel.LOCAL_ADMIN : AuthLevel.SUPERUSER;
