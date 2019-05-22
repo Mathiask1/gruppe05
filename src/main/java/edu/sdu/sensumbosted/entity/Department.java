@@ -87,6 +87,7 @@ public class Department implements DataEntity {
     }
 
     public void deleteUser(Context ctx, User user) {
+        if (!this.equals(user.getDepartment())) throw new IllegalArgumentException("User does not belong to this department");
         if (!user.canDelete(ctx))
             throw new SensumAccessException(ctx, AuditAction.USER_DELETE, "Attempt to delete " + user);
 

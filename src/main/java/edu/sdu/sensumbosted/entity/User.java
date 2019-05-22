@@ -54,8 +54,10 @@ public abstract class User implements DataEntity  {
         return id.hashCode();
     }
 
-    public boolean canDelete(Context context) {
+    boolean canDelete(Context context) {
         if (!context.checkMinimum(getAuth())) return false;
-        return context.checkMinimum(getDepartment(), AuthLevel.LOCAL_ADMIN);
+        AuthLevel required = context.getUser().getDepartment().equals(getDepartment())
+                ? AuthLevel.LOCAL_ADMIN : AuthLevel.SUPERUSER;
+        return context.checkMinimum(getDepartment(), required);
     }
 }
