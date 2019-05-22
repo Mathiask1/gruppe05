@@ -206,11 +206,15 @@ public class MainWindowController extends SensumController {
 
             if (selectedUser != null) {
                 userName.setText(selectedUser.getName() + ": " + selectedUser.getId());
+                userRole.setText(selectedUser.getAuth().getUiName());
+                userDepartment.setText(selectedUser.getDepartment().getName());
             } else {
                 userName.setText("Ingen bruger valgt");
+                userRole.setText("");
+                userDepartment.setText("");
             }
-            userRole.setText(selectedUser.getAuth().getUiName());
-            userDepartment.setText(selectedUser.getDepartment().getName());
+
+
 
             if (selectedUser instanceof Patient) {
                 Patient patient = (Patient) selectedUser;
