@@ -10,6 +10,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,7 +22,12 @@ public class Main extends Application {
     private final SystemContext systemContext = new SystemContext(data);
     public final ControllerLauncher launcher = new ControllerLauncher(this);
 
-    public static void main(String[] args) { launch(args); }
+    public static void main(String[] args) throws IOException {
+        if (args.length >= 0 && args[0] == "gdpr") {
+            GdprActions.main(Arrays.copyOfRange(args, 1, args.length));
+        }
+        launch(args);
+    }
 
     public Main() {
         departments = data.loadDepartments(systemContext);
