@@ -28,7 +28,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         Scene scene = new Scene(launcher.launchMain());
         stage.setTitle("Sensum Bosted");
         stage.setScene(scene);
@@ -49,10 +49,11 @@ public class Main extends Application {
      * @return a set of users that the current user may see
      */
     public Set<User> getUsers(Context ctx) {
-        ctx.data.log(ctx, AuditAction.DEPARTMENT_USERS_READ);
-        return departments.values().stream()
+        Set<User> set = departments.values().stream()
                 .flatMap(department -> department.getVisibleUsers(ctx).stream())
                 .collect(Collectors.toSet());
+        ctx.data.log(ctx, AuditAction.DEPARTMENT_USERS_READ, String.format("Current user can see %d users", set.size()));
+        return set;
     }
 
     public Context getContext() {
