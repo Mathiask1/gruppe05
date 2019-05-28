@@ -11,7 +11,7 @@ import javafx.util.StringConverter;
 
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Set;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -45,15 +45,16 @@ public class StringConverters {
          */
         ObservableList<DataEntity> withDepartments(Collection<User> users) {
             final Department[] lastDepartment = {null}; // Array gets around lambda scope restriction
-            Set<DataEntity> set = users.stream().sorted(Comparator.comparing(o -> o.getDepartment().getName()))
+            List<DataEntity> list = users.stream()
+                    .sorted(Comparator.comparing(o -> o.getDepartment().getName()))
                     .flatMap(user -> {
                         if (user.getDepartment() != lastDepartment[0]) {
                             lastDepartment[0] = user.getDepartment();
                             return Stream.of(user.getDepartment(), user);
                         }
                         return Stream.of(user);
-                    }).collect(Collectors.toSet());
-            return FXCollections.observableArrayList(set);
+                    }).collect(Collectors.toList());
+            return FXCollections.observableArrayList(list);
         }
 
         @Override
