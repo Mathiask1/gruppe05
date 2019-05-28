@@ -108,6 +108,10 @@ class DepartmentLoader(private val data: DataService) {
         assignedRelations.forEach { practitioners.getValue(it.key).lateInit(it.value) }
         assigneeRelations.forEach { patients.getValue(it.key).lateInit(it.value) }
 
+        // Avoid null pointers
+        practitioners.values.forEach { if (!it.isInitialized) it.lateInit(mutableListOf()) }
+        patients.values.forEach { if (!it.isInitialized) it.lateInit(mutableListOf()) }
+
         if (log.isDebugEnabled) printDebug(departments.values.toList())
 
         return HashMap(departments)

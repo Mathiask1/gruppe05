@@ -56,6 +56,13 @@ public class Patient extends User {
         this.assignees = new ArrayList<>(assignees);
     }
 
+    /**
+     * @return if the user is properly initialized by the DB
+     */
+    public boolean isInitialized() {
+        return assignees != null;
+    }
+
     @Override
     public AuthLevel getAuth() {
         return AuthLevel.PATIENT;

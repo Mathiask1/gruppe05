@@ -73,6 +73,7 @@ public class Department implements DataEntity {
     public Practitioner newPractitioner(Context ctx, String name) {
         ctx.assertAndLog(this, AuditAction.USER_CREATE, AuthLevel.LOCAL_ADMIN);
         Practitioner practitioner = new Practitioner(this, name);
+        practitioner.lateInit(new ArrayList<>());
         members.put(practitioner.getId(), practitioner);
         ctx.data.create(practitioner);
         return practitioner;
@@ -81,6 +82,7 @@ public class Department implements DataEntity {
     public Patient newPatient(Context ctx, String name) {
         ctx.assertAndLog(this, AuditAction.USER_CREATE, AuthLevel.CASEWORKER);
         Patient patient = new Patient(this, name);
+        patient.lateInit(new ArrayList<>());
         members.put(patient.getId(), patient);
         ctx.data.create(patient);
         return patient;

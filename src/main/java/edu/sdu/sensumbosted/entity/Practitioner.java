@@ -25,6 +25,13 @@ public class Practitioner extends User {
         this.assigned = assigned;
     }
 
+    /**
+     * @return if the user is properly initialized by the DB
+     */
+    public boolean isInitialized() {
+        return assigned != null;
+    }
+
     @Override
     public AuthLevel getAuth() {
         return AuthLevel.PRACTITIONER;
