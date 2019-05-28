@@ -11,8 +11,7 @@ create table audit
     time        timestamp not null
 );
 
-alter table audit
-    owner to kjpusdpl;
+alter table audit owner to CURRENT_USER;
 
 create unique index audit_id_uindex
     on audit (id);
@@ -25,8 +24,7 @@ create table departments
     name text not null
 );
 
-alter table departments
-    owner to kjpusdpl;
+alter table departments owner to CURRENT_USER;
 
 create unique index department_id_uindex
     on departments (id);
@@ -43,8 +41,7 @@ create table managers
     auth       text default 'NO_AUTH'::text not null
 );
 
-alter table managers
-    owner to kjpusdpl;
+alter table managers owner to CURRENT_USER;
 
 create unique index manager_id_uindex
     on managers (id);
@@ -63,11 +60,26 @@ create table patients
     calendar   json                  not null
 );
 
-alter table patients
-    owner to kjpusdpl;
+alter table patients owner to CURRENT_USER;
 
 create unique index patient_id_uindex
     on patients (id);
+
+create table practitioners
+(
+    id         uuid not null
+        constraint practitioner_pk
+            primary key,
+    department uuid
+        constraint practitioner_department_id_fk
+            references departments,
+    name       text not null
+);
+
+alter table practitioners owner to CURRENT_USER;
+
+create unique index practitioner_id_uindex
+    on practitioners (id);
 
 create table practitionerpatientrelation
 (
@@ -81,25 +93,7 @@ create table practitionerpatientrelation
             on delete cascade
 );
 
-alter table practitionerpatientrelation
-    owner to kjpusdpl;
-
-create table practitioners
-(
-    id         uuid not null
-        constraint practitioner_pk
-            primary key,
-    department uuid
-        constraint practitioner_department_id_fk
-            references departments,
-    name       text not null
-);
-
-alter table practitioners
-    owner to kjpusdpl;
-
-create unique index practitioner_id_uindex
-    on practitioners (id);
+alter table practitionerpatientrelation owner to CURRENT_USER;
 
 -----------------
 -- Row inserts --
