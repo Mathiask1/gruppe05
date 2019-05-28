@@ -1,3 +1,5 @@
+-- Includes all from ddl.sql but also contains row inserts
+
 create table audit
 (
     id          serial    not null
@@ -98,3 +100,9 @@ alter table practitioners
 
 create unique index practitioner_id_uindex
     on practitioners (id);
+
+-----------------
+-- Row inserts --
+-----------------
+
+
